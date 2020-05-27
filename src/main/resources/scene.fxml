@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <TabPane prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -27,7 +28,7 @@
                <content>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <CheckBox mnemonicParsing="false" text="Run Infinitely" />
+                        <CheckBox fx:id="infiniteCheckbox" mnemonicParsing="false" text="Run Infinitely" />
                         <GridPane vgap="5.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="132.0" />
@@ -40,8 +41,8 @@
                            <children>
                               <Label text="Timeskip:" />
                               <Label text="Speed of Simulation:" GridPane.rowIndex="1" />
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="timeskipField" GridPane.columnIndex="1" />
+                              <TextField fx:id="simSpeedField" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <Separator prefWidth="200.0" />
@@ -53,10 +54,10 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Label>
-                                    <ColorPicker />
+                                    <ColorPicker fx:id="colorPicker1Field" />
                                     <Separator orientation="VERTICAL" />
                                     <Label text="Mass:" />
-                                    <TextField prefHeight="25.0" prefWidth="68.0" />
+                                    <TextField fx:id="mass1Field" prefHeight="25.0" prefWidth="68.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" spacing="25.0">
@@ -73,8 +74,8 @@
                                        <children>
                                           <Label text="X-Position" />
                                           <Label text="Y-Position" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xPosition1Field" />
+                                          <TextField fx:id="yPosition1Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                     <GridPane layoutX="100.0" layoutY="10.0">
@@ -89,8 +90,8 @@
                                        <children>
                                           <Label text="X-Velocity" />
                                           <Label text="Y-Velocity" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xVelocity1Field" />
+                                          <TextField fx:id="yVelocity1Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -115,10 +116,10 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Label>
-                                    <ColorPicker />
+                                    <ColorPicker fx:id="colorPicker2Field" />
                                     <Separator orientation="VERTICAL" />
                                     <Label text="Mass:" />
-                                    <TextField prefHeight="25.0" prefWidth="68.0" />
+                                    <TextField fx:id="mass2Field" prefHeight="25.0" prefWidth="68.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" spacing="25.0">
@@ -135,8 +136,8 @@
                                        <children>
                                           <Label text="X-Position" />
                                           <Label text="Y-Position" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xPosition2Field" />
+                                          <TextField fx:id="yPosition2Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                     <GridPane layoutX="100.0" layoutY="10.0">
@@ -151,8 +152,8 @@
                                        <children>
                                           <Label text="X-Velocity" />
                                           <Label text="Y-Velocity" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xVelocity2Field" />
+                                          <TextField fx:id="yVelocity2Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -174,10 +175,10 @@
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></Label>
-                                    <ColorPicker />
+                                    <ColorPicker fx:id="colorPicker3Field" />
                                     <Separator orientation="VERTICAL" />
                                     <Label text="Mass:" />
-                                    <TextField prefHeight="25.0" prefWidth="68.0" />
+                                    <TextField fx:id="mass3Field" prefHeight="25.0" prefWidth="68.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" spacing="25.0">
@@ -194,8 +195,8 @@
                                        <children>
                                           <Label text="X-Position" />
                                           <Label text="Y-Position" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xPosition3Field" />
+                                          <TextField fx:id="yPosition3Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                     <GridPane layoutX="100.0" layoutY="10.0">
@@ -210,8 +211,8 @@
                                        <children>
                                           <Label text="X-Velocity" />
                                           <Label text="Y-Velocity" GridPane.rowIndex="1" />
-                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xVelocity3Field" />
+                                          <TextField fx:id="yVelocity3Field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -225,7 +226,7 @@
                            </padding>
                         </VBox>
                         <Separator prefWidth="200.0" />
-                        <Button mnemonicParsing="false" text="Run Simulation">
+                        <Button fx:id="runButton" mnemonicParsing="false" text="Run Simulation">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></Button>
@@ -236,12 +237,12 @@
                                     <Insets right="25.0" />
                                  </padding>
                               </Label>
-                              <TextField>
+                              <TextField fx:id="templateIDField">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" text="Save" />
+                              <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
                            </children>
                            <padding>
                               <Insets top="10.0" />
@@ -307,9 +308,9 @@
                               </VBox>
                               <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                                  <children>
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" />
+                                    <Label fx:id="position1Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="velocity1Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="acceleration1Info" text="[0.0000, 0.0000]" />
                                  </children>
                               </VBox>
                            </children>
@@ -346,9 +347,9 @@
                               </VBox>
                               <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                                  <children>
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" />
+                                    <Label fx:id="position3Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="velocity3Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="acceleration3Info" text="[0.0000, 0.0000]" />
                                  </children>
                               </VBox>
                            </children>
@@ -385,9 +386,9 @@
                               </VBox>
                               <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                                  <children>
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" textAlignment="RIGHT" />
-                                    <Label text="[0.0000, 0.0000]" />
+                                    <Label fx:id="position2Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="velocity2Info" text="[0.0000, 0.0000]" textAlignment="RIGHT" />
+                                    <Label fx:id="acceleration2Info" text="[0.0000, 0.0000]" />
                                  </children>
                               </VBox>
                            </children>
@@ -396,6 +397,18 @@
                   </VBox>
                </children>
             </GridPane>
-         </top></BorderPane>
+         </top>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" text="Pause" StackPane.alignment="TOP_LEFT">
+                     <StackPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </StackPane.margin>
+                  </Button>
+                  <Canvas height="720.0" width="800.0" />
+               </children>
+            </StackPane>
+         </center></BorderPane>
    </center>
 </BorderPane>
