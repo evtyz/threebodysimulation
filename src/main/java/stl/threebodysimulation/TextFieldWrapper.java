@@ -106,4 +106,25 @@ public class TextFieldWrapper {
             }
         });
     }
+
+    // Disables or enables a textfield.
+    public void changeState(boolean state) {
+        // INPUTS:
+        // state: boolean, true if enabled, false if disabled.
+
+        if (state) {
+            readiness = false;
+            subject.setDisable(false);
+            return;
+        }
+        readiness = true;
+        subject.clear();
+        subject.setStyle("-fx-border-color: #cccccc;");
+        subject.setStyle("-fx-background-color: white;");
+        subject.setDisable(true);
+    }
+
+    public boolean isReady() {
+        return readiness;
+    }
 }

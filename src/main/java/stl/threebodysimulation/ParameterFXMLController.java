@@ -71,10 +71,15 @@ public class ParameterFXMLController {
         };
     }
 
-    public boolean isValidObject() {
+    public boolean isReady() {
         // OUTPUT:
         // boolean, whether this object is ready to be simulated or not.
-        // TODO: should return false if the object isn't ready to be simulated yet.
+
+        for (TextFieldWrapper textField : allTextFields) {
+            if (!textField.isReady()) {
+                return false;
+            }
+        }
         return true;
     }
 

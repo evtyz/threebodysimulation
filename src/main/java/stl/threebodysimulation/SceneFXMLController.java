@@ -2,10 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -21,6 +18,9 @@ public class SceneFXMLController implements Initializable {
     private CheckBox infiniteCheckBox;
 
     @FXML
+    private Label timeskipLabel;
+
+    @FXML
     private TextField timeskipField;
 
     @FXML
@@ -29,12 +29,21 @@ public class SceneFXMLController implements Initializable {
     private TextFieldWrapper timeskipWrapper;
 
     @FXML
+    private Label simSpeedLabel;
+
+    @FXML
     private TextField simSpeedField;
 
     @FXML
     private Tooltip simSpeedTooltip;
 
     private TextFieldWrapper simSpeedWrapper;
+
+    @FXML
+    private CheckBox trailCheckBox;
+
+    @FXML
+    private CheckBox centerCheckBox;
 
     @FXML
     private Button runButton;
@@ -70,16 +79,15 @@ public class SceneFXMLController implements Initializable {
     private ParameterFXMLController[] parameterControllers;
 
     // Default colors
-    private Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+    private final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
 
     // Default limits
-    private double MAX_ABS_TIMESKIP = 10000;
-    private double MIN_SIMULATION_SPEED = 0.01;
-    private double MAX_SIMULATION_SPEED = 100;
+    private final double MAX_ABS_TIMESKIP = 10000;
+    private final double MIN_SIMULATION_SPEED = 0.01;
+    private final double MAX_SIMULATION_SPEED = 100;
 
     // Empty constructor for use by FXML.
-    public SceneFXMLController() {
-    }
+    public SceneFXMLController() { }
 
     // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,5 +105,61 @@ public class SceneFXMLController implements Initializable {
         // Wrap text fields and related tooltips, along with limits, into one object.
         timeskipWrapper = new TextFieldWrapper(timeskipField, timeskipTooltip, -MAX_ABS_TIMESKIP, MAX_ABS_TIMESKIP);
         simSpeedWrapper = new TextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED);
+
+        onChangeInfiniteCheckbox();
+    }
+
+    public void onChangeInfiniteCheckbox() {
+        if (infiniteCheckBox.isSelected()) {
+            timeskipLabel.setTextFill(Color.LIGHTGRAY);
+            timeskipWrapper.changeState(false);
+            simSpeedLabel.setTextFill(Color.BLACK);
+            simSpeedWrapper.changeState(true);
+        } else {
+            timeskipLabel.setTextFill(Color.BLACK);
+            timeskipWrapper.changeState(true);
+            simSpeedLabel.setTextFill(Color.LIGHTGRAY);
+            simSpeedWrapper.changeState(false);
+        }
+    }
+
+    public boolean executeValidityCheck() {
+        // Check if all objects and parameters are ready.
+        // RETURNS:
+        // boolean, true if ready, false if not ready.
+
+        if (!timeskipWrapper.isReady()) {
+            simInputError();
+            return false;
+        }
+        if (!simSpeedWrapper.isReady()) {
+            simInputError();
+            return false;
+        }
+
+        for (ParameterFXMLController controller : parameterControllers) {
+            if (!controller.isReady()) {
+                simInputError();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void runSimulation() {
+        if (!executeValidityCheck()) {
+            return;
+        }
+
+        Particle[] particles = new Particle[3];
+        for (int i = 0; i < 3; i++) {
+            particles[i] = parameterControllers[i].convertToParticle();
+        }
+
+
+    }
+
+    private void simInputError() {
+        // TODO: Write this method
     }
 }
