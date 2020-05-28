@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 public class ParameterFXMLController {
 
     // UI element declarations
-
     @FXML
     private Label objectLabel;
 
@@ -32,7 +31,7 @@ public class ParameterFXMLController {
     private TextField yVelocityField;
 
     // Object ID e.g. Object 1, 2, or 3.
-    private int id;
+    private byte id;
 
     // Empty constructor for use by FXML. Must exist.
     // Also initializes id to -1 so that other methods know that setup isn't finished yet.
@@ -40,10 +39,10 @@ public class ParameterFXMLController {
         id = -1;
     }
 
-    void setup(int id) {
+    void setup(byte id) {
         // Sets the id of the object and changes the label to reflect this.
         // INPUT:
-        // id: int, the id of the object (e.g. Object 1, 2, or 3)
+        // id: byte, the id of the object (e.g. Object 1, 2, or 3)
         // USAGE:
         // >> setup(1) -> objectLabel shows "Object 1"
         objectLabel.setText("Object " + id);
@@ -62,12 +61,12 @@ public class ParameterFXMLController {
         // OUTPUT:
         // Particle, the particle that represents the initial state of the object.
         return new Particle(
-                Integer.parseInt(xPositionField.getText()),
-                Integer.parseInt(yPositionField.getText()),
-                Integer.parseInt(xVelocityField.getText()),
-                Integer.parseInt(yVelocityField.getText()),
-                Integer.parseInt(massField.getText()),
-                id,
+                Double.parseDouble(xPositionField.getText()),
+                Double.parseDouble(yPositionField.getText()),
+                Double.parseDouble(xVelocityField.getText()),
+                Double.parseDouble(yVelocityField.getText()),
+                Double.parseDouble(massField.getText()),
+                (byte)id,
                 colorPickerField.getValue());
     }
 }

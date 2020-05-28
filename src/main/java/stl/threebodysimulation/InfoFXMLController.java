@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
 public class InfoFXMLController {
-    // Declare our UI elements
 
+    // Declare our UI elements
     @FXML
     private Label objectLabel;
 
@@ -22,8 +22,7 @@ public class InfoFXMLController {
     private Label accelerationInfo;
 
     // Declare some other useful variables
-
-    private int id;
+    private byte id;
 
     private HashMap<String, Label> packagedLabels;
 
@@ -33,7 +32,7 @@ public class InfoFXMLController {
         id = -1;
     }
 
-    void setup(int id) {
+    void setup(byte id) {
         // Set the label to be "Object {id}"
         // INPUT:
         // id : int, the ID of the object. (e.g. object 1, 2, or 3)
@@ -53,8 +52,9 @@ public class InfoFXMLController {
         // particle : Particle, the Particle object that we are reading stats from.
 
         for (String key : packagedLabels.keySet()) {
-            int[] vector = particle.packagedInformation.get(key);
-            packagedLabels.get(key).setText("[" + vector[0] + ", " + vector[1] + "]");
+            double[] vector = particle.packagedInformation.get(key);
+            String labelText = String.format("[%f, %f]", vector[0], vector[1]);
+            packagedLabels.get(key).setText(labelText);
         }
     }
 }

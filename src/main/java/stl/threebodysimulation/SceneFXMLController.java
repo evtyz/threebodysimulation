@@ -67,8 +67,8 @@ public class SceneFXMLController implements Initializable {
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            infoControllers[i].setup(i+1);
-            parameterControllers[i].setup(i+1);
+            infoControllers[i].setup((byte)(i+1));
+            parameterControllers[i].setup((byte)(i+1));
         }
     }
 }
