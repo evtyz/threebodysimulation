@@ -7,6 +7,7 @@ import javafx.util.Duration;
 
 import java.text.DecimalFormat;
 
+// This class is a wrapper around a TextField that connects it with related tooltips, limits, and relevant methods.
 public class TextFieldWrapper {
     private final double min;
     private final double max;

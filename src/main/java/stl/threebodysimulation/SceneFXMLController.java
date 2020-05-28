@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+// This class is the FXML controller for the entire scene (or UI).
 public class SceneFXMLController implements Initializable {
 
     // Initialize all UI elements

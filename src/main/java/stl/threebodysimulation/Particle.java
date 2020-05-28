@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 
+// This class represents all the attributes of a single particle object.
 public class Particle {
     final double mass;
     final byte id;
