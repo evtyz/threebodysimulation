@@ -1,5 +1,7 @@
 package stl.threebodysimulation;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
@@ -16,6 +18,8 @@ public class TextFieldWrapper {
     private Tooltip tooltip;
     // This controls what characters can be typed into the textbox.
     private String decimalPattern;
+    // This represents whether the TextField is ready to send its value for simulation.
+    private boolean readiness;
 
     // Constructor of object
     public TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max) {
@@ -23,6 +27,12 @@ public class TextFieldWrapper {
         // Initializes textfield and tooltip
         this.subject = subject;
         this.tooltip = tooltip;
+
+        // Setup mins and maxes
+        this.min = min;
+        this.max = max;
+
+        readiness = false;
 
         // Checks if the minimum value allows negative numbers
         boolean allowNegative = min < 0;
@@ -33,11 +43,9 @@ public class TextFieldWrapper {
         } else {
             decimalPattern = "[0-9]*(\\.[0-9]*)?";
         }
-        limitToNumericalInput(allowNegative);
 
-        // Setup mins and maxes
-        this.min = min;
-        this.max = max;
+        limitToNumericalInput(allowNegative);
+        attachInputValidator();
 
         // Set up the tooltip with correct text and settings
         setupTooltip();
@@ -63,5 +71,39 @@ public class TextFieldWrapper {
         // allowNegative: boolean, whether negative numbers are allowed in the textfield or not.
         subject.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches(decimalPattern)) ? change : null));
+    }
+
+    private boolean isValidInput() {
+        try {
+            double value = Double.parseDouble(subject.getText());
+            return (min <= value && value <= max);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+    }
+
+    // Function that attaches a listener on the TextView to check if the input is within the min and max.
+    // Structure modified from Brendan's answer at https://stackoverflow.com/questions/16549296/how-perform-task-on-javafx-textfield-at-onfocus-and-outfocus
+    private void attachInputValidator() {
+        subject.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldFocus, Boolean newFocus)
+            {
+                if (!newFocus) {
+                    if (!isValidInput()) {
+                        subject.setStyle("-fx-border-color: #ff4444; -fx-background-color: #fff9f9;");
+                        readiness = false;
+                    } else {
+                        subject.setStyle("-fx-border-color: #cccccc;");
+                        subject.setStyle("-fx-background-color: white;");
+                        readiness = true;
+                    }
+                } else {
+                    subject.setStyle("-fx-border-color: #66afe9");
+                    subject.setStyle("-fx-background-color: white;");
+                }
+            }
+        });
     }
 }
