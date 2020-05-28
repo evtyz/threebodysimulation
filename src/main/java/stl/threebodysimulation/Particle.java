@@ -5,14 +5,13 @@ import javafx.scene.paint.Color;
 import java.util.HashMap;
 
 public class Particle {
+    final double mass;
+    final byte id;
+    final Color color;
     // Attributes of a particle. Arrays represent vectors, with index 0 being x-coordinate and 1 being y-coordinate.
     double[] position;
     double[] velocity;
     double[] acceleration;
-    final double mass;
-    final byte id;
-    final Color color;
-
     // Attributes packaged for sending to the InfoFXMLController.
     HashMap<String, double[]> packagedInformation;
 

@@ -1,8 +1,5 @@
 package stl.threebodysimulation;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,6 +7,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class SceneFXMLController implements Initializable {
 
@@ -76,19 +76,20 @@ public class SceneFXMLController implements Initializable {
     private double MAX_SIMULATION_SPEED = 100;
 
     // Empty constructor for use by FXML.
-    public SceneFXMLController() {}
+    public SceneFXMLController() {
+    }
 
     // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         // Setup controller arrays.
-        infoControllers = new InfoFXMLController[] {object1InfoController, object2InfoController, object3InfoController};
-        parameterControllers = new ParameterFXMLController[] {object1ParameterController, object2ParameterController, object3ParameterController};
+        infoControllers = new InfoFXMLController[]{object1InfoController, object2InfoController, object3InfoController};
+        parameterControllers = new ParameterFXMLController[]{object1ParameterController, object2ParameterController, object3ParameterController};
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            infoControllers[i].setup((byte)(i+1));
-            parameterControllers[i].setup((byte)(i+1), defaultColors[i]);
+            infoControllers[i].setup((byte) (i + 1));
+            parameterControllers[i].setup((byte) (i + 1), defaultColors[i]);
         }
 
         // Wrap text fields and related tooltips, along with limits, into one object.

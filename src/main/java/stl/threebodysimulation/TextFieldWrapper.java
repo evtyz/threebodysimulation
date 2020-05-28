@@ -8,12 +8,11 @@ import javafx.util.Duration;
 import java.text.DecimalFormat;
 
 public class TextFieldWrapper {
+    private final double min;
+    private final double max;
     // Instance variables
     private TextField subject;
     private Tooltip tooltip;
-    private final double min;
-    private final double max;
-
     // This controls what characters can be typed into the textbox.
     private String decimalPattern;
 

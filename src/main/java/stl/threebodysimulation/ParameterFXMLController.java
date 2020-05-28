@@ -10,58 +10,43 @@ import javafx.scene.paint.Color;
 // This class represents the FXML controller of the editable parameters shown for each object before the simulation, on the left.
 public class ParameterFXMLController {
 
+    // Min and Max values for position, velocity, mass
+    public static final double MAX_ABS_STARTING_POSITION = 100000; // TODO: Calculate
+    public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
+    public static final double MAX_MASS = 10000; // TODO: Calculate
     // UI element declarations
     @FXML
     private Label objectLabel;
-
     @FXML
     private ColorPicker colorPickerField;
-
     @FXML
     private TextField massField;
-
     @FXML
     private Tooltip massTooltip;
-
     @FXML
     private TextField xPositionField;
-
     @FXML
     private Tooltip xPositionTooltip;
-
     @FXML
     private TextField yPositionField;
-
     @FXML
     private Tooltip yPositionTooltip;
-
     @FXML
     private TextField xVelocityField;
-
     @FXML
     private Tooltip xVelocityTooltip;
-
     @FXML
     private TextField yVelocityField;
-
     @FXML
     private Tooltip yVelocityTooltip;
-
     private TextFieldWrapper[] allTextFields;
-
     // Object ID e.g. Object 1, 2, or 3.
     private byte id;
-
     // Empty constructor for use by FXML. Must exist.
     // Also initializes id to -1 so that other methods know that setup isn't finished yet.
     public ParameterFXMLController() {
         id = -1;
     }
-
-    // Min and Max values for position, velocity, mass
-    public static final double MAX_ABS_STARTING_POSITION = 100000; // TODO: Calculate
-    public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
-    public static final double MAX_MASS = 10000; // TODO: Calculate
 
     void setup(byte id, Color color) {
         // Sets the id of the object and changes the label to reflect this.
@@ -77,7 +62,7 @@ public class ParameterFXMLController {
         colorPickerField.setValue(color);
 
         // Wrap all text-fields and related tooltips into cohesive TextFieldWrapper class with min and max values.
-        allTextFields = new TextFieldWrapper[] {
+        allTextFields = new TextFieldWrapper[]{
                 new TextFieldWrapper(massField, massTooltip, 0, MAX_MASS),
                 new TextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
                 new TextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
