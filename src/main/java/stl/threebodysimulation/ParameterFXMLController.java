@@ -30,6 +30,8 @@ public class ParameterFXMLController {
     @FXML
     private TextField yVelocityField;
 
+    private TextFieldWrapper[] allTextFields;
+
     // Object ID e.g. Object 1, 2, or 3.
     private byte id;
 
@@ -39,14 +41,27 @@ public class ParameterFXMLController {
         id = -1;
     }
 
+    public static final double MAX_ABS_STARTING_POSITION = 100000; // TODO: Calculate
+    public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
+    public static final double MAX_MASS = 10000; // TODO: Calculate
+
     void setup(byte id) {
         // Sets the id of the object and changes the label to reflect this.
+        // Also sets up each text-field to limit input correctly.
         // INPUT:
         // id: byte, the id of the object (e.g. Object 1, 2, or 3)
         // USAGE:
         // >> setup(1) -> objectLabel shows "Object 1"
         objectLabel.setText("Object " + id);
         this.id = id;
+
+        allTextFields = new TextFieldWrapper[] {
+                new TextFieldWrapper(massField, 0, MAX_MASS),
+                new TextFieldWrapper(xPositionField, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
+                new TextFieldWrapper(yPositionField, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
+                new TextFieldWrapper(xVelocityField, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY),
+                new TextFieldWrapper(yVelocityField, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY)
+        };
     }
 
     public boolean isValidObject() {
@@ -66,7 +81,7 @@ public class ParameterFXMLController {
                 Double.parseDouble(xVelocityField.getText()),
                 Double.parseDouble(yVelocityField.getText()),
                 Double.parseDouble(massField.getText()),
-                (byte)id,
+                id,
                 colorPickerField.getValue());
     }
 }
