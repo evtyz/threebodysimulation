@@ -14,7 +14,7 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
         stage.setResizable(false);
         stage.setTitle("JavaFX and Gradle");
         stage.setScene(scene);

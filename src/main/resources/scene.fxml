@@ -263,9 +263,9 @@
       </TabPane>
    </left>
    <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
          <top>
-            <GridPane hgap="40.0" prefHeight="178.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <GridPane hgap="40.0" prefHeight="178.0" prefWidth="800.0" style="-fx-background-color: #F9F9F9;" styleClass="canvasLabels" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -399,14 +399,14 @@
             </GridPane>
          </top>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #F3F3F3;" BorderPane.alignment="CENTER">
                <children>
+                  <Canvas fx:id="canvas" height="720.0" width="800.0" />
                   <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" text="Pause" StackPane.alignment="TOP_LEFT">
                      <StackPane.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </StackPane.margin>
                   </Button>
-                  <Canvas height="720.0" width="800.0" />
                </children>
             </StackPane>
          </center></BorderPane>
