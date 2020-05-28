@@ -16,7 +16,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
         stage.setResizable(false);
-        stage.setTitle("JavaFX and Gradle");
+        stage.setTitle("Three-Body Simulation");
         stage.setScene(scene);
         stage.show();
     }
