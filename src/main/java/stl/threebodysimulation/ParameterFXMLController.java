@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 // This class represents the FXML controller of the editable parameters shown for each object before the simulation, on the left.
 public class ParameterFXMLController {
@@ -45,7 +46,7 @@ public class ParameterFXMLController {
     public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
     public static final double MAX_MASS = 10000; // TODO: Calculate
 
-    void setup(byte id) {
+    void setup(byte id, Color color) {
         // Sets the id of the object and changes the label to reflect this.
         // Also sets up each text-field to limit input correctly.
         // INPUT:
@@ -54,6 +55,8 @@ public class ParameterFXMLController {
         // >> setup(1) -> objectLabel shows "Object 1"
         objectLabel.setText("Object " + id);
         this.id = id;
+
+        colorPickerField.setValue(color);
 
         allTextFields = new TextFieldWrapper[] {
                 new TextFieldWrapper(massField, 0, MAX_MASS),

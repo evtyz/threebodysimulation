@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 public class SceneFXMLController implements Initializable {
 
@@ -55,6 +56,9 @@ public class SceneFXMLController implements Initializable {
     private InfoFXMLController[] infoControllers;
     private ParameterFXMLController[] parameterControllers;
 
+    // Default colors
+    private Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+
     // Empty constructor for use by FXML.
     public SceneFXMLController() {}
 
@@ -68,7 +72,7 @@ public class SceneFXMLController implements Initializable {
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
             infoControllers[i].setup((byte)(i+1));
-            parameterControllers[i].setup((byte)(i+1));
+            parameterControllers[i].setup((byte)(i+1), defaultColors[i]);
         }
     }
 }
