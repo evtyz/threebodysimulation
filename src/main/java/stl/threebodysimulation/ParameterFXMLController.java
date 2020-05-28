@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 
 // This class represents the FXML controller of the editable parameters shown for each object before the simulation, on the left.
@@ -20,16 +21,31 @@ public class ParameterFXMLController {
     private TextField massField;
 
     @FXML
+    private Tooltip massTooltip;
+
+    @FXML
     private TextField xPositionField;
+
+    @FXML
+    private Tooltip xPositionTooltip;
 
     @FXML
     private TextField yPositionField;
 
     @FXML
+    private Tooltip yPositionTooltip;
+
+    @FXML
     private TextField xVelocityField;
 
     @FXML
+    private Tooltip xVelocityTooltip;
+
+    @FXML
     private TextField yVelocityField;
+
+    @FXML
+    private Tooltip yVelocityTooltip;
 
     private TextFieldWrapper[] allTextFields;
 
@@ -42,6 +58,7 @@ public class ParameterFXMLController {
         id = -1;
     }
 
+    // Min and Max values for position, velocity, mass
     public static final double MAX_ABS_STARTING_POSITION = 100000; // TODO: Calculate
     public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
     public static final double MAX_MASS = 10000; // TODO: Calculate
@@ -56,21 +73,23 @@ public class ParameterFXMLController {
         objectLabel.setText("Object " + id);
         this.id = id;
 
+        // Set up default color for this object
         colorPickerField.setValue(color);
 
+        // Wrap all text-fields and related tooltips into cohesive TextFieldWrapper class with min and max values.
         allTextFields = new TextFieldWrapper[] {
-                new TextFieldWrapper(massField, 0, MAX_MASS),
-                new TextFieldWrapper(xPositionField, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
-                new TextFieldWrapper(yPositionField, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
-                new TextFieldWrapper(xVelocityField, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY),
-                new TextFieldWrapper(yVelocityField, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY)
+                new TextFieldWrapper(massField, massTooltip, 0, MAX_MASS),
+                new TextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
+                new TextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
+                new TextFieldWrapper(xVelocityField, xVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY),
+                new TextFieldWrapper(yVelocityField, yVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY)
         };
     }
 
     public boolean isValidObject() {
         // OUTPUT:
         // boolean, whether this object is ready to be simulated or not.
-        //TODO: should return false if the object isn't ready to be simulated yet.
+        // TODO: should return false if the object isn't ready to be simulated yet.
         return true;
     }
 

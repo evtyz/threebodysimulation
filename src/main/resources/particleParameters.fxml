@@ -5,13 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <VBox spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.ParameterFXMLController">
    <children>
@@ -25,7 +25,10 @@
             <ColorPicker fx:id="colorPickerField" />
             <Separator orientation="VERTICAL" />
             <Label text="Mass:" />
-            <TextField fx:id="massField" prefHeight="25.0" prefWidth="68.0" />
+            <TextField fx:id="massField" prefHeight="25.0" prefWidth="68.0">
+               <tooltip>
+                  <Tooltip fx:id="massTooltip" text="Empty Tooltip" />
+               </tooltip></TextField>
          </children>
       </HBox>
       <HBox alignment="CENTER" spacing="25.0">
@@ -42,8 +45,14 @@
                <children>
                   <Label text="X-Position:" />
                   <Label text="Y-Position:" GridPane.rowIndex="1" />
-                  <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xPositionField" />
-                  <TextField fx:id="yPositionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xPositionField">
+                     <tooltip>
+                        <Tooltip text="Empty Tooltip" fx:id="xPositionTooltip" />
+                     </tooltip></TextField>
+                  <TextField fx:id="yPositionField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <tooltip>
+                        <Tooltip fx:id="yPositionTooltip" text="Empty Tooltip" />
+                     </tooltip></TextField>
                </children>
             </GridPane>
             <GridPane layoutX="100.0" layoutY="10.0" vgap="5.0">
@@ -58,8 +67,14 @@
                <children>
                   <Label text="X-Velocity:" />
                   <Label text="Y-Velocity:" GridPane.rowIndex="1" />
-                  <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xVelocityField" />
-                  <TextField fx:id="yVelocityField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="1" fx:id="xVelocityField">
+                     <tooltip>
+                        <Tooltip text="Empty Tooltip" fx:id="xVelocityTooltip" />
+                     </tooltip></TextField>
+                  <TextField fx:id="yVelocityField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <tooltip>
+                        <Tooltip fx:id="yVelocityTooltip" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Empty Tooltip" wrapText="true" />
+                     </tooltip></TextField>
                </children>
             </GridPane>
          </children>

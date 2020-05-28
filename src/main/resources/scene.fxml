@@ -9,6 +9,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -40,8 +41,22 @@
                            <children>
                               <Label text="Timeskip:" />
                               <Label text="Speed of Simulation:" GridPane.rowIndex="1" />
-                              <TextField fx:id="timeskipField" GridPane.columnIndex="1" />
-                              <TextField fx:id="simSpeedField" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="timeskipField" GridPane.columnIndex="1">
+                                 <tooltip>
+                                    <Tooltip fx:id="timeskipTooltip" text="Empty Tooltip">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip></TextField>
+                              <TextField fx:id="simSpeedField" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <tooltip>
+                                    <Tooltip fx:id="simSpeedTooltip" text="Empty Tooltip">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip></TextField>
                            </children>
                         </GridPane>
                         <Separator prefWidth="200.0" />

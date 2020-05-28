@@ -2,15 +2,29 @@ package stl.threebodysimulation;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
+
+import java.text.DecimalFormat;
 
 public class TextFieldWrapper {
+    // Instance variables
     private TextField subject;
+    private Tooltip tooltip;
     private final double min;
     private final double max;
+
+    // This controls what characters can be typed into the textbox.
     private String decimalPattern;
 
-    public TextFieldWrapper(TextField subject, double min, double max) {
+    // Constructor of object
+    public TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max) {
+
+        // Initializes textfield and tooltip
         this.subject = subject;
+        this.tooltip = tooltip;
+
+        // Checks if the minimum value allows negative numbers
         boolean allowNegative = min < 0;
 
         // Regexes modified from P. Jowko's implementation at https://stackoverflow.com/questions/40485521/javafx-textfield-validation-decimal-value.
@@ -20,11 +34,27 @@ public class TextFieldWrapper {
             decimalPattern = "[0-9]*(\\.[0-9]*)?";
         }
         limitToNumericalInput(allowNegative);
+
+        // Setup mins and maxes
         this.min = min;
         this.max = max;
+
+        // Set up the tooltip with correct text and settings
+        setupTooltip();
     }
 
+    private void setupTooltip() {
+        // Void method that initializes a tooltip
 
+        // This allows us to round to the correct number of decimal places
+        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
+        // Tooltips show up after 100 milliseconds of hovering
+        tooltip.setShowDelay(new Duration(100));
+
+        // Set the text of the tooltip to display the min and max.
+        tooltip.setText(String.format("Number between %s and %s", decimalFormat.format(min), decimalFormat.format(max)));
+    }
 
     // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
     private void limitToNumericalInput(boolean allowNegative) {
