@@ -13,6 +13,9 @@ public class CanvasPanelFXMLController {
     @FXML
     private Button pauseButton;
 
+    @FXML
+    private Button stopButton;
+
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() {
     }

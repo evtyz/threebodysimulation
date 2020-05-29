@@ -2,35 +2,33 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="900.0" prefWidth="1200.0" stylesheets="@bootstrap3.css"
-            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="stl.threebodysimulation.SceneFXMLController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SceneFXMLController">
     <left>
         <TabPane prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
                 <Tab text="Settings">
                     <content>
-                        <fx:include fx:id="settingsPanel" source="settingsPanel.fxml"/>
+                        <fx:include fx:id="settingsPanel" source="settingsPanel.fxml" />
                     </content>
                 </Tab>
                 <Tab text="Saves">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"/>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                 </Tab>
             </tabs>
         </TabPane>
     </left>
     <center>
-        <BorderPane prefHeight="200.0" prefWidth="200.0"
-                    style="-fx-border-color: transparent transparent transparent  #C0C0C0;"
-                    BorderPane.alignment="CENTER">
+        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
             <center>
-                <fx:include fx:id="canvasPanel" source="canvasPanel.fxml"/>
+                <fx:include fx:id="canvasPanel" source="canvasPanel.fxml" />
             </center>
             <top>
-                <fx:include fx:id="infoPanel" source="infoPanel.fxml"/>
+                <fx:include fx:id="infoPanel" source="infoPanel.fxml" />
             </top>
         </BorderPane>
     </center>
