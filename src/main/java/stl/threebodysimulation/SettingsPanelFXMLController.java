@@ -48,6 +48,9 @@ public class SettingsPanelFXMLController {
     private ParameterFXMLController object3ParameterController;
     private ParameterFXMLController[] parameterControllers;
 
+    public Listener onOpenManualListener;
+    public Listener onRunSimulationListener;
+
     public SettingsPanelFXMLController() {
     }
 
@@ -120,21 +123,38 @@ public class SettingsPanelFXMLController {
             return;
         }
 
+        try {
+            onRunSimulationListener.onEvent();
+        } catch (Exception ignored) {};
+    }
+
+    private void simInputError() {
+        // Handles errors when the user presses "Run Simulation" but doesn't fill everything correctly.
+        // TODO: Write this method, potentially link to scenecontroller
+    }
+
+    public void openManual() {
+        // Called when the user presses the View User Manual button.
+        try {
+            onOpenManualListener.onEvent();
+        } catch (Exception ignored) {};
+    }
+
+    public SimulationSettings getSimulationSettings() {
+        // A class that packages the inputs in the settingspanel into a SimulationSettings object.
+        // RETURNS:
+        // new SimulationSettings: a SimulationSettings object that represents settings for the simulation.
         Particle[] particles = new Particle[3];
         for (int i = 0; i < 3; i++) {
             particles[i] = parameterControllers[i].convertToParticle();
         }
 
+        boolean infiniteEnabled = infiniteCheckBox.isSelected();
+        boolean trailsEnabled = trailCheckBox.isSelected();
+        boolean centerOfGravityEnabled = centerCheckBox.isSelected();
+        double skip = Double.parseDouble(timeskipField.getText());
+        double speed = Double.parseDouble(simSpeedField.getText());
 
-    }
-
-    private void simInputError() {
-        // Handles errors when the user presses "Run Simulation" but doesn't fill everything correctly.
-        // TODO: Write this method
-    }
-
-    public void openManual() {
-        // Called when the user presses the View User Manual button.
-        // TODO: Write this method
+        return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed);
     }
 }

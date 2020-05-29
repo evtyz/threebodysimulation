@@ -28,5 +28,28 @@ public class SceneFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         infoPanelController.setup();
         settingsPanelController.setup();
+        settingsPanelController.onOpenManualListener = new Listener() {
+            @Override
+            public void onEvent() {
+                openManual();
+            }
+        };
+
+        settingsPanelController.onRunSimulationListener = new Listener() {
+            @Override
+            public void onEvent() {
+                runSimulation(settingsPanelController.getSimulationSettings());
+            }
+        };
+    }
+
+    public void openManual() {
+        // Opens user manual popups
+        // TODO: Implement method.
+    }
+
+    public void runSimulation(SimulationSettings settings) {
+        // Runs the simulation according to the given settings
+        // TODO: Implement method.
     }
 }
