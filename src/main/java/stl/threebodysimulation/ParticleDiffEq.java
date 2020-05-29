@@ -4,12 +4,17 @@ import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 
 public class ParticleDiffEq implements FirstOrderDifferentialEquations {
 
-    // TODO: Deal with precision and overflow issues, this number is too big.
-    public static final double G = 132711917360.38; // Universal Gravitational Constant in km^3 * solarmasses^-1 * seconds^-2
+
     private final double[] masses;
 
-    public ParticleDiffEq(double[] masses) {
+    static double[] accelerationStorage;
+
+    private Listener derivativeListener;
+
+    public ParticleDiffEq(double[] masses, Listener derivativeListener) {
         this.masses = masses;
+        this.derivativeListener = derivativeListener;
+        accelerationStorage = new double[6];
     }
 
     public int getDimension() {
@@ -42,11 +47,12 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
          */
 
         // Copy velocity for y to yDot in correct position.
-        for (int i = 0; i < 3; i++) {
-            yDot[4 * i] = y[4 * i + 2];
-            yDot[4 * i + 1] = y[4 * i + 3];
+        for (int particle = 0; particle < 3; particle++) {
+            yDot[4 * particle] = y[4 * particle + 2];
+            yDot[4 * particle + 1] = y[4 * particle + 3];
         }
 
+        // Define relationships between particles
         ParticleRelationship[] relationships = new ParticleRelationship[] {
                 new ParticleRelationship(new double[] {y[4] - y[0], y[5] - y[1]}, masses[0], masses[1], 0, 1),
                 new ParticleRelationship(new double[] {y[8] - y[0], y[9] - y[1]}, masses[0], masses[2], 0, 2),
@@ -55,6 +61,7 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
 
         double[][] accelerations = new double[3][2];
 
+        // Calculate accelerations based on relationships
         for (ParticleRelationship relationship : relationships) {
             for (int particle : relationship.accelerationMap.keySet()) {
                 double[] acceleration = relationship.accelerationMap.get(particle);
@@ -63,9 +70,12 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
             }
         }
 
+        // Set yDot acceleration indices to correct value
         for (int particle = 0; particle < 3; particle++) {
             yDot[4 * particle + 2] = accelerations[particle][0];
             yDot[4 * particle + 3] = accelerations[particle][1];
         }
+
+        derivativeListener.onEvent();
     }
 }

@@ -4,12 +4,12 @@ package stl.threebodysimulation;
 public class SimulationSettings {
 
     // Settings
-    private Particle[] particles;
-    private boolean isInfinite;
-    private boolean hasTrails;
-    private boolean showsCenterOfGravity;
-    private double skip;
-    private double speed;
+    public Particle[] particles;
+    public boolean isInfinite;
+    public boolean hasTrails;
+    public boolean showsCenterOfGravity;
+    public double skip;
+    public double speed;
 
 
     // Constructor that builds a Settings object.

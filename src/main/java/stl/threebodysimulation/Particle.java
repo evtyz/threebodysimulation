@@ -45,4 +45,19 @@ public class Particle {
         this.id = id;
         this.color = color;
     }
+
+    public double[] flatten() {
+        return new double[]{position[0], position[1], velocity[0], velocity[1]};
+    }
+
+    public void updateFromFlattenedParticle(double[] flattenedParticle) {
+        position[0] = flattenedParticle[0];
+        position[1] = flattenedParticle[1];
+        velocity[0] = flattenedParticle[0];
+        velocity[1] = flattenedParticle[1];
+    }
+
+    public void updateAcceleration(double[] accelerationArray) {
+        acceleration = accelerationArray;
+    }
 }

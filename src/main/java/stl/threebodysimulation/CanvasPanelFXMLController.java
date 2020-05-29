@@ -20,6 +20,8 @@ public class CanvasPanelFXMLController {
 
     public Listener onStopListener;
 
+    public Particle[] particles;
+
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() {
     }
@@ -31,7 +33,8 @@ public class CanvasPanelFXMLController {
         stopButton.setDisable(true);
     }
 
-    public void runSimulation() {
+    public void runSimulation(SimulationSettings settings) {
+        particles = settings.particles;
         // TODO: run simulation
         state = SimulationState.RUNNING;
         stopButton.setDisable(false);

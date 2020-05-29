@@ -30,4 +30,12 @@ public class InfoPanelFXMLController {
             infoControllers[id].setup((byte) (id + 1));
         }
     }
+
+    public void updateAccelerations(double[] accelerations) {
+        // INPUTS:
+        // accelerations: double[6], the accelerations of every particle in the following format:
+        // [xAcc1, yAcc1, xAcc2, yAcc2, xAcc3, yAcc3].
+
+
+    }
 }
