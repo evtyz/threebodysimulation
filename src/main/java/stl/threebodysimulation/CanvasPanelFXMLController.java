@@ -1,5 +1,7 @@
 package stl.threebodysimulation;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -27,6 +29,8 @@ public class CanvasPanelFXMLController {
 
     public double[] flattenedParticles = new double[12];
 
+    private double currentTime;
+
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() { }
 
@@ -39,18 +43,12 @@ public class CanvasPanelFXMLController {
         state = SimulationState.NOT_STARTED;
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
+        currentTime = 0;
     }
 
     public void runSimulation(SimulationSettings settings) {
         // TODO: run simulation
-        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass(), new Listener() {
-            @Override
-            public void onEvent() {
-                for (int i = 0; i < 3; i++) {
-                    particles[i].updateAcceleration(Arrays.copyOfRange(ParticleDiffEq.accelerationStorage, i * 2, i * 2 + 2));
-                }
-            }
-        });
+        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
         // TODO: Find reasonable values for parameters here
         DormandPrince853Integrator integrator = new DormandPrince853Integrator(0.01, 30000, 0.01, 0.01);
@@ -60,14 +58,34 @@ public class CanvasPanelFXMLController {
             state = SimulationState.RUNNING;
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
-            // TODO
 
+            Task task  = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    while (state == SimulationState.RUNNING) {
+                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + settings.speed, flattenedParticles);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateParticlesAndCanvas();
+                            }
+                        });
+                        currentTime += settings.speed;
+                        Thread.sleep(1000);
+                    }
+                    return null;
+                }
+            };
         } else {
             state = SimulationState.FINISHED;
             integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
-            unflattenParticles();
-            updateCanvas();
+            updateParticlesAndCanvas();
         }
+    }
+
+    public void updateParticlesAndCanvas() {
+        unflattenParticles();
+        updateCanvas();
     }
 
     // Method called when stop button is pressed
@@ -109,6 +127,7 @@ public class CanvasPanelFXMLController {
     public void unflattenParticles() {
         for (int i = 0; i < 3; i++) {
             particles[i].updateFromFlattenedParticle(Arrays.copyOfRange(flattenedParticles, 4 * i, 4 * i + 4));
+            particles[i].updateAcceleration();
         }
     }
 

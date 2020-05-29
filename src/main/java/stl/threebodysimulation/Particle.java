@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 // This class represents all the attributes of a single particle object.
@@ -16,7 +17,6 @@ public class Particle {
     // Attributes packaged for sending to the InfoFXMLController.
     HashMap<String, double[]> packagedInformation;
 
-    Listener canvasUpdateListener;
     Listener infoUpdateListener;
 
     Particle(double xPos, double yPos, double xVel, double yVel, double mass, int id, Color color) {
@@ -59,12 +59,10 @@ public class Particle {
         velocity[0] = flattenedParticle[0];
         velocity[1] = flattenedParticle[1];
         infoUpdateListener.onEvent();
-        canvasUpdateListener.onEvent();
     }
 
-    public void updateAcceleration(double[] accelerationArray) {
-        acceleration = accelerationArray;
+    public void updateAcceleration() {
+        acceleration = Arrays.copyOfRange(ParticleDiffEq.accelerationStorage, 2 * id, 2 * id + 2);
         infoUpdateListener.onEvent();
-        canvasUpdateListener.onEvent();
     }
 }

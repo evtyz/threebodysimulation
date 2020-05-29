@@ -1,5 +1,6 @@
 package stl.threebodysimulation;
 
+import javafx.application.Platform;
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 
 public class ParticleDiffEq implements FirstOrderDifferentialEquations {
@@ -9,11 +10,9 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
 
     static double[] accelerationStorage;
 
-    private Listener derivativeListener;
 
-    public ParticleDiffEq(double[] masses, Listener derivativeListener) {
+    public ParticleDiffEq(double[] masses) {
         this.masses = masses;
-        this.derivativeListener = derivativeListener;
         accelerationStorage = new double[6];
     }
 
@@ -75,7 +74,5 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
             yDot[4 * particle + 2] = accelerations[particle][0];
             yDot[4 * particle + 3] = accelerations[particle][1];
         }
-
-        derivativeListener.onEvent();
     }
 }

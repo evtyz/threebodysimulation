@@ -8,6 +8,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #F2F2F2;" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.CanvasPanelFXMLController">
     <children>
+        <Canvas fx:id="canvas" height="720.0" width="800.0" />
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
             <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopPressed" styleClass="danger" text="Stop">
@@ -25,6 +26,5 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </StackPane.margin>
       </HBox>
-        <Canvas fx:id="canvas" height="720.0" width="800.0" />
     </children>
 </StackPane>
