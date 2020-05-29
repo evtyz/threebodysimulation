@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 
@@ -65,14 +64,10 @@ public class SceneFXMLController implements Initializable {
         canvasPanelController.setParticles(particles);
         infoPanelController.setParticles(particles);
 
-        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass(), new Listener() {
-            @Override
-            public void onEvent() {
-                for (int i = 0; i < 3; i++) {
-                    particles[i].updateAcceleration(Arrays.copyOfRange(ParticleDiffEq.accelerationStorage, i * 2, i * 2 + 2));
-                }
-            }
-        });
+
+
+
+
 
         canvasPanelController.runSimulation(settings);
     }

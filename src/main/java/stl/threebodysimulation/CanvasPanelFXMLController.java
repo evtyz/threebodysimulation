@@ -3,6 +3,9 @@ package stl.threebodysimulation;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
+
+import java.util.Arrays;
 
 // The controller for the canvas with graphics.
 public class CanvasPanelFXMLController {
@@ -22,6 +25,8 @@ public class CanvasPanelFXMLController {
 
     public Particle[] particles;
 
+    public double[] flattenedParticles = new double[12];
+
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() { }
 
@@ -38,9 +43,31 @@ public class CanvasPanelFXMLController {
 
     public void runSimulation(SimulationSettings settings) {
         // TODO: run simulation
-        state = SimulationState.RUNNING;
-        stopButton.setDisable(false);
-        pauseButton.setDisable(false);
+        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass(), new Listener() {
+            @Override
+            public void onEvent() {
+                for (int i = 0; i < 3; i++) {
+                    particles[i].updateAcceleration(Arrays.copyOfRange(ParticleDiffEq.accelerationStorage, i * 2, i * 2 + 2));
+                }
+            }
+        });
+
+        // TODO: Find reasonable values for parameters here
+        DormandPrince853Integrator integrator = new DormandPrince853Integrator(0.01, 30000, 0.01, 0.01);
+        flattenParticles();
+
+        if (settings.isInfinite) {
+            state = SimulationState.RUNNING;
+            stopButton.setDisable(false);
+            pauseButton.setDisable(false);
+            // TODO
+
+        } else {
+            state = SimulationState.FINISHED;
+            integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
+            unflattenParticles();
+            updateCanvas();
+        }
     }
 
     // Method called when stop button is pressed
@@ -67,5 +94,29 @@ public class CanvasPanelFXMLController {
                 break;
                 // Pause
         }
+    }
+
+    public void flattenParticles() {
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            double[] flattenedParticle = particles[i].flatten();
+            for (double property : flattenedParticle) {
+                flattenedParticles[index++] = property;
+            }
+        }
+    }
+
+    public void unflattenParticles() {
+        for (int i = 0; i < 3; i++) {
+            particles[i].updateFromFlattenedParticle(Arrays.copyOfRange(flattenedParticles, 4 * i, 4 * i + 4));
+        }
+    }
+
+    private void clearCanvas() {
+        // TODO
+    }
+
+    private void updateCanvas() {
+        // TODO
     }
 }
