@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
@@ -73,6 +74,12 @@ public class SceneFXMLController implements Initializable {
 
     @FXML
     private ParameterFXMLController object3ParameterController;
+
+    @FXML
+    private Canvas canvas;
+
+    @FXML
+    private Button pauseButton;
 
     // Packages controllers into arrays.
     private InfoFXMLController[] infoControllers;
@@ -160,6 +167,12 @@ public class SceneFXMLController implements Initializable {
     }
 
     private void simInputError() {
+        // Handles errors when the user presses "Run Simulation" but doesn't fill everything correctly.
+        // TODO: Write this method
+    }
+
+    public void openManual() {
+        // Called when the user presses the View User Manual button.
         // TODO: Write this method
     }
 }

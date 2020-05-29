@@ -44,7 +44,7 @@ public class TextFieldWrapper {
             decimalPattern = "[0-9]*(\\.[0-9]*)?";
         }
 
-        limitToNumericalInput(allowNegative);
+        limitToNumericalInput();
         attachInputValidator();
 
         // Set up the tooltip with correct text and settings
@@ -65,10 +65,8 @@ public class TextFieldWrapper {
     }
 
     // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
-    private void limitToNumericalInput(boolean allowNegative) {
+    private void limitToNumericalInput() {
         // Ensures that the text-field only accepts numerical inputs.
-        // INPUT:
-        // allowNegative: boolean, whether negative numbers are allowed in the textfield or not.
         subject.setTextFormatter(new TextFormatter<>(change ->
                 (change.getControlNewText().matches(decimalPattern)) ? change : null));
     }
