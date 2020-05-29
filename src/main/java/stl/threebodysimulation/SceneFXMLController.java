@@ -57,6 +57,9 @@ public class SceneFXMLController implements Initializable {
     public void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
         // TODO: Implement method.
+
+        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass());
+
         canvasPanelController.runSimulation();
     }
 }

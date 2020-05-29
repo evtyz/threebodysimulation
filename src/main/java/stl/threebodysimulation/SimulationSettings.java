@@ -21,4 +21,8 @@ public class SimulationSettings {
         this.skip = skip;
         this.speed = speed;
     }
+
+    public double[] returnMass() {
+        return new double[] {particles[0].mass, particles[1].mass, particles[2].mass};
+    }
 }
