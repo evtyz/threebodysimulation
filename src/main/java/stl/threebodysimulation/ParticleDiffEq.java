@@ -47,8 +47,12 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
             yDot[4 * i + 1] = y[4 * i + 3];
         }
 
+
+
+        Distance distance12 = new Distance(new double[] {y[4] - y[0], y[5] - y[1]});
+        Distance distance13 = new Distance(new double[] {y[8] - y[0], y[9] - y[1]});
+        Distance distance23 = new Distance(new double[] {y[8] - y[4], y[9] - y[1]});
+
         // TODO: Calculate acceleration...
-
-
     }
 }
