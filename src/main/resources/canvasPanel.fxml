@@ -10,12 +10,12 @@
     <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Button fx:id="stopButton" mnemonicParsing="false" styleClass="danger" text="Stop">
+            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopPressed" styleClass="danger" text="Stop">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
-              <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" text="Pause">
+              <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#pausePressed" text="Pause">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

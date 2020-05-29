@@ -123,9 +123,7 @@ public class SettingsPanelFXMLController {
             return;
         }
 
-        try {
-            onRunSimulationListener.onEvent();
-        } catch (Exception ignored) {};
+        onRunSimulationListener.onEvent();
     }
 
     private void simInputError() {
@@ -152,8 +150,18 @@ public class SettingsPanelFXMLController {
         boolean infiniteEnabled = infiniteCheckBox.isSelected();
         boolean trailsEnabled = trailCheckBox.isSelected();
         boolean centerOfGravityEnabled = centerCheckBox.isSelected();
-        double skip = Double.parseDouble(timeskipField.getText());
-        double speed = Double.parseDouble(simSpeedField.getText());
+        double skip;
+        try {
+            skip = Double.parseDouble(timeskipField.getText());
+        } catch (NumberFormatException ignored) {
+            skip = 0;
+        }
+        double speed;
+        try {
+            speed = Double.parseDouble(simSpeedField.getText());
+        } catch (NumberFormatException ignored) {
+            speed = 0;
+        }
 
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed);
     }

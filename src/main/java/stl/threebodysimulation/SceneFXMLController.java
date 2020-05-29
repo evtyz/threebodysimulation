@@ -34,11 +34,17 @@ public class SceneFXMLController implements Initializable {
                 openManual();
             }
         };
-
         settingsPanelController.onRunSimulationListener = new Listener() {
             @Override
             public void onEvent() {
                 runSimulation(settingsPanelController.getSimulationSettings());
+            }
+        };
+        canvasPanelController.setup();
+        canvasPanelController.onStopListener = new Listener() {
+            @Override
+            public void onEvent() {
+                // TODO: What happens when we stop.
             }
         };
     }
@@ -51,5 +57,6 @@ public class SceneFXMLController implements Initializable {
     public void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
         // TODO: Implement method.
+        canvasPanelController.runSimulation();
     }
 }
