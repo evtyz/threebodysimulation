@@ -58,3 +58,5 @@ public class InfoFXMLController {
         }
     }
 }
+
+// TODO: Add the corresponding colour for each particle next to the labels.

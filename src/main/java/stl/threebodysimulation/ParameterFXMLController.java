@@ -14,6 +14,7 @@ public class ParameterFXMLController {
     public static final double MAX_ABS_STARTING_POSITION = 100000; // TODO: Calculate
     public static final double MAX_ABS_STARTING_VELOCITY = 100000; // TODO: Calculate
     public static final double MAX_MASS = 10000; // TODO: Calculate
+
     // UI element declarations
     @FXML
     private Label objectLabel;
@@ -42,6 +43,7 @@ public class ParameterFXMLController {
     private TextFieldWrapper[] allTextFields;
     // Object ID e.g. Object 1, 2, or 3.
     private byte id;
+
     // Empty constructor for use by FXML. Must exist.
     // Also initializes id to -1 so that other methods know that setup isn't finished yet.
     public ParameterFXMLController() {

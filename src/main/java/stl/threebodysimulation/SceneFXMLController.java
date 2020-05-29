@@ -21,7 +21,8 @@ public class SceneFXMLController implements Initializable {
     private CanvasPanelFXMLController canvasPanelController;
 
     // Empty constructor for use by FXML.
-    public SceneFXMLController() { }
+    public SceneFXMLController() {
+    }
 
     // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
     public void initialize(URL url, ResourceBundle resourceBundle) {

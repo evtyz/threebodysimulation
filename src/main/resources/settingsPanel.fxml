@@ -1,98 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
-   <children>
-      <Label text="Simulation Settings">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Label>
-      <HBox alignment="CENTER" spacing="10.0">
-         <children>
-            <CheckBox fx:id="infiniteCheckBox" mnemonicParsing="false" onAction="#onChangeInfiniteCheckbox" selected="true" text="Run Infinitely" />
-            <CheckBox fx:id="trailCheckBox" mnemonicParsing="false" text="Show Particle Trails" />
-            <CheckBox fx:id="centerCheckBox" alignment="CENTER" mnemonicParsing="false" text="Show Center of Mass" />
-         </children>
-      </HBox>
-      <GridPane vgap="5.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="132.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="318.0" minWidth="10.0" prefWidth="228.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <Label fx:id="timeskipLabel" text="Timeskip:" />
-            <Label fx:id="simSpeedLabel" text="Speed of Simulation:" GridPane.rowIndex="1" />
-            <TextField fx:id="timeskipField" GridPane.columnIndex="1">
-               <tooltip>
-                  <Tooltip fx:id="timeskipTooltip" text="Empty Tooltip">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Tooltip>
-               </tooltip>
-            </TextField>
-            <TextField fx:id="simSpeedField" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <tooltip>
-                  <Tooltip fx:id="simSpeedTooltip" text="Empty Tooltip">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Tooltip>
-               </tooltip>
-            </TextField>
-         </children>
-      </GridPane>
-      <Separator prefWidth="200.0" />
-      <fx:include fx:id="object1Parameter" source="particleParameters.fxml" />
-      <Separator prefWidth="200.0" />
-      <fx:include fx:id="object2Parameter" source="particleParameters.fxml" />
-      <Separator prefWidth="200.0" />
-      <fx:include fx:id="object3Parameter" source="particleParameters.fxml" />
-      <Separator prefWidth="200.0" />
-      <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#runSimulation" style="-fx-background-color: #0099CC; -fx-text-fill: white; -fx-font-weight: bold;" text="Run Simulation">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <HBox alignment="CENTER">
-         <children>
-            <Label text="Template ID:">
-               <padding>
-                  <Insets right="25.0" />
-               </padding>
-            </Label>
-            <TextField fx:id="templateIDField">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </TextField>
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
-         </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-      </HBox>
-      <Button fx:id="manualButton" mnemonicParsing="false" onAction="#openManual" text="View User Manual" />
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
+      stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+    <children>
+        <Label text="Simulation Settings">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Label>
+        <HBox alignment="CENTER" spacing="10.0">
+            <children>
+                <CheckBox fx:id="infiniteCheckBox" mnemonicParsing="false" onAction="#onChangeInfiniteCheckbox"
+                          selected="true" text="Run Infinitely"/>
+                <CheckBox fx:id="trailCheckBox" mnemonicParsing="false" text="Show Particle Trails"/>
+                <CheckBox fx:id="centerCheckBox" alignment="CENTER" mnemonicParsing="false" text="Show Center of Mass"/>
+            </children>
+        </HBox>
+        <GridPane vgap="5.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="132.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="318.0" minWidth="10.0" prefWidth="228.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label fx:id="timeskipLabel" text="Timeskip:"/>
+                <Label fx:id="simSpeedLabel" text="Speed of Simulation:" GridPane.rowIndex="1"/>
+                <TextField fx:id="timeskipField" GridPane.columnIndex="1">
+                    <tooltip>
+                        <Tooltip fx:id="timeskipTooltip" text="Empty Tooltip">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Tooltip>
+                    </tooltip>
+                </TextField>
+                <TextField fx:id="simSpeedField" prefHeight="25.0" prefWidth="233.0" GridPane.columnIndex="1"
+                           GridPane.rowIndex="1">
+                    <tooltip>
+                        <Tooltip fx:id="simSpeedTooltip" text="Empty Tooltip">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Tooltip>
+                    </tooltip>
+                </TextField>
+            </children>
+        </GridPane>
+        <Separator prefWidth="200.0"/>
+        <fx:include fx:id="object1Parameter" source="particleParameters.fxml"/>
+        <Separator prefWidth="200.0"/>
+        <fx:include fx:id="object2Parameter" source="particleParameters.fxml"/>
+        <Separator prefWidth="200.0"/>
+        <fx:include fx:id="object3Parameter" source="particleParameters.fxml"/>
+        <Separator prefWidth="200.0"/>
+        <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#runSimulation"
+                style="-fx-background-color: #0099CC; -fx-text-fill: white; -fx-font-weight: bold;"
+                text="Run Simulation">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Button>
+        <HBox alignment="CENTER">
+            <children>
+                <Label text="Template ID:">
+                    <padding>
+                        <Insets right="25.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="templateIDField">
+                    <HBox.margin>
+                        <Insets right="10.0"/>
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="saveButton" mnemonicParsing="false" text="Save"/>
+            </children>
+            <padding>
+                <Insets top="10.0"/>
+            </padding>
+        </HBox>
+        <Button fx:id="manualButton" mnemonicParsing="false" onAction="#openManual" text="View User Manual"/>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 </VBox>

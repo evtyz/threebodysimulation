@@ -78,7 +78,6 @@ public class TextFieldWrapper {
         } catch (NumberFormatException e) {
             return false;
         }
-
     }
 
     // Function that attaches a listener on the TextView to check if the input is within the min and max.
@@ -86,8 +85,7 @@ public class TextFieldWrapper {
     private void attachInputValidator() {
         subject.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldFocus, Boolean newFocus)
-            {
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldFocus, Boolean newFocus) {
                 if (!newFocus) {
                     if (!isValidInput()) {
                         subject.setStyle("-fx-border-color: #ff4444; -fx-background-color: #fff9f9;");
@@ -122,6 +120,7 @@ public class TextFieldWrapper {
         subject.setDisable(true);
     }
 
+    // returns readiness value
     public boolean isReady() {
         return readiness;
     }
