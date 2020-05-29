@@ -56,15 +56,8 @@ public class SceneFXMLController implements Initializable {
     private Button saveButton;
 
     // Initialize controllers for custom UI elements
-
     @FXML
-    private InfoFXMLController object1InfoController;
-
-    @FXML
-    private InfoFXMLController object2InfoController;
-
-    @FXML
-    private InfoFXMLController object3InfoController;
+    private InfoGroupFXMLController infoGroupController;
 
     @FXML
     private ParameterFXMLController object1ParameterController;
@@ -79,7 +72,7 @@ public class SceneFXMLController implements Initializable {
     private CanvasFXMLController canvasController;
 
     // Packages controllers into arrays.
-    private InfoFXMLController[] infoControllers;
+
     private ParameterFXMLController[] parameterControllers;
 
     // Default colors
@@ -96,13 +89,13 @@ public class SceneFXMLController implements Initializable {
     // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        infoGroupController.setup();
+
         // Setup controller arrays.
-        infoControllers = new InfoFXMLController[]{object1InfoController, object2InfoController, object3InfoController};
         parameterControllers = new ParameterFXMLController[]{object1ParameterController, object2ParameterController, object3ParameterController};
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            infoControllers[i].setup((byte) (i + 1));
             parameterControllers[i].setup((byte) (i + 1), defaultColors[i]);
         }
 

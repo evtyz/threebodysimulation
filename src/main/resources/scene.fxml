@@ -122,29 +122,12 @@
     </left>
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
-            <top>
-                <GridPane hgap="40.0" prefHeight="178.0" prefWidth="800.0" style="-fx-background-color: #F9F9F9;" styleClass="canvasLabels" BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <padding>
-                        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
-                    </padding>
-                    <children>
-                        <fx:include fx:id="object1Info" source="particleInfo.fxml" />
-                        <fx:include fx:id="object2Info" source="particleInfo.fxml" GridPane.columnIndex="1" />
-                        <fx:include fx:id="object3Info" source="particleInfo.fxml" GridPane.columnIndex="2" />
-                    </children>
-                </GridPane>
-            </top>
          <center>
-            <fx:include source="canvas.fxml" />
+            <fx:include fx:id="canvas" source="canvas.fxml" />
          </center>
+         <top>
+            <fx:include fx:id="infoGroup" source="infoGroup.fxml" />
+         </top>
         </BorderPane>
     </center>
 </BorderPane>
