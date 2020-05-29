@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -23,6 +24,7 @@ public class MainApp extends Application {
         // We don't want the window to be resizable, to save us the UI headache.
         stage.setResizable(false);
 
+        stage.getIcons().add(new Image("/icon.png"));
         // Title of app
         stage.setTitle("Three-Body Simulation");
 
