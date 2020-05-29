@@ -2,7 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 
-public class InfoGroupFXMLController {
+public class InfoPanelFXMLController {
 
     @FXML
     private InfoFXMLController object1InfoController;
@@ -13,7 +13,7 @@ public class InfoGroupFXMLController {
     @FXML
     private InfoFXMLController object3InfoController;
 
-    public InfoGroupFXMLController() {}
+    public InfoPanelFXMLController() {}
 
     private InfoFXMLController[] infoControllers;
 

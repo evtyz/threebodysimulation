@@ -126,7 +126,7 @@
             <fx:include fx:id="canvas" source="canvas.fxml" />
          </center>
          <top>
-            <fx:include fx:id="infoGroup" source="infoGroup.fxml" />
+            <fx:include fx:id="infoGroup" source="infoPanel.fxml" />
          </top>
         </BorderPane>
     </center>

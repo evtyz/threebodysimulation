@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
@@ -57,7 +56,7 @@ public class SceneFXMLController implements Initializable {
 
     // Initialize controllers for custom UI elements
     @FXML
-    private InfoGroupFXMLController infoGroupController;
+    private InfoPanelFXMLController infoGroupController;
 
     @FXML
     private ParameterFXMLController object1ParameterController;
