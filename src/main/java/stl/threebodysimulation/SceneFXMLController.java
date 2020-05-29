@@ -76,10 +76,7 @@ public class SceneFXMLController implements Initializable {
     private ParameterFXMLController object3ParameterController;
 
     @FXML
-    private Canvas canvas;
-
-    @FXML
-    private Button pauseButton;
+    private CanvasFXMLController canvasController;
 
     // Packages controllers into arrays.
     private InfoFXMLController[] infoControllers;
