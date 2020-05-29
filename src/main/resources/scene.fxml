@@ -123,7 +123,7 @@
     <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
          <center>
-            <fx:include fx:id="canvas" source="canvas.fxml" />
+            <fx:include fx:id="canvas" source="canvasPanel.fxml" />
          </center>
          <top>
             <fx:include fx:id="infoGroup" source="infoPanel.fxml" />

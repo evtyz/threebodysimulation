@@ -4,12 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 
-public class CanvasFXMLController {
+public class CanvasPanelFXMLController {
     @FXML
     private Canvas canvas;
 
     @FXML
     private Button pauseButton;
 
-    public CanvasFXMLController() {}
+    public CanvasPanelFXMLController() {}
 }
