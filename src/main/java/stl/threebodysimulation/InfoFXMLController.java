@@ -22,7 +22,7 @@ public class InfoFXMLController {
     private Label accelerationInfo;
 
     // Declare some other useful variables
-    private byte id;
+    private int id;
 
     private HashMap<String, Label> packagedLabels;
 
@@ -32,7 +32,7 @@ public class InfoFXMLController {
         id = -1;
     }
 
-    void setup(byte id) {
+    void setup(int id) {
         // Set the label to be "Object {id}"
         // INPUT:
         // id : int, the ID of the object. (e.g. object 1, 2, or 3)

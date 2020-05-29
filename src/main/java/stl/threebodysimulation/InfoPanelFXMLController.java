@@ -17,6 +17,8 @@ public class InfoPanelFXMLController {
 
     private InfoFXMLController[] infoControllers;
 
+    private Particle[] particles;
+
     // Default constructor for FXML
     public InfoPanelFXMLController() {
     }
@@ -31,11 +33,19 @@ public class InfoPanelFXMLController {
         }
     }
 
-    public void updateAccelerations(double[] accelerations) {
-        // INPUTS:
-        // accelerations: double[6], the accelerations of every particle in the following format:
-        // [xAcc1, yAcc1, xAcc2, yAcc2, xAcc3, yAcc3].
+    public void setParticles(Particle[] particles) {
+        this.particles = particles;
+        for (int i = 0; i < 3; i++) {
+            setParticleListener(i);
+        }
+    }
 
-
+    public void setParticleListener(int index) {
+        particles[index].infoUpdateListener = new Listener() {
+            @Override
+            public void onEvent() {
+                infoControllers[index].updateFromParticle(particles[index]);
+            }
+        };
     }
 }

@@ -23,7 +23,10 @@ public class CanvasPanelFXMLController {
     public Particle[] particles;
 
     // Blank Constructor for FXML
-    public CanvasPanelFXMLController() {
+    public CanvasPanelFXMLController() { }
+
+    public void setParticles(Particle[] particles) {
+        this.particles = particles;
     }
 
     // Setup method that is called from scenecontroller
@@ -34,7 +37,6 @@ public class CanvasPanelFXMLController {
     }
 
     public void runSimulation(SimulationSettings settings) {
-        particles = settings.particles;
         // TODO: run simulation
         state = SimulationState.RUNNING;
         stopButton.setDisable(false);
