@@ -72,7 +72,7 @@ public class CanvasPanelFXMLController {
 
         // TODO: Find reasonable values for parameters here
         // Set up the integrator that we will be using. The minimum step value is set to the minimum value of a double.
-        integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 1, 1);
+        integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 0.01, 0.01);
         flattenParticles();
 
         // Different situations if we are running infinitely or not

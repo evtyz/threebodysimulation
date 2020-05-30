@@ -48,6 +48,10 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
            Writes the derivative of y into yDot.
          */
 
+        if (y[0] < 0) {
+            int zero = 0;
+        }
+
         // Copy velocity for y to yDot in correct position.
         for (int particle = 0; particle < 3; particle++) {
             yDot[4 * particle] = y[4 * particle + 2];
@@ -60,6 +64,8 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
                 new ParticleRelationship(new double[]{y[8] - y[0], y[9] - y[1]}, masses[0], masses[2], 0, 2),
                 new ParticleRelationship(new double[]{y[8] - y[4], y[9] - y[5]}, masses[1], masses[2], 1, 2)
         };
+
+        accelerationStorage = new double[3][2];
 
         // Calculate accelerations based on relationships
         for (ParticleRelationship relationship : relationships) {
@@ -74,6 +80,10 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
         for (int particle = 0; particle < 3; particle++) {
             yDot[4 * particle + 2] = accelerationStorage[particle][0];
             yDot[4 * particle + 3] = accelerationStorage[particle][1];
+        }
+
+        if (y[0] < 0) {
+            int zero = 0;
         }
     }
 }
