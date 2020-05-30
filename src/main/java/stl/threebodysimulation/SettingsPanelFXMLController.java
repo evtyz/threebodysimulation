@@ -62,7 +62,7 @@ public class SettingsPanelFXMLController {
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            parameterControllers[i].setup((byte) (i + 1), defaultColors[i]);
+            parameterControllers[i].setup(i + 1, defaultColors[i]);
         }
 
         // Wrap text fields and related tooltips, along with limits, into one object.

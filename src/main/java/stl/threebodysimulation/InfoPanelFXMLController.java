@@ -29,7 +29,7 @@ public class InfoPanelFXMLController {
         infoControllers = new InfoFXMLController[]{object1InfoController, object2InfoController, object3InfoController};
         // setup each individual controller with correct ids
         for (int id = 0; id < 3; id++) {
-            infoControllers[id].setup((byte) (id + 1));
+            infoControllers[id].setup(id + 1);
         }
     }
 
