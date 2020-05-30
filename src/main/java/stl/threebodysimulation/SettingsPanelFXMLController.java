@@ -11,8 +11,8 @@ public class SettingsPanelFXMLController {
     private final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
     // Default limits
     private final double MAX_ABS_TIMESKIP = 10000;
-    private final double MIN_SIMULATION_SPEED = 0.01;
-    private final double MAX_SIMULATION_SPEED = 100;
+    private final double MIN_SIMULATION_SPEED = 0.001;
+    private final double MAX_SIMULATION_SPEED = 1000;
     // Listeners
     public Listener onOpenManualListener;
     public Listener onRunSimulationListener;

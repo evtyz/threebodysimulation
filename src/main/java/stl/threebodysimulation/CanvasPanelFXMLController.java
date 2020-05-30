@@ -152,6 +152,7 @@ public class CanvasPanelFXMLController {
     public void stopPressed() {
         // TODO: Finish implementing method
         state = SimulationState.FINISHED;
+        pauseButton.setText("Pause");
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
         onStopListener.onEvent();
