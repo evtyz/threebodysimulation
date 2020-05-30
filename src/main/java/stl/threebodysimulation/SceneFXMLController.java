@@ -1,7 +1,14 @@
 package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,6 +57,26 @@ public class SceneFXMLController implements Initializable {
 
     public void openManual() {
         // Opens user manual popups
+        try {
+            final Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("/userManual.fxml"));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
+            // We don't want the window to be resizable, to save us the UI headache.
+            stage.setResizable(false);
+
+            // Icon of app
+            stage.getIcons().add(new Image("/icon.png"));
+
+            // Title of app
+            stage.setTitle("User Manual");
+
+            // Stage the UI.
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception ignored){
+        }
         // TODO: Implement method.
     }
 
