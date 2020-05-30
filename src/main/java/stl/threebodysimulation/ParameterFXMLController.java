@@ -42,7 +42,7 @@ public class ParameterFXMLController {
     private Tooltip yVelocityTooltip;
     private TextFieldWrapper[] allTextFields;
     // Object ID e.g. Object 1, 2, or 3.
-    private byte id;
+    private int id;
 
     // Empty constructor for use by FXML. Must exist.
     // Also initializes id to -1 so that other methods know that setup isn't finished yet.
@@ -50,11 +50,11 @@ public class ParameterFXMLController {
         id = -1;
     }
 
-    void setup(byte id, Color color) {
+    void setup(int id, Color color) {
         // Sets the id of the object and changes the label to reflect this.
         // Also sets up each text-field to limit input correctly.
         // INPUT:
-        // id: byte, the id of the object (e.g. Object 1, 2, or 3)
+        // id: int, the id of the object (e.g. Object 1, 2, or 3)
         // USAGE:
         // >> setup(1) -> objectLabel shows "Object 1"
         objectLabel.setText("Object " + id);

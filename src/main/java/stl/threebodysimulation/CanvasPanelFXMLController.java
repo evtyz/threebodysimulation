@@ -13,9 +13,15 @@ import java.util.Arrays;
 
 // The controller for the canvas with graphics.
 public class CanvasPanelFXMLController {
+    // Listener called when stop button is pressed
     public Listener onStopListener;
+
+    // Particles managed by our canvas.
     public Particle[] particles;
+
+    // Particles in flattened form, where we can manipulate them using math library.
     public double[] flattenedParticles = new double[12];
+
     // UI element declarations
     @FXML
     private Canvas canvas;
@@ -23,12 +29,18 @@ public class CanvasPanelFXMLController {
     private Button pauseButton;
     @FXML
     private Button stopButton;
+
+    // The state of the simulation (Not started, running, paused, finished)
     private SimulationState state;
+
+    // Some handy simulation variables
     private double currentTime;
     private double speed;
 
+    // The runnable task that involves simulation
     private Task simulation;
 
+    // Math variables
     ParticleDiffEq particleDiffEq;
     DormandPrince853Integrator integrator;
 
@@ -36,6 +48,7 @@ public class CanvasPanelFXMLController {
     public CanvasPanelFXMLController() {
     }
 
+    // Sets up particles according to given array
     public void setParticles(Particle[] particles) {
         this.particles = particles;
     }
@@ -48,51 +61,77 @@ public class CanvasPanelFXMLController {
         currentTime = 0;
     }
 
+    // This method is called when we want to start running a simulation.
     public void runSimulation(SimulationSettings settings) {
-        // TODO: run simulation
+        // INPUTS:
+        // settings: SimulationSettings, the settings that we are simulating with.
+        // Runs the simulation according to these settings.
+
+        // Set up the particle differential equation according to the masses of each particle.
         particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
         // TODO: Find reasonable values for parameters here
+        // Set up the integrator that we will be using. The minimum step value is set to the minimum value of a double.
         integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 1, 1);
         flattenParticles();
 
+        // Different situations if we are running infinitely or not
         if (settings.isInfinite) {
+            // Set state and change buttons to active
             state = SimulationState.RUNNING;
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
+            // Speed is relevant now, so set accordingly
             speed = settings.speed;
+            // Start simulation.
             startSimulation();
         } else {
             // TODO: Test this part of the code.
+            // Instantly done (skips to this time)
             state = SimulationState.FINISHED;
+            // Get position, velocity, acceleration
             integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
+            // Update canvas
             updateParticlesAndCanvas();
         }
     }
 
+    // This method is called when an update to the graphics is needed.
     public void updateParticlesAndCanvas() {
+        // Update the particles according to the state of the FlattenedParticles array.
         unflattenParticles();
+
+        // Then update the canvas according to the new particles.
         updateCanvas();
     }
 
+    // Asynchronously start the simulation.
     public void startSimulation() {
+
+        // Builds a new task that simulates the particle
         simulation = new Task() {
             @Override
             protected Object call() throws Exception {
+                // This while loop will end when the state changes
                 while (state == SimulationState.RUNNING) {
+                    // Integrate between the current time and the next time
                     integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + speed, flattenedParticles);
+                    // Update the UI on the main thread
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             updateParticlesAndCanvas();
                         }
                     });
+                    // Update the time
                     currentTime += speed;
+                    // Slow things down, so the UI can update.
                     Thread.sleep(200);
                 }
                 return null;
             }
         };
+        // Run the thread.
         Thread simulationThread = new Thread(simulation);
         simulationThread.setDaemon(true);
         simulationThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -132,6 +171,7 @@ public class CanvasPanelFXMLController {
         }
     }
 
+    // Flattens the properties of all the particles into the FlattenedParticles array
     public void flattenParticles() {
         int index = 0;
         for (int i = 0; i < 3; i++) {
@@ -142,17 +182,16 @@ public class CanvasPanelFXMLController {
         }
     }
 
+    // Updates the particles according to the new FlattenedParticles array
     public void unflattenParticles() {
         for (int i = 0; i < 3; i++) {
             particles[i].updateFromFlattenedParticle(Arrays.copyOfRange(flattenedParticles, 4 * i, 4 * i + 4));
+            // Reminds the particles to check for acceleration
             particles[i].updateAcceleration();
         }
     }
 
-    private void clearCanvas() {
-        // TODO
-    }
-
+    // Updates the canvas according to the positions of the particles.
     private void updateCanvas() {
         // TODO
     }

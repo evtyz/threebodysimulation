@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import java.util.HashMap;
 
+// This class defines how two different particles interact with one another
 public class ParticleRelationship {
 
     // TODO: Deal with precision and overflow issues, this number is too big.
@@ -22,21 +23,21 @@ public class ParticleRelationship {
         // >> 1 -> [0.6, 0.8]
         // >> 2 -> [-0.6, -0.8]
 
-        // Absolute value of vector
+        // Absolute value of vector, according to pythagorean theorem
         double absoluteDistance = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
 
-        double[] baseAcceleration;
-
         // Common factors of acceleration: vector / absVector^3
+        double[] baseAcceleration;
         if (absoluteDistance != 0) {
             baseAcceleration = new double[]{vector[0] / Math.pow(absoluteDistance, 3), vector[1] / Math.pow(absoluteDistance, 3)};
         } else {
+            // obviously zero if there is no distance between two objects.
             baseAcceleration = new double[]{0, 0};
         }
 
-
         // individual coefficients for each acceleration
         double massFactor1 = mass2 * G;
+        // Reversed for mass2, because vectors have direction
         double massFactor2 = -1 * mass1 * G;
         double[] acceleration1 = new double[2];
         double[] acceleration2 = new double[2];
@@ -48,6 +49,7 @@ public class ParticleRelationship {
 
         // TODO: make this constructor more efficient.
 
+        // Store accelerations with the correct particle.
         accelerationMap.put(id1, acceleration1);
         accelerationMap.put(id2, acceleration2);
     }

@@ -24,7 +24,9 @@ public class MainApp extends Application {
         // We don't want the window to be resizable, to save us the UI headache.
         stage.setResizable(false);
 
+        // Icon of app
         stage.getIcons().add(new Image("/icon.png"));
+
         // Title of app
         stage.setTitle("Three-Body Simulation");
 

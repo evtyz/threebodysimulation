@@ -53,7 +53,7 @@ public class InfoFXMLController {
 
         for (String key : packagedLabels.keySet()) {
             double[] vector = particle.packagedInformation.get(key);
-            String labelText = String.format("[%f, %f]", vector[0], vector[1]);
+            String labelText = String.format("[%.02f, %.02f]", vector[0], vector[1]);
             packagedLabels.get(key).setText(labelText);
         }
     }

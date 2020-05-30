@@ -55,13 +55,9 @@ public class SceneFXMLController implements Initializable {
 
     public void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
-        // TODO: Implement method.
         particles = settings.particles;
-
         canvasPanelController.setParticles(particles);
         infoPanelController.setParticles(particles);
-
-
         canvasPanelController.runSimulation(settings);
     }
 }

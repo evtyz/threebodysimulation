@@ -33,13 +33,20 @@ public class InfoPanelFXMLController {
         }
     }
 
+    // Sets up the particles that the panel reads
     public void setParticles(Particle[] particles) {
+        // INPUTS:
+        // particles: Particle[3], the particles whose stats will be shown.
+
         this.particles = particles;
+
+        // Set up a listener inside each particle
         for (int i = 0; i < 3; i++) {
             setParticleListener(i);
         }
     }
 
+    // Sets up the particle listener for a single particle
     public void setParticleListener(int index) {
         particles[index].infoUpdateListener = new Listener() {
             @Override

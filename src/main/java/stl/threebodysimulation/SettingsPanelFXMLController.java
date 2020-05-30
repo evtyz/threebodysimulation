@@ -13,6 +13,7 @@ public class SettingsPanelFXMLController {
     private final double MAX_ABS_TIMESKIP = 10000;
     private final double MIN_SIMULATION_SPEED = 0.01;
     private final double MAX_SIMULATION_SPEED = 100;
+    // Listeners
     public Listener onOpenManualListener;
     public Listener onRunSimulationListener;
     // UI element declarations
@@ -50,6 +51,7 @@ public class SettingsPanelFXMLController {
     private ParameterFXMLController object3ParameterController;
     private ParameterFXMLController[] parameterControllers;
 
+    // Default method for FXML
     public SettingsPanelFXMLController() {
     }
 

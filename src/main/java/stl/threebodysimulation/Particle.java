@@ -48,10 +48,12 @@ public class Particle {
         this.color = color;
     }
 
+    // Flattens a particle's position and velocity into a single array of 4 doubles.
     public double[] flatten() {
         return new double[]{position[0], position[1], velocity[0], velocity[1]};
     }
 
+    // Parses a flattened array into position and velocity, and then updates info
     public void updateFromFlattenedParticle(double[] flattenedParticle) {
         position[0] = flattenedParticle[0];
         position[1] = flattenedParticle[1];
@@ -60,6 +62,7 @@ public class Particle {
         infoUpdateListener.onEvent();
     }
 
+    // Updates acceleration according to the accelerationStorage variable in the differential equations class.
     public void updateAcceleration() {
         acceleration[0] = ParticleDiffEq.accelerationStorage[id - 1][0];
         acceleration[1] = ParticleDiffEq.accelerationStorage[id - 1][1];
