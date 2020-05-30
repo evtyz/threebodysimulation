@@ -49,6 +49,7 @@ public class SceneFXMLController implements Initializable {
             @Override
             public void onEvent() {
                 // TODO: What happens when we stop.
+                settingsPanelController.setDisabledRunButton(false);
             }
         };
     }

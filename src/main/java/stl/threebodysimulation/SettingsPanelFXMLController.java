@@ -132,7 +132,6 @@ public class SettingsPanelFXMLController {
         if (!executeValidityCheck()) {
             return;
         }
-
         onRunSimulationListener.onEvent();
     }
 
@@ -174,6 +173,14 @@ public class SettingsPanelFXMLController {
             speed = 0;
         }
 
+        if (infiniteEnabled) {
+            runButton.setDisable(true);
+        }
+
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
+    }
+
+    public void setDisabledRunButton(boolean state) {
+        runButton.setDisable(state);
     }
 }

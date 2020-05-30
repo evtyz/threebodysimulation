@@ -94,8 +94,11 @@ public class CanvasPanelFXMLController {
             // TODO: Test this part of the code.
             // Instantly done (skips to this time)
             state = SimulationState.FINISHED;
+            currentTime = settings.skip;
             // Get position, velocity, acceleration
-            integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
+            if (currentTime != 0) {
+                integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
+            }
             // Update canvas
             updateParticlesAndCanvas();
         }
