@@ -5,6 +5,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 import java.util.Arrays;
@@ -29,6 +30,8 @@ public class CanvasPanelFXMLController {
     private Button pauseButton;
     @FXML
     private Button stopButton;
+    @FXML
+    private Label timeLabel;
 
     // The state of the simulation (Not started, running, paused, finished)
     private SimulationState state;
@@ -39,6 +42,8 @@ public class CanvasPanelFXMLController {
 
     // The runnable task that involves simulation
     private Task simulation;
+
+    private static final int FRAMERATE = 25;
 
     // Math variables
     ParticleDiffEq particleDiffEq;
@@ -115,7 +120,7 @@ public class CanvasPanelFXMLController {
                 // This while loop will end when the state changes
                 while (state == SimulationState.RUNNING) {
                     // Integrate between the current time and the next time
-                    integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + speed, flattenedParticles);
+                    integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
                     // Update the UI on the main thread
                     Platform.runLater(new Runnable() {
                         @Override
@@ -124,9 +129,9 @@ public class CanvasPanelFXMLController {
                         }
                     });
                     // Update the time
-                    currentTime += speed;
+                    currentTime += (speed / FRAMERATE);
                     // Slow things down, so the UI can update.
-                    Thread.sleep(200);
+                    Thread.sleep(1000 / FRAMERATE);
                 }
                 return null;
             }
@@ -194,5 +199,6 @@ public class CanvasPanelFXMLController {
     // Updates the canvas according to the positions of the particles.
     private void updateCanvas() {
         // TODO
+        timeLabel.setText(String.format("Time: %.2f secs", currentTime));
     }
 }
