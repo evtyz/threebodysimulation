@@ -25,8 +25,15 @@ public class ParticleRelationship {
         // Absolute value of vector
         double absoluteDistance = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
 
+        double[] baseAcceleration;
+
         // Common factors of acceleration: vector / absVector^3
-        double[] baseAcceleration = new double[] {vector[0] / Math.pow(absoluteDistance, 3), vector[1] / Math.pow(absoluteDistance, 3)};
+        if (absoluteDistance != 0) {
+            baseAcceleration = new double[] {vector[0] / Math.pow(absoluteDistance, 3), vector[1] / Math.pow(absoluteDistance, 3)};
+        } else {
+            baseAcceleration = new double[] {0, 0};
+        }
+
 
         // individual coefficients for each acceleration
         double massFactor1 = mass2 * G;

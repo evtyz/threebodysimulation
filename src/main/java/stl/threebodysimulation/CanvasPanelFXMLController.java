@@ -31,6 +31,8 @@ public class CanvasPanelFXMLController {
 
     private double currentTime;
 
+    private Task simulation;
+
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() { }
 
@@ -47,6 +49,7 @@ public class CanvasPanelFXMLController {
     }
 
     public void runSimulation(SimulationSettings settings) {
+        // TODO: FIX BUG
         // TODO: run simulation
         ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
@@ -59,7 +62,7 @@ public class CanvasPanelFXMLController {
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
 
-            Task task  = new Task() {
+            simulation  = new Task() {
                 @Override
                 protected Object call() throws Exception {
                     while (state == SimulationState.RUNNING) {
@@ -76,6 +79,7 @@ public class CanvasPanelFXMLController {
                     return null;
                 }
             };
+            startSimulation();
         } else {
             state = SimulationState.FINISHED;
             integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
@@ -86,6 +90,18 @@ public class CanvasPanelFXMLController {
     public void updateParticlesAndCanvas() {
         unflattenParticles();
         updateCanvas();
+    }
+
+    public void startSimulation() {
+        Thread simulationThread = new Thread(simulation);
+        simulationThread.setDaemon(true);
+        simulationThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        simulationThread.start();
     }
 
     // Method called when stop button is pressed
