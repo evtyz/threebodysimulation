@@ -25,8 +25,12 @@ public class CanvasPanelFXMLController {
     private Button stopButton;
     private SimulationState state;
     private double currentTime;
+    private double speed;
 
     private Task simulation;
+
+    ParticleDiffEq particleDiffEq;
+    DormandPrince853Integrator integrator;
 
     // Blank Constructor for FXML
     public CanvasPanelFXMLController() {
@@ -46,34 +50,17 @@ public class CanvasPanelFXMLController {
 
     public void runSimulation(SimulationSettings settings) {
         // TODO: run simulation
-        ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass());
+        particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
         // TODO: Find reasonable values for parameters here
-        DormandPrince853Integrator integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 1, 1);
+        integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 1, 1);
         flattenParticles();
 
         if (settings.isInfinite) {
             state = SimulationState.RUNNING;
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
-
-            simulation = new Task() {
-                @Override
-                protected Object call() throws Exception {
-                    while (state == SimulationState.RUNNING) {
-                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + settings.speed, flattenedParticles);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateParticlesAndCanvas();
-                            }
-                        });
-                        currentTime += settings.speed;
-                        Thread.sleep(200);
-                    }
-                    return null;
-                }
-            };
+            speed = settings.speed;
             startSimulation();
         } else {
             // TODO: Test this part of the code.
@@ -89,6 +76,23 @@ public class CanvasPanelFXMLController {
     }
 
     public void startSimulation() {
+        simulation = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (state == SimulationState.RUNNING) {
+                    integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + speed, flattenedParticles);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateParticlesAndCanvas();
+                        }
+                    });
+                    currentTime += speed;
+                    Thread.sleep(200);
+                }
+                return null;
+            }
+        };
         Thread simulationThread = new Thread(simulation);
         simulationThread.setDaemon(true);
         simulationThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {

@@ -55,8 +55,8 @@ public class Particle {
     public void updateFromFlattenedParticle(double[] flattenedParticle) {
         position[0] = flattenedParticle[0];
         position[1] = flattenedParticle[1];
-        velocity[0] = flattenedParticle[0];
-        velocity[1] = flattenedParticle[1];
+        velocity[0] = flattenedParticle[2];
+        velocity[1] = flattenedParticle[3];
         infoUpdateListener.onEvent();
     }
 
