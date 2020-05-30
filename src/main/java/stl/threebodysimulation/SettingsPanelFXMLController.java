@@ -78,6 +78,7 @@ public class SettingsPanelFXMLController {
         if (infiniteCheckBox.isSelected()) {
             timeskipLabel.setTextFill(Color.LIGHTGRAY);
             timeskipWrapper.changeState(false);
+            timeskipField.setPromptText("");
             simSpeedLabel.setTextFill(Color.BLACK);
             simSpeedWrapper.changeState(true);
             trailCheckBox.setDisable(false);
@@ -85,6 +86,7 @@ public class SettingsPanelFXMLController {
         } else {
             timeskipLabel.setTextFill(Color.BLACK);
             timeskipWrapper.changeState(true);
+            timeskipField.setPromptText("(s)");
             simSpeedLabel.setTextFill(Color.LIGHTGRAY);
             simSpeedWrapper.changeState(false);
             trailCheckBox.setSelected(false);
