@@ -37,7 +37,6 @@ public class TextFieldWrapper {
         // Whether the max and min are valid or not
         this.allowBottomInclusive = allowBottomInclusive;
 
-        readiness = false;
 
         // Checks if the minimum value allows negative numbers
         boolean allowNegative = min < 0;
@@ -54,6 +53,12 @@ public class TextFieldWrapper {
 
         // Set up the tooltip with correct text and settings
         setupTooltip();
+
+        if (isValidInput()) {
+            readiness = true;
+        } else {
+            readiness = false;
+        }
     }
 
     private void setupTooltip() {

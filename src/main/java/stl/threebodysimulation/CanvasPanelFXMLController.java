@@ -80,6 +80,14 @@ public class CanvasPanelFXMLController {
         integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 0.01, 0.01);
         flattenParticles();
 
+        currentTime = settings.skip;
+        // Get position, velocity, acceleration
+        if (currentTime != 0) {
+            integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
+        }
+        // Update canvas
+        updateParticlesAndCanvas();
+
         // Different situations if we are running infinitely or not
         if (settings.isInfinite) {
             // Set state and change buttons to active
@@ -94,13 +102,6 @@ public class CanvasPanelFXMLController {
             // TODO: Test this part of the code.
             // Instantly done (skips to this time)
             state = SimulationState.FINISHED;
-            currentTime = settings.skip;
-            // Get position, velocity, acceleration
-            if (currentTime != 0) {
-                integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
-            }
-            // Update canvas
-            updateParticlesAndCanvas();
         }
     }
 

@@ -69,6 +69,8 @@ public class SettingsPanelFXMLController {
             parameterControllers[i].setup(i + 1, defaultColors[i]);
         }
 
+        timeskipField.setText("0");
+
         // Wrap text fields and related tooltips, along with limits, into one object.
         timeskipWrapper = new TextFieldWrapper(timeskipField, timeskipTooltip, -MAX_ABS_TIMESKIP, MAX_ABS_TIMESKIP, true);
         simSpeedWrapper = new TextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, true);
@@ -83,17 +85,11 @@ public class SettingsPanelFXMLController {
     // This method handles the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
     public void onChangeInfiniteCheckbox() {
         if (infiniteCheckBox.isSelected()) {
-            timeskipLabel.setTextFill(Color.LIGHTGRAY);
-            timeskipWrapper.changeState(false);
-            timeskipField.setPromptText("");
             simSpeedLabel.setTextFill(Color.BLACK);
             simSpeedWrapper.changeState(true);
             trailCheckBox.setDisable(false);
             centerCheckBox.setDisable(false);
         } else {
-            timeskipLabel.setTextFill(Color.BLACK);
-            timeskipWrapper.changeState(true);
-            timeskipField.setPromptText("(s)");
             simSpeedLabel.setTextFill(Color.LIGHTGRAY);
             simSpeedWrapper.changeState(false);
             trailCheckBox.setSelected(false);
