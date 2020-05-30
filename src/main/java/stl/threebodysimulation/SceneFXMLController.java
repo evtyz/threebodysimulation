@@ -6,8 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -77,7 +75,6 @@ public class SceneFXMLController implements Initializable {
         }
         catch (Exception ignored){
         }
-        // TODO: Implement method.
     }
 
     public void runSimulation(SimulationSettings settings) {
