@@ -74,7 +74,7 @@ public class TextFieldWrapper {
     private boolean isValidInput() {
         try {
             double value = Double.parseDouble(subject.getText());
-            return (min <= value && value <= max);
+            return (min < value && value < max);
         } catch (NumberFormatException e) {
             return false;
         }

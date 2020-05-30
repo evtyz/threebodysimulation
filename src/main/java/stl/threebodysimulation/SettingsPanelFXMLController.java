@@ -13,6 +13,8 @@ public class SettingsPanelFXMLController {
     private final double MAX_ABS_TIMESKIP = 10000;
     private final double MIN_SIMULATION_SPEED = 0.01;
     private final double MAX_SIMULATION_SPEED = 100;
+    public Listener onOpenManualListener;
+    public Listener onRunSimulationListener;
     // UI element declarations
     @FXML
     private CheckBox infiniteCheckBox;
@@ -47,9 +49,6 @@ public class SettingsPanelFXMLController {
     @FXML
     private ParameterFXMLController object3ParameterController;
     private ParameterFXMLController[] parameterControllers;
-
-    public Listener onOpenManualListener;
-    public Listener onRunSimulationListener;
 
     public SettingsPanelFXMLController() {
     }
@@ -135,7 +134,8 @@ public class SettingsPanelFXMLController {
         // Called when the user presses the View User Manual button.
         try {
             onOpenManualListener.onEvent();
-        } catch (Exception ignored) {};
+        } catch (Exception ignored) {
+        }
     }
 
     public SimulationSettings getSimulationSettings() {

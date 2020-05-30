@@ -9,32 +9,28 @@ import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 import java.util.Arrays;
 
+// TODO: Documentation
+
 // The controller for the canvas with graphics.
 public class CanvasPanelFXMLController {
+    public Listener onStopListener;
+    public Particle[] particles;
+    public double[] flattenedParticles = new double[12];
     // UI element declarations
     @FXML
     private Canvas canvas;
-
     @FXML
     private Button pauseButton;
-
     @FXML
     private Button stopButton;
-
     private SimulationState state;
-
-    public Listener onStopListener;
-
-    public Particle[] particles;
-
-    public double[] flattenedParticles = new double[12];
-
     private double currentTime;
 
     private Task simulation;
 
     // Blank Constructor for FXML
-    public CanvasPanelFXMLController() { }
+    public CanvasPanelFXMLController() {
+    }
 
     public void setParticles(Particle[] particles) {
         this.particles = particles;
@@ -49,12 +45,11 @@ public class CanvasPanelFXMLController {
     }
 
     public void runSimulation(SimulationSettings settings) {
-        // TODO: FIX BUG
         // TODO: run simulation
         ParticleDiffEq particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
         // TODO: Find reasonable values for parameters here
-        DormandPrince853Integrator integrator = new DormandPrince853Integrator(0.01, 30000, 0.01, 0.01);
+        DormandPrince853Integrator integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 1, 1);
         flattenParticles();
 
         if (settings.isInfinite) {
@@ -62,7 +57,7 @@ public class CanvasPanelFXMLController {
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
 
-            simulation  = new Task() {
+            simulation = new Task() {
                 @Override
                 protected Object call() throws Exception {
                     while (state == SimulationState.RUNNING) {
@@ -74,13 +69,14 @@ public class CanvasPanelFXMLController {
                             }
                         });
                         currentTime += settings.speed;
-                        Thread.sleep(1000);
+                        Thread.sleep(200);
                     }
                     return null;
                 }
             };
             startSimulation();
         } else {
+            // TODO: Test this part of the code.
             state = SimulationState.FINISHED;
             integrator.integrate(particleDiffEq, 0, flattenedParticles, settings.skip, flattenedParticles);
             updateParticlesAndCanvas();
@@ -111,6 +107,7 @@ public class CanvasPanelFXMLController {
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
         onStopListener.onEvent();
+        currentTime = 0;
     }
 
     // Method called when pause button is pressed
@@ -120,13 +117,14 @@ public class CanvasPanelFXMLController {
             case PAUSED:
                 state = SimulationState.RUNNING;
                 pauseButton.setText("Pause");
+                startSimulation();
                 break;
-                // Resume
+            // Resume
             case RUNNING:
                 state = SimulationState.PAUSED;
                 pauseButton.setText("Unpause");
                 break;
-                // Pause
+            // Pause
         }
     }
 

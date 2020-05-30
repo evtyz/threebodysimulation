@@ -23,6 +23,6 @@ public class SimulationSettings {
     }
 
     public double[] returnMass() {
-        return new double[] {particles[0].mass, particles[1].mass, particles[2].mass};
+        return new double[]{particles[0].mass, particles[1].mass, particles[2].mass};
     }
 }

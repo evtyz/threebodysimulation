@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.scene.paint.Color;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 // This class represents all the attributes of a single particle object.
@@ -62,7 +61,8 @@ public class Particle {
     }
 
     public void updateAcceleration() {
-        acceleration = Arrays.copyOfRange(ParticleDiffEq.accelerationStorage, 2 * id, 2 * id + 2);
+        acceleration[0] = ParticleDiffEq.accelerationStorage[id - 1][0];
+        acceleration[1] = ParticleDiffEq.accelerationStorage[id - 1][1];
         infoUpdateListener.onEvent();
     }
 }

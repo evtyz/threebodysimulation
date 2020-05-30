@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class ParticleRelationship {
 
     // TODO: Deal with precision and overflow issues, this number is too big.
-    static final double G = 132711917360.38; // Universal Gravitational Constant in km^3 * solarmasses^-1 * seconds^-2
+    static final double G = 398575.0725; // Universal Gravitational Constant in km^3 * earthmasses^-1 * seconds^-2
     HashMap<Integer, double[]> accelerationMap = new HashMap<>();
 
     // This constructor creates a hashmap that denotes how much acceleration is provided to a particle by this relationship.
@@ -29,9 +29,9 @@ public class ParticleRelationship {
 
         // Common factors of acceleration: vector / absVector^3
         if (absoluteDistance != 0) {
-            baseAcceleration = new double[] {vector[0] / Math.pow(absoluteDistance, 3), vector[1] / Math.pow(absoluteDistance, 3)};
+            baseAcceleration = new double[]{vector[0] / Math.pow(absoluteDistance, 3), vector[1] / Math.pow(absoluteDistance, 3)};
         } else {
-            baseAcceleration = new double[] {0, 0};
+            baseAcceleration = new double[]{0, 0};
         }
 
 

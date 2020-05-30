@@ -10,17 +10,14 @@ import java.util.ResourceBundle;
 // This class is the FXML controller for the entire scene (or UI).
 public class SceneFXMLController implements Initializable {
 
+    public Particle[] particles;
     // Initialize controllers for custom UI elements
     @FXML
     private InfoPanelFXMLController infoPanelController;
-
     @FXML
     private SettingsPanelFXMLController settingsPanelController;
-
     @FXML
     private CanvasPanelFXMLController canvasPanelController;
-
-    public Particle[] particles;
 
     // Empty constructor for use by FXML.
     public SceneFXMLController() {
@@ -63,10 +60,6 @@ public class SceneFXMLController implements Initializable {
 
         canvasPanelController.setParticles(particles);
         infoPanelController.setParticles(particles);
-
-
-
-
 
 
         canvasPanelController.runSimulation(settings);
