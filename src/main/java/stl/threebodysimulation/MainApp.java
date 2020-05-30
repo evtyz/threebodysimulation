@@ -13,7 +13,7 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
+    } // TODO: Check how fast this program actually starts up
 
     @Override
     public void start(Stage stage) throws Exception {

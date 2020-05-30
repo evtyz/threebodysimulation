@@ -24,6 +24,7 @@ public class SimulationSettings {
         this.speed = speed;
     }
 
+    // Returns the masses of all three particles in an array
     public double[] returnMass() {
         return new double[]{particles[0].mass, particles[1].mass, particles[2].mass};
     }

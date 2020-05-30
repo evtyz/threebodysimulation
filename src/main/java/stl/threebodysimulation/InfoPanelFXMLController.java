@@ -58,6 +58,7 @@ public class InfoPanelFXMLController {
         };
     }
 
+    // Sets the number format of the info panel.
     public void setNumberFormat(NumberFormat format) {
         chosenFormat = format;
     }

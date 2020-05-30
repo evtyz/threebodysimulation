@@ -70,7 +70,7 @@ public class TextFieldWrapper {
         // Tooltips show up after 100 milliseconds of hovering
         tooltip.setShowDelay(new Duration(100));
 
-        // Set the text of the tooltip to display the min and max.
+        // Set the text of the tooltip to display the min and max. TODO: Make more eloquent
         tooltip.setText(String.format("Number between %s and %s", decimalFormat.format(min), decimalFormat.format(max)));
     }
 
@@ -81,7 +81,10 @@ public class TextFieldWrapper {
                 (change.getControlNewText().matches(decimalPattern)) ? change : null));
     }
 
+    // Function that checks if the textfield included in the wrapper has a valid input or not.
     private boolean isValidInput() {
+        // OUTPUTS:
+        // boolean: true if valid, false if invalid.
         try {
             double value = Double.parseDouble(subject.getText());
             if (allowBottomInclusive) {

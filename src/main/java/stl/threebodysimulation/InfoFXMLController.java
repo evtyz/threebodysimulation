@@ -51,7 +51,7 @@ public class InfoFXMLController {
         // INPUT:
         // particle : Particle, the Particle object that we are reading stats from.
 
-        for (String key : packagedLabels.keySet()) {
+        for (String key : packagedLabels.keySet()) { // TODO: Improve formatting so there is no overflow.
             double[] vector = particle.packagedInformation.get(key);
             String labelText;
             switch (InfoPanelFXMLController.chosenFormat) {

@@ -131,6 +131,7 @@ public class CanvasPanelFXMLController {
                         public void run() {
                             updateParticlesAndCanvas();
                         }
+                        // TODO: interaction that occurs when two particles collide must be checked for.
                     });
                     // Update the time
                     currentTime += (speed / FRAMERATE);

@@ -48,10 +48,6 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
            Writes the derivative of y into yDot.
          */
 
-        if (y[0] < 0) {
-            int zero = 0;
-        }
-
         // Copy velocity for y to yDot in correct position.
         for (int particle = 0; particle < 3; particle++) {
             yDot[4 * particle] = y[4 * particle + 2];
@@ -82,8 +78,5 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
             yDot[4 * particle + 3] = accelerationStorage[particle][1];
         }
 
-        if (y[0] < 0) {
-            int zero = 0;
-        }
     }
 }
