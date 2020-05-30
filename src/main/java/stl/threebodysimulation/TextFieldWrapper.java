@@ -21,8 +21,10 @@ public class TextFieldWrapper {
     // This represents whether the TextField is ready to send its value for simulation.
     private boolean readiness;
 
+    private final boolean allowBottomInclusive;
+
     // Constructor of object
-    public TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max) {
+    public TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {
 
         // Initializes textfield and tooltip
         this.subject = subject;
@@ -31,6 +33,9 @@ public class TextFieldWrapper {
         // Setup mins and maxes
         this.min = min;
         this.max = max;
+
+        // Whether the max and min are valid or not
+        this.allowBottomInclusive = allowBottomInclusive;
 
         readiness = false;
 
@@ -74,7 +79,10 @@ public class TextFieldWrapper {
     private boolean isValidInput() {
         try {
             double value = Double.parseDouble(subject.getText());
-            return (min < value && value < max);
+            if (allowBottomInclusive) {
+                return (min <= value && value <= max);
+            }
+            return (min < value && value <= max);
         } catch (NumberFormatException e) {
             return false;
         }

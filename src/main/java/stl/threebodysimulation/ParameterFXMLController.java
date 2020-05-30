@@ -65,11 +65,11 @@ public class ParameterFXMLController {
 
         // Wrap all text-fields and related tooltips into cohesive TextFieldWrapper class with min and max values.
         allTextFields = new TextFieldWrapper[]{
-                new TextFieldWrapper(massField, massTooltip, 0, MAX_MASS),
-                new TextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
-                new TextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION),
-                new TextFieldWrapper(xVelocityField, xVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY),
-                new TextFieldWrapper(yVelocityField, yVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY)
+                new TextFieldWrapper(massField, massTooltip, 0, MAX_MASS, false), // can't have zero mass
+                new TextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
+                new TextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
+                new TextFieldWrapper(xVelocityField, xVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true),
+                new TextFieldWrapper(yVelocityField, yVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true)
         };
     }
 
