@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
 // This class is the controller for the settings panel UI element on the left
 public class SettingsPanelFXMLController {
 
@@ -102,24 +104,28 @@ public class SettingsPanelFXMLController {
     public boolean executeValidityCheck() {
         // Check if all objects and parameters are ready.
         // RETURNS:
-        // boolean, true if ready, false if not ready.
+        // readiness: boolean, true if ready, false if not ready.
+
+        boolean readiness = true;
+
+        // All wrappers must be called, so that they have an opportunity to highlight red.
 
         if (!timeskipWrapper.isReady()) {
             simInputError();
-            return false;
+            readiness = false;
         }
         if (!simSpeedWrapper.isReady()) {
             simInputError();
-            return false;
+            readiness = false;
         }
 
         for (ParameterFXMLController controller : parameterControllers) {
             if (!controller.isReady()) {
                 simInputError();
-                return false;
+                readiness = false;
             }
         }
-        return true;
+        return readiness;
     }
 
     // Called when the run simulation button is pressed.
