@@ -19,6 +19,8 @@ public class InfoPanelFXMLController {
 
     private Particle[] particles;
 
+    public static NumberFormat chosenFormat;
+
     // Default constructor for FXML
     public InfoPanelFXMLController() {
     }
@@ -54,5 +56,9 @@ public class InfoPanelFXMLController {
                 infoControllers[index].updateFromParticle(particles[index]);
             }
         };
+    }
+
+    public void setNumberFormat(NumberFormat format) {
+        chosenFormat = format;
     }
 }

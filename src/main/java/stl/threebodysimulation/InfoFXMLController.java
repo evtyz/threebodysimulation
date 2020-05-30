@@ -53,7 +53,24 @@ public class InfoFXMLController {
 
         for (String key : packagedLabels.keySet()) {
             double[] vector = particle.packagedInformation.get(key);
-            String labelText = String.format("[%.02f, %.02f]", vector[0], vector[1]);
+            String labelText;
+            switch (InfoPanelFXMLController.chosenFormat) {
+                case SCIENTIFIC_2:
+                    labelText = String.format("[%.02e, %.02e]", vector[0], vector[1]);
+                    break;
+                case SCIENTIFIC_5:
+                    labelText = String.format("[%.05e, %.05e]", vector[0], vector[1]);
+                    break;
+                case STANDARD_2:
+                    labelText = String.format("[%.02f, %.02f]", vector[0], vector[1]);
+                    break;
+                case STANDARD_5:
+                    labelText = String.format("[%.05f, %.05f]", vector[0], vector[1]);
+                    break;
+                default:
+                    labelText = "N/A";
+            }
+
             packagedLabels.get(key).setText(labelText);
         }
     }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+<VBox alignment="TOP_CENTER" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
     <children>
         <Label text="Global Settings">
             <font>
@@ -30,12 +31,13 @@
         </HBox>
         <GridPane vgap="5.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="56.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="318.0" minWidth="10.0" prefWidth="82.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="198.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="318.0" minWidth="10.0" prefWidth="227.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label fx:id="timeskipLabel" text="Timeskip:" />
@@ -58,6 +60,8 @@
                         </Tooltip>
                     </tooltip>
                 </TextField>
+            <ChoiceBox fx:id="numberFormatBox" prefWidth="318.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <Label text="Preferred Number Format:" GridPane.rowIndex="2" />
             </children>
         </GridPane>
         <Separator prefWidth="200.0" />
@@ -76,7 +80,7 @@
             <children>
                 <Label text="Template ID:">
                     <padding>
-                        <Insets right="25.0" />
+                        <Insets right="15.0" />
                     </padding>
                 </Label>
                 <TextField fx:id="templateIDField">
@@ -84,11 +88,11 @@
                         <Insets right="10.0" />
                     </HBox.margin>
                 </TextField>
-                <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+                <Button fx:id="saveButton" mnemonicParsing="false" text="Save">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
             </children>
-            <padding>
-                <Insets top="10.0" />
-            </padding>
         </HBox>
         <Button fx:id="manualButton" mnemonicParsing="false" onAction="#openManual" text="View User Manual" />
     </children>

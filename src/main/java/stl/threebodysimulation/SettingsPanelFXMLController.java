@@ -1,5 +1,7 @@
 package stl.threebodysimulation;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
@@ -10,7 +12,7 @@ public class SettingsPanelFXMLController {
     // Default colors
     private final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
     // Default limits
-    private final double MAX_ABS_TIMESKIP = 10000;
+    private final double MAX_ABS_TIMESKIP = 1000000;
     private final double MIN_SIMULATION_SPEED = 0.001;
     private final double MAX_SIMULATION_SPEED = 1000;
     // Listeners
@@ -37,6 +39,8 @@ public class SettingsPanelFXMLController {
     private CheckBox trailCheckBox;
     @FXML
     private CheckBox centerCheckBox;
+    @FXML
+    private ChoiceBox<NumberFormat> numberFormatBox;
     @FXML
     private Button runButton;
     @FXML
@@ -71,6 +75,9 @@ public class SettingsPanelFXMLController {
 
         // Change UI elements based on default state of checkbox
         onChangeInfiniteCheckbox();
+
+        numberFormatBox.setItems(FXCollections.observableArrayList(NumberFormat.values()));
+        numberFormatBox.setValue(NumberFormat.SCIENTIFIC_2);
     }
 
     // This method handles the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
@@ -167,6 +174,6 @@ public class SettingsPanelFXMLController {
             speed = 0;
         }
 
-        return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed);
+        return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
     }
 }

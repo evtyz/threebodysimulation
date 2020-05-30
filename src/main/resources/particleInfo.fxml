@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER" spacing="15.0" stylesheets="@bootstrap3.css"
-      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="stl.threebodysimulation.InfoFXMLController">
+
+<VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoFXMLController">
     <children>
         <Label fx:id="objectLabel" text="Object">
             <font>
-                <Font name="System Bold" size="16.0"/>
+                <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <StackPane prefHeight="150.0" prefWidth="200.0">
+        <StackPane prefWidth="225.0">
             <children>
-                <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                <VBox prefWidth="100.0" spacing="15.0">
                     <children>
-                        <Label text="Position:">
+                        <Label text="POS:">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
-                        <Label text="Velocity:">
+                        <Label text="VEL:">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
-                        <Label text="Acceleration:">
+                        <Label text="ACC:">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
                     </children>
                 </VBox>
-                <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0"
-                      spacing="15.0">
+                <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefWidth="100.0" spacing="15.0">
                     <children>
-                        <Label fx:id="positionInfo" text="N/A" textAlignment="RIGHT"/>
-                        <Label fx:id="velocityInfo" text="N/A" textAlignment="RIGHT"/>
-                        <Label fx:id="accelerationInfo" text="N/A"/>
+                        <Label fx:id="positionInfo" text="N/A" textAlignment="RIGHT" />
+                        <Label fx:id="velocityInfo" text="N/A" textAlignment="RIGHT" />
+                        <Label fx:id="accelerationInfo" text="N/A" />
                     </children>
                 </VBox>
             </children>

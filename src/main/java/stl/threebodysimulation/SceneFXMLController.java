@@ -80,8 +80,9 @@ public class SceneFXMLController implements Initializable {
     public void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
         particles = settings.particles;
-        canvasPanelController.setParticles(particles);
         infoPanelController.setParticles(particles);
+        infoPanelController.setNumberFormat(settings.numberFormat);
+        canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
     }
 }

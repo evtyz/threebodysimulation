@@ -10,10 +10,12 @@ public class SimulationSettings {
     public boolean showsCenterOfGravity;
     public double skip;
     public double speed;
+    public NumberFormat numberFormat;
 
 
     // Constructor that builds a Settings object.
-    public SimulationSettings(Particle[] particles, boolean isInfinite, boolean hasTrails, boolean showsCenterOfGravity, double skip, double speed) {
+    public SimulationSettings(Particle[] particles, boolean isInfinite, boolean hasTrails, boolean showsCenterOfGravity, double skip, double speed, NumberFormat numberFormat) {
+        this.numberFormat = numberFormat;
         this.particles = particles;
         this.isInfinite = isInfinite;
         this.hasTrails = hasTrails;
