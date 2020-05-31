@@ -7,7 +7,7 @@ import javafx.scene.shape.Circle;
 import java.util.HashMap;
 
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
-public class InfoFXMLController extends ParameterFXMLController {
+public class InfoFXMLController {
 
     // Declare our UI elements
     @FXML
@@ -74,10 +74,8 @@ public class InfoFXMLController extends ParameterFXMLController {
                 default:
                     labelText = "N/A";
             }
-
+            objectCircle.setFill(particle.color);
             packagedLabels.get(key).setText(labelText);
         }
     }
 }
-
-// TODO: Add the corresponding colour for each particle next to the labels.
