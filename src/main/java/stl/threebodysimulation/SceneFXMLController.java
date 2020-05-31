@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,6 +18,7 @@ import java.util.ResourceBundle;
 // This class is the FXML controller for the entire scene (or UI).
 public class SceneFXMLController implements Initializable {
 
+    public static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
     public Particle[] particles;
     // Initialize controllers for custom UI elements
     @FXML

@@ -32,6 +32,7 @@ public class InfoPanelFXMLController {
         // setup each individual controller with correct ids
         for (int id = 0; id < 3; id++) {
             infoControllers[id].setup(id + 1);
+            infoControllers[id].updateFromColor(SceneFXMLController.defaultColors[id]);
         }
     }
 
@@ -45,6 +46,7 @@ public class InfoPanelFXMLController {
         // Set up a listener inside each particle
         for (int i = 0; i < 3; i++) {
             setParticleListener(i);
+            infoControllers[i].updateFromColor(particles[i].color);
         }
     }
 

@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.HashMap;
@@ -73,9 +74,12 @@ public class InfoFXMLController {
                     break;
                 default:
                     labelText = "N/A";
+                    packagedLabels.get(key).setText(labelText);
             }
-            objectCircle.setFill(particle.color);
-            packagedLabels.get(key).setText(labelText);
         }
+    }
+
+    public void updateFromColor (Color color) {
+            objectCircle.setFill(color);
     }
 }

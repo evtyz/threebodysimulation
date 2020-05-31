@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SettingsPanelFXMLController {
 
     // Default colors
-    private final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+
     // Default limits
     private final double MAX_ABS_TIMESKIP = 1000000;
     private final double MIN_SIMULATION_SPEED = 0.001;
@@ -69,7 +69,7 @@ public class SettingsPanelFXMLController {
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            parameterControllers[i].setup(i + 1, defaultColors[i]);
+            parameterControllers[i].setup(i + 1, SceneFXMLController.defaultColors[i]);
         }
 
         timeskipField.setText("0");
