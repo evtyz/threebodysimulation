@@ -6,6 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,6 +25,8 @@ public class SceneFXMLController implements Initializable {
     private SettingsPanelFXMLController settingsPanelController;
     @FXML
     private CanvasPanelFXMLController canvasPanelController;
+    @FXML
+    private BorderPane window;
 
     // Empty constructor for use by FXML.
     public SceneFXMLController() {
@@ -42,6 +46,36 @@ public class SceneFXMLController implements Initializable {
             @Override
             public void onEvent() {
                 runSimulation(settingsPanelController.getSimulationSettings());
+            }
+        };
+        settingsPanelController.onRunErrorListener = new Listener() {
+            @Override
+            public void onEvent() {
+                try {
+                    // Makes an FXML Loader and loads the fxml files
+                    FXMLLoader windowLoader = new FXMLLoader(getClass().getResource("/runErrorWindow.fxml"));
+                    Parent root = windowLoader.load();
+
+                    // Load the correct message into the layout
+                    runErrorWindowFXMLController errorController = windowLoader.getController();
+                    errorController.setLabel("The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.");
+
+                    // Style the scenes
+                    Scene errorScene = new Scene(root);
+                    errorScene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
+
+                    // Make a popup window that blocks the main screen, and set icons and titles.
+                    final Stage errorWindow = new Stage();
+                    errorWindow.initModality(Modality.APPLICATION_MODAL);
+                    errorWindow.initOwner(window.getScene().getWindow());
+                    errorWindow.setResizable(false);
+                    errorWindow.getIcons().add(new Image("/errorIcon.png"));
+                    errorWindow.setTitle("Simulation Error");
+                    errorWindow.setScene(errorScene);
+                    errorWindow.show();
+                    
+                } catch (Exception ignored) {}
+
             }
         };
         canvasPanelController.setup();

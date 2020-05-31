@@ -20,6 +20,7 @@ public class SettingsPanelFXMLController {
     // Listeners
     public Listener onOpenManualListener;
     public Listener onRunSimulationListener;
+    public Listener onRunErrorListener;
     // UI element declarations
     @FXML
     private CheckBox infiniteCheckBox;
@@ -111,20 +112,21 @@ public class SettingsPanelFXMLController {
         // All wrappers must be called, so that they have an opportunity to highlight red.
 
         if (!timeskipWrapper.isReady()) {
-            simInputError();
             readiness = false;
         }
         if (!simSpeedWrapper.isReady()) {
-            simInputError();
             readiness = false;
         }
 
         for (ParameterFXMLController controller : parameterControllers) {
             if (!controller.isReady()) {
-                simInputError();
                 readiness = false;
             }
         }
+        if (!readiness) {
+            onRunErrorListener.onEvent();
+        }
+
         return readiness;
     }
 
@@ -135,11 +137,6 @@ public class SettingsPanelFXMLController {
             return;
         }
         onRunSimulationListener.onEvent();
-    }
-
-    private void simInputError() {
-        // Handles errors when the user presses "Run Simulation" but doesn't fill everything correctly.
-        // TODO: Write this method, potentially link to scenecontroller
     }
 
     public void openManual() {
