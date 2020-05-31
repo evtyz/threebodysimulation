@@ -2,11 +2,12 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.shape.Circle;
 
 import java.util.HashMap;
 
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
-public class InfoFXMLController {
+public class InfoFXMLController extends ParameterFXMLController {
 
     // Declare our UI elements
     @FXML
@@ -20,6 +21,9 @@ public class InfoFXMLController {
 
     @FXML
     private Label accelerationInfo;
+
+    @FXML
+    public Circle objectCircle;
 
     // Declare some other useful variables
     private int id;
@@ -44,6 +48,7 @@ public class InfoFXMLController {
         packagedLabels.put("position", positionInfo);
         packagedLabels.put("velocity", velocityInfo);
         packagedLabels.put("acceleration", accelerationInfo);
+        objectColorSync();
     }
 
     public void updateFromParticle(Particle particle) {
@@ -72,6 +77,12 @@ public class InfoFXMLController {
             }
 
             packagedLabels.get(key).setText(labelText);
+        }
+    }
+    public void objectColorSync() {
+        try {
+            objectCircle.fillProperty().bind(colorPickerField.valueProperty());
+        } catch (Exception ignored) {
         }
     }
 }
