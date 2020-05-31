@@ -37,7 +37,7 @@ public class Particle {
         velocity = new double[]{xVel, yVel};
         acceleration = new double[]{0, 0}; // users cannot provide starting acceleration to a particle.
 
-        // Packages above vectors into convenient hashmap for later use.
+        // Packages above vectors into a convenient hashmap for later use.
         packagedInformation = new HashMap<>();
         packagedInformation.put("position", position);
         packagedInformation.put("velocity", velocity);

@@ -53,12 +53,12 @@ public class CanvasPanelFXMLController {
     public CanvasPanelFXMLController() {
     }
 
-    // Sets up particles according to given array
+    // Sets up particles according to the given array
     public void setParticles(Particle[] particles) {
         this.particles = particles;
     }
 
-    // Setup method that is called from scenecontroller
+    // Setup method that is called from scene controller
     public void setup() {
         state = SimulationState.NOT_STARTED;
         pauseButton.setDisable(true);
@@ -123,7 +123,7 @@ public class CanvasPanelFXMLController {
             protected Object call() throws Exception {
                 // This while loop will end when the state changes
                 while (state == SimulationState.RUNNING) {
-                    // Integrate between the current time and the next time
+                    // Integrate between the current time, and the next time
                     integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
                     // Update the UI on the main thread
                     Platform.runLater(new Runnable() {
