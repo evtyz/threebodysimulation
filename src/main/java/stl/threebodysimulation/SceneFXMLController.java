@@ -18,7 +18,9 @@ import java.util.ResourceBundle;
 // This class is the FXML controller for the entire scene (or UI).
 public class SceneFXMLController implements Initializable {
 
+    // Default colors
     public static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+
     public Particle[] particles;
     // Initialize controllers for custom UI elements
     @FXML

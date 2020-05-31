@@ -11,8 +11,6 @@ import java.util.ArrayList;
 // This class is the controller for the settings panel UI element on the left
 public class SettingsPanelFXMLController {
 
-    // Default colors
-
     // Default limits
     private final double MAX_ABS_TIMESKIP = 1000000;
     private final double MIN_SIMULATION_SPEED = 0.001;
