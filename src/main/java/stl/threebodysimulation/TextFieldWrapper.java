@@ -20,6 +20,7 @@ public class TextFieldWrapper {
     private String decimalPattern;
     // This represents whether the TextField is ready to send its value for simulation.
     private boolean readiness;
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
     private final boolean allowBottomInclusive;
 
@@ -65,13 +66,13 @@ public class TextFieldWrapper {
         // Void method that initializes a tooltip
 
         // This allows us to round to the correct number of decimal places
-        DecimalFormat decimalFormat = new DecimalFormat("0.##");
+
 
         // Tooltips show up after 100 milliseconds of hovering
         tooltip.setShowDelay(new Duration(100));
 
         // Set the text of the tooltip to display the min and max. TODO: Make more eloquent
-        tooltip.setText(String.format("Number between %s and %s", decimalFormat.format(min), decimalFormat.format(max)));
+        tooltip.setText(String.format("Must be between %s and %s", FORMAT.format(min), FORMAT.format(max)));
     }
 
     // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
@@ -96,6 +97,11 @@ public class TextFieldWrapper {
         }
     }
 
+    // Highlights the textfield as incorrect with colouring.
+    public void highlightIncorrect() {
+        subject.setStyle("-fx-border-color: #ff4444; -fx-background-color: #fff9f9;");
+    }
+
     // Function that attaches a listener on the TextView to check if the input is within the min and max.
     // Structure modified from Brendan's answer at https://stackoverflow.com/questions/16549296/how-perform-task-on-javafx-textfield-at-onfocus-and-outfocus
     private void attachInputValidator() {
@@ -104,16 +110,14 @@ public class TextFieldWrapper {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldFocus, Boolean newFocus) {
                 if (!newFocus) {
                     if (!isValidInput()) {
-                        subject.setStyle("-fx-border-color: #ff4444; -fx-background-color: #fff9f9;");
+                        highlightIncorrect();
                         readiness = false;
                     } else {
-                        subject.setStyle("-fx-border-color: #cccccc;");
-                        subject.setStyle("-fx-background-color: white;");
+                        subject.setStyle("-fx-border-color: #cccccc; -fx-background-color: white;");
                         readiness = true;
                     }
                 } else {
-                    subject.setStyle("-fx-border-color: #66afe9");
-                    subject.setStyle("-fx-background-color: white;");
+                    subject.setStyle("-fx-border-color: #66afe9; -fx-background-color: white;");
                 }
             }
         });
@@ -138,6 +142,9 @@ public class TextFieldWrapper {
 
     // returns readiness value
     public boolean isReady() {
+        if (!readiness) {
+            highlightIncorrect();
+        }
         return readiness;
     }
 }

@@ -77,12 +77,15 @@ public class ParameterFXMLController {
         // OUTPUT:
         // boolean, whether this object is ready to be simulated or not.
 
+        boolean readiness = true;
+
+        // All wrappers must be called so that they can highlight themselves if they are not ready.
         for (TextFieldWrapper textField : allTextFields) {
             if (!textField.isReady()) {
-                return false;
+                readiness = false;
             }
         }
-        return true;
+        return readiness;
     }
 
     public Particle convertToParticle() {
