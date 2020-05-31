@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoFXMLController">
+<VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoFXMLController">
     <children>
         <Label fx:id="objectLabel" text="Object">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
+      <Circle fx:id="objectCircle" fill="#1f93ff" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
         <StackPane prefWidth="225.0">
             <children>
                 <VBox prefWidth="100.0" spacing="15.0">

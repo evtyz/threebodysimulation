@@ -19,7 +19,7 @@ public class ParameterFXMLController {
     @FXML
     private Label objectLabel;
     @FXML
-    private ColorPicker colorPickerField;
+    public ColorPicker colorPickerField;
     @FXML
     private TextField massField;
     @FXML
