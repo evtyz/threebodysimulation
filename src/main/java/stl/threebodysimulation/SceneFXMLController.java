@@ -126,4 +126,22 @@ public class SceneFXMLController implements Initializable {
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
     }
+
+    public static double[] centerOfMass(Particle[] particles) {
+        // Returns the center of mass coordinates for an array of particles
+        // INPUTS:
+        // particles: Particle[], the array of particles that the center of mass is calculated for.
+        // RETURNS:
+        // centerOfMass: double[], the x and y coordinates of the center of mass.
+        double totalMass = 0;
+        double[] centerOfMass = new double[2];
+        for (Particle particle : particles) {
+            totalMass += particle.mass;
+            centerOfMass[0] += particle.position[0] * particle.mass;
+            centerOfMass[1] += particle.position[1] * particle.mass;
+        }
+        centerOfMass[0] /= totalMass;
+        centerOfMass[1] /= totalMass;
+        return centerOfMass;
+    }
 }
