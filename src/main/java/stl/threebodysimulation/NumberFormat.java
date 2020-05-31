@@ -2,6 +2,11 @@ package stl.threebodysimulation;
 
 // This class sets up all possible number formats.
 public enum NumberFormat {
+    ADAPTIVE {
+        public String toString() {
+            return "Adaptive";
+        }
+    },
     SCIENTIFIC_2 {
         public String toString() {
             return "Scientific, 2 decimal places";

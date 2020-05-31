@@ -71,6 +71,9 @@ public class InfoFXMLController {
             double[] vector = particle.packagedInformation.get(key);
             String labelText;
             switch (InfoPanelFXMLController.chosenFormat) {
+                case ADAPTIVE:
+                    labelText = String.format("[%.05g, %.05g]", vector[0], vector[1]);
+                    break;
                 case SCIENTIFIC_2:
                     labelText = String.format("[%.02e, %.02e]", vector[0], vector[1]);
                     break;
