@@ -5,7 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Set;
 
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
 public class InfoFXMLController {
@@ -25,6 +27,12 @@ public class InfoFXMLController {
 
     @FXML
     public Circle objectCircle;
+
+    private static DecimalFormat STANDARD_2_DIGIT =  new DecimalFormat("#####,##0.##");
+    private static DecimalFormat STANDARD_5_DIGIT = new DecimalFormat("#####,##0.#####");
+
+    private final int MAX_STANDARD_2_DIGIT_LENGTH = 10;
+    private final int MAX_STANDARD_5_DIGIT_LENGTH = 7;
 
     // Declare some other useful variables
     private int id;
@@ -49,6 +57,9 @@ public class InfoFXMLController {
         packagedLabels.put("position", positionInfo);
         packagedLabels.put("velocity", velocityInfo);
         packagedLabels.put("acceleration", accelerationInfo);
+
+        STANDARD_2_DIGIT.setMaximumIntegerDigits(MAX_STANDARD_2_DIGIT_LENGTH);
+        STANDARD_5_DIGIT.setMaximumIntegerDigits(MAX_STANDARD_5_DIGIT_LENGTH);
     }
 
     public void updateFromParticle(Particle particle) {
@@ -67,16 +78,26 @@ public class InfoFXMLController {
                     labelText = String.format("[%.05e, %.05e]", vector[0], vector[1]);
                     break;
                 case STANDARD_2:
-                    labelText = String.format("[%.02f, %.02f]", vector[0], vector[1]);
+                    labelText = String.format("[%s, %s]", formatNumberWithLimits(STANDARD_2_DIGIT, vector[0]), formatNumberWithLimits(STANDARD_2_DIGIT, vector[1]));
                     break;
                 case STANDARD_5:
-                    labelText = String.format("[%.05f, %.05f]", vector[0], vector[1]);
+                    labelText = String.format("[%s, %s]", formatNumberWithLimits(STANDARD_5_DIGIT, vector[0]), formatNumberWithLimits(STANDARD_5_DIGIT, vector[1]));
                     break;
                 default:
                     labelText = "N/A";
             }
             packagedLabels.get(key).setText(labelText);
         }
+    }
+
+    private static String formatNumberWithLimits(DecimalFormat format, double number) {
+        if (Math.abs(number) >= Math.pow(10, format.getMaximumIntegerDigits())) {
+            if (number > 0) {
+                return "+Infinity";
+            }
+            return "-Infinity";
+        }
+        return format.format(number);
     }
 
     public void updateFromColor (Color color) {

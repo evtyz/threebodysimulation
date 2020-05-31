@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,6 +22,8 @@ public class SceneFXMLController implements Initializable {
     // Default colors
     public static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
 
+    public static Window parentWindow;
+
     public Particle[] particles;
     // Initialize controllers for custom UI elements
     @FXML
@@ -30,7 +33,7 @@ public class SceneFXMLController implements Initializable {
     @FXML
     private CanvasPanelFXMLController canvasPanelController;
     @FXML
-    private BorderPane window;
+    private BorderPane sceneLayout;
 
     // Empty constructor for use by FXML.
     public SceneFXMLController() {
@@ -55,7 +58,7 @@ public class SceneFXMLController implements Initializable {
         settingsPanelController.onRunErrorListener = new Listener() {
             @Override
             public void onEvent() {
-                openPopupWindow("Simulation Error", "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.", new Image("/errorIcon.png"));
+                openPopupWindow("Simulation Error", "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.", new Image("/errorIcon.png"), sceneLayout.getScene().getWindow());
             }
         };
         canvasPanelController.setup();
@@ -68,11 +71,11 @@ public class SceneFXMLController implements Initializable {
         };
     }
 
-    // Method that opens a popup window with a message and icon.
-    public void openPopupWindow(String title, String message, Image icon) {
+    // Method that opens a popup sceneLayout with a message and icon.
+    public static void openPopupWindow(String title, String message, Image icon, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
-            FXMLLoader windowLoader = new FXMLLoader(getClass().getResource("/popupWindow.fxml"));
+            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/popupWindow.fxml"));
             Parent root = windowLoader.load();
 
             // Load the correct message into the layout
@@ -81,12 +84,12 @@ public class SceneFXMLController implements Initializable {
 
             // Style the scenes
             Scene errorScene = new Scene(root);
-            errorScene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
+            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/bootstrap3.css").toExternalForm());
 
-            // Make a popup window that blocks the main screen, and set icons and titles.
+            // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
             final Stage errorWindow = new Stage();
             errorWindow.initModality(Modality.APPLICATION_MODAL);
-            errorWindow.initOwner(window.getScene().getWindow());
+            errorWindow.initOwner(parent);
             errorWindow.setResizable(false);
             errorWindow.getIcons().add(icon);
             errorWindow.setTitle(title);
@@ -103,7 +106,7 @@ public class SceneFXMLController implements Initializable {
             Parent root = FXMLLoader.load(getClass().getResource("/userManual.fxml"));
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
-            // We don't want the window to be resizable, to save us the UI headache.
+            // We don't want the sceneLayout to be resizable, to save us the UI headache.
             stage.setResizable(false);
 
             // Icon of app

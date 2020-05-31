@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class SettingsPanelFXMLController {
 
     // Default limits
-    private final double MAX_ABS_TIMESKIP = 1000000;
-    private final double MIN_SIMULATION_SPEED = 0.001;
-    private final double MAX_SIMULATION_SPEED = 1000;
+    private final double MAX_ABS_TIMESKIP = 10000000;
+    private final double MIN_SIMULATION_SPEED = 0.0001;
+    private final double MAX_SIMULATION_SPEED = 10000;
     // Listeners
     public Listener onOpenManualListener;
     public Listener onRunSimulationListener;

@@ -20,7 +20,7 @@ public class TextFieldWrapper {
     private String decimalPattern;
     // This represents whether the TextField is ready to send its value for simulation.
     private boolean readiness;
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.##");
+    private static final DecimalFormat FORMAT = new DecimalFormat("###,##0.####");
 
     private final boolean allowBottomInclusive;
 

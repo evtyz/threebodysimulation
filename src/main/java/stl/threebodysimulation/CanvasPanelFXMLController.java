@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 import java.util.Arrays;
@@ -66,6 +67,12 @@ public class CanvasPanelFXMLController {
         currentTime = 0;
     }
 
+    public void breakSimulation() {
+        updateParticlesAndCanvas();
+        stopPressed();
+        SceneFXMLController.openPopupWindow("Simulation Error", "An asymptote has been detected, and the simulation has ceased. Please make sure your inputs do not lead to asymptotic behavior, and try again.", new Image("/errorIcon.png"), canvas.getScene().getWindow());
+    }
+
     // This method is called when we want to start running a simulation.
     public void runSimulation(SimulationSettings settings) {
         // INPUTS:
@@ -77,13 +84,19 @@ public class CanvasPanelFXMLController {
 
         // TODO: Find reasonable values for parameters here
         // Set up the integrator that we will be using. The minimum step value is set to the minimum value of a double.
-        integrator = new DormandPrince853Integrator(Double.MIN_VALUE, 30000, 0.01, 0.01);
+        integrator = new DormandPrince853Integrator(Math.pow(10, -8), 30000, 0.01, 0.01);
         flattenParticles();
 
         currentTime = settings.skip;
         // Get position, velocity, acceleration
         if (currentTime != 0) {
-            integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
+            try {
+                integrate(true);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                breakSimulation();
+                return;
+            }
         }
         // Update canvas
         updateParticlesAndCanvas();
@@ -114,6 +127,14 @@ public class CanvasPanelFXMLController {
         updateCanvas();
     }
 
+    public void integrate(boolean start) throws Exception {
+        if (start) {
+            integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
+        } else {
+            integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
+        }
+    }
+
     // Asynchronously start the simulation.
     public void startSimulation() {
 
@@ -124,7 +145,19 @@ public class CanvasPanelFXMLController {
                 // This while loop will end when the state changes
                 while (state == SimulationState.RUNNING) {
                     // Integrate between the current time, and the next time
-                    integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
+                    try {
+                        integrate(false);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                breakSimulation();
+                            }
+                        });
+                        break;
+                    }
+
                     // Update the UI on the main thread
                     Platform.runLater(new Runnable() {
                         @Override

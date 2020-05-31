@@ -11,9 +11,9 @@ import javafx.scene.paint.Color;
 public class ParameterFXMLController {
 
     // Min and Max values for position, velocity, mass
-    public static final double MAX_ABS_STARTING_POSITION = 1000000; // TODO: Calculate
-    public static final double MAX_ABS_STARTING_VELOCITY = 1000000; // TODO: Calculate
-    public static final double MAX_MASS = 100000; // TODO: Calculate
+    public static final double MAX_ABS_STARTING_POSITION = 100000000; // TODO: Calculate
+    public static final double MAX_ABS_STARTING_VELOCITY = 100000000; // TODO: Calculate
+    public static final double MAX_MASS = 1000000; // TODO: Calculate
 
     // UI element declarations
     @FXML
