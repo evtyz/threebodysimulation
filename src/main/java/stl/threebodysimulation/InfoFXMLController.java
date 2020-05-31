@@ -48,7 +48,6 @@ public class InfoFXMLController extends ParameterFXMLController {
         packagedLabels.put("position", positionInfo);
         packagedLabels.put("velocity", velocityInfo);
         packagedLabels.put("acceleration", accelerationInfo);
-        objectColorSync();
     }
 
     public void updateFromParticle(Particle particle) {
@@ -77,12 +76,6 @@ public class InfoFXMLController extends ParameterFXMLController {
             }
 
             packagedLabels.get(key).setText(labelText);
-        }
-    }
-    public void objectColorSync() {
-        try {
-            objectCircle.fillProperty().bind(colorPickerField.valueProperty());
-        } catch (Exception ignored) {
         }
     }
 }
