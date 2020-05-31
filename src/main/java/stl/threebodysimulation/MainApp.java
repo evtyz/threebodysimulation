@@ -25,7 +25,7 @@ public class MainApp extends Application {
         stage.setResizable(false);
 
         // Icon of app
-        stage.getIcons().add(new Image("/icon.png"));
+        stage.getIcons().add(new Image("/appIcon.png"));
 
         // Title of app
         stage.setTitle("Three-Body Simulation");

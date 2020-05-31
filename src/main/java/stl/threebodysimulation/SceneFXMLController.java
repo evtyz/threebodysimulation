@@ -74,7 +74,7 @@ public class SceneFXMLController implements Initializable {
             Parent root = windowLoader.load();
 
             // Load the correct message into the layout
-            popupWindowFXMLController errorController = windowLoader.getController();
+            PopupWindowFXMLController errorController = windowLoader.getController();
             errorController.setLabel(message);
 
             // Style the scenes
@@ -105,7 +105,7 @@ public class SceneFXMLController implements Initializable {
             stage.setResizable(false);
 
             // Icon of app
-            stage.getIcons().add(new Image("/icon.png"));
+            stage.getIcons().add(new Image("/appIcon.png"));
 
             // Title of app
             stage.setTitle("User Manual");

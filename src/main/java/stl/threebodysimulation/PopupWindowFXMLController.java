@@ -10,14 +10,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 // The controller for the error window that pops up when a problem occurs.
-public class popupWindowFXMLController implements Initializable {
+public class PopupWindowFXMLController implements Initializable {
     @FXML
     private Button closeWindowButton;
 
     @FXML
     private Label messageLabel;
 
-    public popupWindowFXMLController() {}
+    public PopupWindowFXMLController() {}
 
     public void setLabel(String label) {
         messageLabel.setText(label);
