@@ -51,31 +51,7 @@ public class SceneFXMLController implements Initializable {
         settingsPanelController.onRunErrorListener = new Listener() {
             @Override
             public void onEvent() {
-                try {
-                    // Makes an FXML Loader and loads the fxml files
-                    FXMLLoader windowLoader = new FXMLLoader(getClass().getResource("/runErrorWindow.fxml"));
-                    Parent root = windowLoader.load();
-
-                    // Load the correct message into the layout
-                    runErrorWindowFXMLController errorController = windowLoader.getController();
-                    errorController.setLabel("The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.");
-
-                    // Style the scenes
-                    Scene errorScene = new Scene(root);
-                    errorScene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
-
-                    // Make a popup window that blocks the main screen, and set icons and titles.
-                    final Stage errorWindow = new Stage();
-                    errorWindow.initModality(Modality.APPLICATION_MODAL);
-                    errorWindow.initOwner(window.getScene().getWindow());
-                    errorWindow.setResizable(false);
-                    errorWindow.getIcons().add(new Image("/errorIcon.png"));
-                    errorWindow.setTitle("Simulation Error");
-                    errorWindow.setScene(errorScene);
-                    errorWindow.show();
-                    
-                } catch (Exception ignored) {}
-
+                openPopupWindow("Simulation Error", "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.", new Image("/errorIcon.png"));
             }
         };
         canvasPanelController.setup();
@@ -86,6 +62,34 @@ public class SceneFXMLController implements Initializable {
                 settingsPanelController.setDisabledRunButton(false);
             }
         };
+    }
+
+    // Method that opens a popup window with a message and icon.
+    public void openPopupWindow(String title, String message, Image icon) {
+        try {
+            // Makes an FXML Loader and loads the fxml files
+            FXMLLoader windowLoader = new FXMLLoader(getClass().getResource("/popupWindow.fxml"));
+            Parent root = windowLoader.load();
+
+            // Load the correct message into the layout
+            popupWindowFXMLController errorController = windowLoader.getController();
+            errorController.setLabel(message);
+
+            // Style the scenes
+            Scene errorScene = new Scene(root);
+            errorScene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
+
+            // Make a popup window that blocks the main screen, and set icons and titles.
+            final Stage errorWindow = new Stage();
+            errorWindow.initModality(Modality.APPLICATION_MODAL);
+            errorWindow.initOwner(window.getScene().getWindow());
+            errorWindow.setResizable(false);
+            errorWindow.getIcons().add(icon);
+            errorWindow.setTitle(title);
+            errorWindow.setScene(errorScene);
+            errorWindow.show();
+
+        } catch (Exception ignored) {}
     }
 
     public void openManual() {
