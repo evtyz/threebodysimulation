@@ -74,8 +74,8 @@ public class InfoFXMLController {
                     break;
                 default:
                     labelText = "N/A";
-                    packagedLabels.get(key).setText(labelText);
             }
+            packagedLabels.get(key).setText(labelText);
         }
     }
 
