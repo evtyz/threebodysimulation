@@ -70,7 +70,7 @@ public class CanvasPanelFXMLController {
     public void breakSimulation() {
         updateParticlesAndCanvas();
         stopPressed();
-        SceneFXMLController.openPopupWindow("Simulation Error", "An asymptote has been detected, and the simulation has ceased. Please make sure your inputs do not lead to asymptotic behavior, and try again.", new Image("/errorIcon.png"), canvas.getScene().getWindow());
+        SceneFXMLController.openPopupWindow(ErrorMessage.ASYMPTOTE_ERROR, canvas.getScene().getWindow());
     }
 
     // This method is called when we want to start running a simulation.
@@ -91,7 +91,7 @@ public class CanvasPanelFXMLController {
         // Get position, velocity, acceleration
         if (currentTime != 0) {
             try {
-                integrate(true);
+                integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 breakSimulation();
@@ -127,14 +127,6 @@ public class CanvasPanelFXMLController {
         updateCanvas();
     }
 
-    public void integrate(boolean start) throws Exception {
-        if (start) {
-            integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
-        } else {
-            integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
-        }
-    }
-
     // Asynchronously start the simulation.
     public void startSimulation() {
 
@@ -146,7 +138,7 @@ public class CanvasPanelFXMLController {
                 while (state == SimulationState.RUNNING) {
                     // Integrate between the current time, and the next time
                     try {
-                        integrate(false);
+                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         Platform.runLater(new Runnable() {
