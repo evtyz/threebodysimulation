@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -33,6 +34,8 @@ public class CanvasPanelFXMLController {
     private Button stopButton;
     @FXML
     private Label timeLabel;
+
+    private GraphicsContext gc = canvas.getGraphicsContext2D();
 
     // The state of the simulation (Not started, running, paused, finished)
     private SimulationState state;
@@ -239,5 +242,9 @@ public class CanvasPanelFXMLController {
     private void updateCanvas() {
         // TODO
         timeLabel.setText(String.format("Time: %.2f secs", currentTime));
+        for(int i = 0; i < 3; i++){
+            gc.setFill(particles[i].color);
+            gc.fillOval(particles[i].position[0], particles[i].position[1], 30, 30);
+        }
     }
 }
