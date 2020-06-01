@@ -16,30 +16,51 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-// This class is the FXML controller for the entire scene (or UI).
+/**
+ * This class is the FXML controller for the entire scene (or UI).
+ */
 public class SceneFXMLController implements Initializable {
 
-    // Default colors
+    /**
+     * Default colors that each particle is initialized to.
+     */
     private static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
 
-    private static Window parentWindow;
-
-    private Particle[] particles;
-    // Initialize controllers for custom UI elements
+    /**
+     * The info display panel in the UI.
+     */
     @FXML
     private InfoPanelFXMLController infoPanelController;
+
+    /**
+     * The settings panel in the UI.
+     */
     @FXML
     private SettingsPanelFXMLController settingsPanelController;
+
+    /**
+     * The visualization canvas and controls in the UI.
+     */
     @FXML
     private CanvasPanelFXMLController canvasPanelController;
+
+    /**
+     * The entire UI scene, as a single element.
+     */
     @FXML
     private BorderPane sceneLayout;
 
-    // Empty constructor for use by FXML.
+    /**
+     * Constructor used by the FXML loader.
+     */
     public SceneFXMLController() {
     }
 
-    // Method that opens a popup sceneLayout with a message and icon.
+    /**
+     * Opens a new popup window with an error message
+     * @param message The error message to display.
+     * @param parent The window that the error popup must block.
+     */
     static void openPopupWindow(ErrorMessage message, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
@@ -56,10 +77,10 @@ public class SceneFXMLController implements Initializable {
 
             // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
             final Stage errorWindow = new Stage();
-            errorWindow.initModality(Modality.APPLICATION_MODAL);
+            errorWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
             errorWindow.initOwner(parent);
-            errorWindow.setResizable(false);
-            errorWindow.getIcons().add(new Image("/errorIcon.png"));
+            errorWindow.setResizable(false); // Not resizable
+            errorWindow.getIcons().add(new Image("/errorIcon.png")); // Error icon.
             errorWindow.setTitle(message.getTitle());
             errorWindow.setScene(errorScene);
             errorWindow.show();
@@ -68,23 +89,33 @@ public class SceneFXMLController implements Initializable {
         }
     }
 
-    // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
+    /**
+     * Sets up initial states of UI elements after the FXML loader is done linking. Called by the FXML loader.
+     * @param url Unused. From parent class.
+     * @param resourceBundle Unused. From parent class.
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        infoPanelController.setup();
-        settingsPanelController.setup();
-        settingsPanelController.setOnOpenManualListener(this::openManual);
-        settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings()));
-        settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow()));
-        canvasPanelController.setup();
-        canvasPanelController.setOnStopListener(() -> settingsPanelController.disableRunButton());
+        infoPanelController.setup(); // Set up info panel.
+        settingsPanelController.setup(); // Set up settings panel.
+        settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
+        settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
+        settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
+        canvasPanelController.setup(); // Sets up canvas.
+        canvasPanelController.setOnStopListener(() -> settingsPanelController.enableRunButton()); // Enables rerunning the simulation if it is stopped.
     }
 
+    /**
+     * Opens the user manual.
+     */
     private void openManual() {
         // Opens user manual popups
         try {
+            // Load up a new window with user manual layout.
             final Stage stage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("/userManual.fxml"));
             Scene scene = new Scene(root);
+            // Enable css
             scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
             // We don't want the sceneLayout to be resizable, to save us the UI headache.
             stage.setResizable(false);
@@ -98,19 +129,30 @@ public class SceneFXMLController implements Initializable {
             // Stage the UI.
             stage.setScene(scene);
             stage.show();
-        } catch (Exception ignored) {
+        } catch (Exception ignored) { // In case the layout is not found. Should never happen.
         }
     }
 
+    /**
+     * Runs the simulation.
+     * @param settings Settings to run the simulation with.
+     */
     private void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
-        particles = settings.getParticles();
+        // Sets up info display.
+        Particle[] particles = settings.getParticles();
         infoPanelController.setParticles(particles);
         InfoPanelFXMLController.setNumberFormat(settings.getNumberFormat());
+
+        // Sets up visualization.
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
     }
 
+    /**
+     * Gets the default colors of particles.
+     * @return Default colors of all three particles.
+     */
     static Color[] getDefaultColors() {
         return defaultColors;
     }

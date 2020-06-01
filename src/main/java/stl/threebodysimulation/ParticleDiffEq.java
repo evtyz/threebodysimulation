@@ -2,66 +2,72 @@ package stl.threebodysimulation;
 
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 
-// This class defines the mathematical relationships between three different masses
+/**
+ * A class that represents the differential equations, which govern the movement of three masses.
+ */
 class ParticleDiffEq implements FirstOrderDifferentialEquations {
 
-    // TODO: Precision?
-    // Universal Gravitational Constant in km^3 * earthmasses^-1 * seconds^-2
+    /**
+     * Universal gravitational constant, in in km^3 * earthmasses^-1 * seconds^-2
+     */
     private static final double G = 398575.0725;
-    // Storage that shows the x- and y-accelerations of each particle, so other classes can read from it.
+
+    /**
+     * Stores the x and y accelerations of each particle so other classes can access them.
+     */
     private static double[][] accelerationStorage;
-    // Array of masses for each particle
+
+    /**
+     * The mass of each particle.
+     */
     private final double[] masses;
 
-    // Constructor for class
+    /**
+     * Initializes a differential equation set based on given masses.
+     * @param masses The masses of each particle, in an array.
+     */
     ParticleDiffEq(double[] masses) {
         this.masses = masses;
         accelerationStorage = new double[3][2];
     }
 
+    /**
+     * Gets the acceleration for a particle and a dimension.
+     * @param particleID The particle with acceleration.
+     * @param dimension The dimension of acceleration.
+     * @return The acceleration.
+     */
     static double getAcceleration(int particleID, int dimension) {
-        return accelerationStorage[particleID - 1][dimension];
+        return accelerationStorage[particleID - 1][dimension]; // Particle IDs start with 1, but indices start with 0.
     }
 
-    // The dimension of the differential equations.
+    /**
+     * Gets the dimensions of the differential equations. From the interface.
+     * @return The dimensions of the equations. Always 12.
+     */
+    @Override
     public int getDimension() {
         return 3 * 2 * 2; // 3 particles * 2 dimensions * 2 derivatives (both displacement -> velocity and velocity -> acceleration)
     }
 
-    // Defines the differential equation.
+    /**
+     * Takes the derivative of an array and stores it an another array. From the interface.
+     * @param t The current time. Parameter inherited from interface, not used.
+     * @param y The initial state of the function. <br>[X-pos of particle 1, Y-pos of particle 1, X-vel of particle 1, Y-vel of particle 1, X-pos of particle 2, Y-pos of particle 2, X-vel of particle 2, Y-vel of particle 2, X-pos of particle 3, Y-pos of particle 3, X-vel of particle 3, Y-vel of particle 3]
+     * @param yDot The array where the derivatives are stored. <br>[X-vel of particle 1, Y-vel of particle 1, X-acc of particle 1, Y-acc of particle 1, X-vel of particle 2, Y-vel of particle 2, X-acc of particle 2, Y-acc of particle 2, X-vel of particle 3, Y-vel of particle 3, X-acc of particle 3, Y-acc of particle 3]
+     */
+    @Override
     public void computeDerivatives(double t, double[] y, double[] yDot) {
-        /* INPUTS:
-         t: time, int.
-
-         y: Array of doubles, length 12:
-        [X-pos of particle 1, Y-pos of particle 1,
-         X-vel of particle 1, Y-vel of particle 1,
-         X-pos of particle 2, Y-pos of particle 2,
-         X-vel of particle 2, Y-vel of particle 2,
-         X-pos of particle 3, Y-pos of particle 3,
-         X-vel of particle 3, Y-vel of particle 3]
-
-         yDot: Array of doubles, length 12, derivative of y:
-        [X-vel of particle 1, Y-vel of particle 1,
-         X-acc of particle 1, Y-acc of particle 1,
-         X-vel of particle 2, Y-vel of particle 2,
-         X-acc of particle 2, Y-acc of particle 2,
-         X-vel of particle 3, Y-vel of particle 3,
-         X-acc of particle 3, Y-acc of particle 3]
-        */
-
-        /* FUNCTION:
-           Writes the derivative of y into yDot.
-         */
-
         // Copy velocity for y to yDot in correct position.
         for (int particle = 0; particle < 3; particle++) {
             yDot[4 * particle] = y[4 * particle + 2];
             yDot[4 * particle + 1] = y[4 * particle + 3];
         }
 
+        // Reset acceleration
         accelerationStorage = new double[3][2];
 
+        // Calculate acceleration on each object from every other object.
         addToAcceleration(new double[]{y[4] - y[0], y[5] - y[1]}, masses[0], masses[1], 0, 1);
         addToAcceleration(new double[]{y[8] - y[0], y[9] - y[1]}, masses[0], masses[2], 0, 2);
         addToAcceleration(new double[]{y[8] - y[4], y[9] - y[5]}, masses[1], masses[2], 1, 2);
@@ -73,19 +79,15 @@ class ParticleDiffEq implements FirstOrderDifferentialEquations {
         }
     }
 
-    // This method calculates the pull that two particles have on one another and adds it to accelerationStorage
+    /**
+     * Calculates acceleration due to gravity between two different objects and stores it in the accelerationStorage array.
+     * @param vector The distance between the objects.
+     * @param mass1 The mass of object 1.
+     * @param mass2 The mass of object 2.
+     * @param id1 The id of object 1 in the storage array.
+     * @param id2 The id of object 2 in the storage array.
+     */
     private void addToAcceleration(double[] vector, double mass1, double mass2, int id1, int id2) {
-        // INPUTS:
-        // vector: double[], the vector distance between particle1 and particle2.
-        // mass1: double, the mass of particle 1
-        // mass2: double, the mass of particle 2
-        // id1: int, the id of particle 1
-        // id2: int, the id of particle 2
-        // USAGE:
-        // >> addToAcceleration([3.0, 4.0], 1, 1, 1, 2)
-        // >> accelerationStorage[1] increments by [+0.6, +0.8]
-        // >> accelerationStorage[2] increments by [-0.6, -0.8]
-
         // Absolute value of vector, according to pythagorean theorem
         double absoluteDistance = Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
 

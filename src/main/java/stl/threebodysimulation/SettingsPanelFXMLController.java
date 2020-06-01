@@ -5,59 +5,155 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
-// This class is the controller for the settings panel UI element on the left
+/**
+ * The controller for the setting panel UI layout.
+ */
 public class SettingsPanelFXMLController {
 
-    // Default limits
+    /**
+     * The maximum timeskip allowed, in seconds, in both positive and negative directions.
+     */
     private static final double MAX_ABS_TIMESKIP = 10000000;
+
+    /**
+     * The slowest simulation speed allowed.
+     */
     private static final double MIN_SIMULATION_SPEED = 0.0001;
+
+    /**
+     * The fastest simulation speed allowed.
+     */
     private static final double MAX_SIMULATION_SPEED = 10000;
-    // Listeners
+
+    /**
+     * The listener that is called when the manual button is pressed.
+     */
     private Listener onOpenManualListener;
+
+    /**
+     * The listener that is called when the run simulation button is pressed.
+     */
     private Listener onRunSimulationListener;
+
+    /**
+     * The listener that is called when an error occurs with inputs.
+     */
     private Listener onRunErrorListener;
-    // UI element declarations
+
+    /**
+     * The CheckBox UI element for running infinitely.
+     */
     @FXML
     private CheckBox infiniteCheckBox;
-    @FXML
-    private Label timeskipLabel;
+
+    /**
+     * The TextField UI element for timeskips.
+     */
     @FXML
     private TextField timeskipField;
+
+    /**
+     * The Tooltip UI element for timeskip hints.
+     */
     @FXML
     private Tooltip timeskipTooltip;
+
+    /**
+     * The TextWrapper that the timeskip elements are wrapped in.
+     */
     private TextFieldWrapper timeskipWrapper;
+
+    /**
+     * The Label UI element for the simulation speed.
+     */
     @FXML
     private Label simSpeedLabel;
+
+    /**
+     * The TextField UI element for the simulation speed.
+     */
     @FXML
     private TextField simSpeedField;
+
+    /**
+     * The Tooltip UI element for simulation speed hints.
+     */
     @FXML
     private Tooltip simSpeedTooltip;
+
+    /**
+     * The TextWrapper that the simulation speed elements are wrapped in.
+     */
     private TextFieldWrapper simSpeedWrapper;
+
+    /**
+     * The CheckBox UI element that records whether trails should be shown.
+     */
     @FXML
     private CheckBox trailCheckBox;
+
+    /**
+     * The CheckBox UI element that records whether the center of mass should be shown.
+     */
     @FXML
     private CheckBox centerCheckBox;
+
+    /**
+     * The ChoiceBox UI element where users choose a number format.
+     */
     @FXML
     private ChoiceBox<NumberFormat> numberFormatBox;
+
+    /**
+     * The Button UI element that is clicked to run a simulation.
+     */
     @FXML
     private Button runButton;
+
+    /**
+     * The TextField UI element that holds a template ID for saving.
+     */
     @FXML
     private TextField templateIDField;
+
+    /**
+     * The Button UI element that is clicked to save a template.
+     */
     @FXML
     private Button saveButton;
+
+    /**
+     * The controller for the settings UI of object 1.
+     */
     @FXML
     private ParameterFXMLController object1ParameterController;
+
+    /**
+     * The controller for the settings UI of object 2.
+     */
     @FXML
     private ParameterFXMLController object2ParameterController;
+
+    /**
+     * The controller for the settings UI of object 3.
+     */
     @FXML
     private ParameterFXMLController object3ParameterController;
+
+    /**
+     * An array that holds all controllers for object settings UIs.
+     */
     private ParameterFXMLController[] parameterControllers;
 
-    // Default method for FXML
+    /**
+     * Constructor called by the FXML loader.
+     */
     public SettingsPanelFXMLController() {
     }
 
-    // setup method, called by scenecontroller
+    /**
+     * Sets up the initial state of the settings panel.
+     */
     void setup() {
         // Setup controller arrays.
         parameterControllers = new ParameterFXMLController[]{object1ParameterController, object2ParameterController, object3ParameterController};
@@ -67,6 +163,7 @@ public class SettingsPanelFXMLController {
             parameterControllers[i].setup(i + 1, SceneFXMLController.getDefaultColors()[i]);
         }
 
+        // Default value of timeskip.
         timeskipField.setText("0");
 
         // Wrap text fields and related tooltips, along with limits, into one object.
@@ -76,11 +173,14 @@ public class SettingsPanelFXMLController {
         // Change UI elements based on default state of checkbox
         onChangeInfiniteCheckbox();
 
+        // Sets up number formats and default format.
         numberFormatBox.setItems(FXCollections.observableArrayList(NumberFormat.values()));
         numberFormatBox.setValue(NumberFormat.ADAPTIVE);
     }
 
-    // This method handles the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
+    /**
+     * Changes the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
+     */
     public void onChangeInfiniteCheckbox() { // TODO: Add support for center of gravity in non-infinite simulations
         if (infiniteCheckBox.isSelected()) {
             simSpeedLabel.setTextFill(Color.BLACK);
@@ -97,31 +197,42 @@ public class SettingsPanelFXMLController {
         }
     }
 
+    /**
+     * Sets the listener for the manual button.
+     * @param listener The listener that will be called when the manual button is pressed.
+     */
     void setOnOpenManualListener(Listener listener) {
         onOpenManualListener = listener;
     }
 
+    /**
+     * Sets the listener for the simulation button.
+     * @param listener The listener that will be called when the simulation button is pressed.
+     */
     void setOnRunSimulationListener(Listener listener) {
         onRunSimulationListener = listener;
     }
 
+    /**
+     * Sets the listener for when errors occur.
+     * @param listener The listener that will be called when an error happens.
+     */
     void setOnRunErrorListener(Listener listener) {
         onRunErrorListener = listener;
     }
 
+    /**
+     * Checks if all object and parameter settings are ready.
+     * @return True if ready, False if not ready.
+     */
     private boolean executeValidityCheck() {
-        // Check if all objects and parameters are ready.
-        // RETURNS:
-        // readiness: boolean, true if ready, false if not ready.
-
         boolean readiness = true;
 
         // All wrappers must be called, so that they have an opportunity to highlight red.
-
-        if (timeskipWrapper.isReady()) {
+        if (!timeskipWrapper.isReady()) {
             readiness = false;
         }
-        if (simSpeedWrapper.isReady()) {
+        if (!simSpeedWrapper.isReady()) {
             readiness = false;
         }
 
@@ -137,7 +248,9 @@ public class SettingsPanelFXMLController {
         return readiness;
     }
 
-    // Called when the run simulation button is pressed.
+    /**
+     * Runs the simulation, if the settings are valid. Links to FXML.
+     */
     public void runSimulation() {
         // TODO: Finish this method.
         if (!executeValidityCheck()) {
@@ -146,39 +259,42 @@ public class SettingsPanelFXMLController {
         onRunSimulationListener.onEvent();
     }
 
+    /**
+     * Opens the manual. Links to FXML.
+     */
     public void openManual() {
-        // Called when the user presses the View User Manual button.
-        try {
-            onOpenManualListener.onEvent();
-        } catch (Exception ignored) {
-        }
+        onOpenManualListener.onEvent();
     }
 
+    /**
+     * Packages the inputs in the settings panel into a SimulationSettings object.
+     * @return The SimulationSettings that the simulation will run with.
+     */
     SimulationSettings getSimulationSettings() {
-        // A class that packages the inputs in the settingspanel into a SimulationSettings object.
-        // RETURNS:
-        // new SimulationSettings: a SimulationSettings object that represents settings for the simulation.
+        // Package each object's settings UI into a particle object.
         Particle[] particles = new Particle[3];
         for (int i = 0; i < 3; i++) {
             particles[i] = parameterControllers[i].convertToParticle();
         }
 
+        // Track settings down.
         boolean infiniteEnabled = infiniteCheckBox.isSelected();
         boolean trailsEnabled = trailCheckBox.isSelected();
         boolean centerOfGravityEnabled = centerCheckBox.isSelected();
         double skip;
         try {
             skip = Double.parseDouble(timeskipField.getText());
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException ignored) { // Should never happen.
             skip = 0;
         }
         double speed;
         try {
             speed = Double.parseDouble(simSpeedField.getText());
-        } catch (NumberFormatException ignored) {
+        } catch (NumberFormatException ignored) { // Should never happen.
             speed = 0;
         }
 
+        // Disable run button if the simulation is going to continuously run.
         if (infiniteEnabled) {
             runButton.setDisable(true);
         }
@@ -186,7 +302,10 @@ public class SettingsPanelFXMLController {
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
     }
 
-    void disableRunButton() {
+    /**
+     * Enables the run button.
+     */
+    void enableRunButton() {
         runButton.setDisable(false);
     }
 }

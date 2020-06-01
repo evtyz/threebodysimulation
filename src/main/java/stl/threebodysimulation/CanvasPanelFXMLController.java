@@ -13,7 +13,7 @@ import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 import java.util.Arrays;
 
 /**
- * The controller for the canvas with graphics.
+ * The controller for the Canvas with graphics.
  */
 public class CanvasPanelFXMLController {
     /**
@@ -37,46 +37,46 @@ public class CanvasPanelFXMLController {
     private Listener onStopListener;
 
     /**
-     * Array of particles that the controller manages.
+     * Particle array that the controller manages.
      */
     private Particle[] particles;
 
     /**
-     * Flattened version of the particles for input into differential equations.
+     * Flattened version of the Particle array for input into a ParticleDiffEq object.
      */
     private double[] flattenedParticles = new double[12];
 
     /**
-     * The canvas UI object.
+     * The Canvas UI object.
      */
     @FXML
     private Canvas canvas;
 
     /**
-     * A wrapper object that manages the canvas UI object.
+     * A CanvasWrapper object that manages the canvas UI object.
      */
     private CanvasWrapper canvasWrapper;
 
     /**
-     * The pause button UI object.
+     * The Button UI object for pausing.
      */
     @FXML
     private Button pauseButton;
 
     /**
-     * The stop button UI object.
+     * The Button UI object for stopping.
      */
     @FXML
     private Button stopButton;
 
     /**
-     * The label UI object that writes the current time of the simulation.
+     * The Label UI object that writes the current time of the simulation.
      */
     @FXML
     private Label timeLabel;
 
     /**
-     * The state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
+     * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
      */
     private SimulationState state;
 
@@ -96,7 +96,7 @@ public class CanvasPanelFXMLController {
     private ParticleDiffEq particleDiffEq;
 
     /**
-     * The ordinary-differential-equation-integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
+     * The DormandPrince853Integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
      */
     private DormandPrince853Integrator integrator;
 
@@ -108,7 +108,7 @@ public class CanvasPanelFXMLController {
 
 
     /**
-     * Sets a listener that is called when the simulation stops.
+     * Sets a Listener that is called when the simulation stops.
      * @param listener The listener that will be called.
      */
     void setOnStopListener(Listener listener) {
@@ -116,7 +116,7 @@ public class CanvasPanelFXMLController {
     }
 
     /**
-     * Sets the particle arrays to be simulated.
+     * Sets the Particle arrays to be simulated.
      * @param particles An array of 3 particles to be simulated by the canvas controller.
      */
     void setParticles(Particle[] particles) {
