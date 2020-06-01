@@ -1,5 +1,7 @@
 package stl.threebodysimulation;
 
+
+// TODO: Documentation
 public enum ErrorMessage {
     INPUT_ERROR {
         public String getTitle() {

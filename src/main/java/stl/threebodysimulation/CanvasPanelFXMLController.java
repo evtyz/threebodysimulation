@@ -27,6 +27,7 @@ public class CanvasPanelFXMLController {
     // UI element declarations
     @FXML
     private Canvas canvas;
+    private CanvasWrapper canvasWrapper;
     @FXML
     private Button pauseButton;
     @FXML
@@ -57,6 +58,7 @@ public class CanvasPanelFXMLController {
     // Sets up particles according to the given array
     public void setParticles(Particle[] particles) {
         this.particles = particles;
+        canvasWrapper.particles = particles;
     }
 
     // Setup method that is called from scene controller
@@ -65,6 +67,7 @@ public class CanvasPanelFXMLController {
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
         currentTime = 0;
+        canvasWrapper = new CanvasWrapper(canvas);
     }
 
     public void breakSimulation() {
@@ -78,6 +81,9 @@ public class CanvasPanelFXMLController {
         // INPUTS:
         // settings: SimulationSettings, the settings that we are simulating with.
         // Runs the simulation according to these settings.
+
+        canvasWrapper.clearCanvas();
+        canvasWrapper.setSettings(settings);
 
         // Set up the particle differential equation according to the masses of each particle.
         particleDiffEq = new ParticleDiffEq(settings.returnMass());
@@ -231,5 +237,6 @@ public class CanvasPanelFXMLController {
     private void updateCanvas() {
         // TODO
         timeLabel.setText(String.format("Time: %.2f secs", currentTime));
+        canvasWrapper.updateCanvas();
     }
 }
