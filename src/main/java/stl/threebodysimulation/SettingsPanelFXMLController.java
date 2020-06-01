@@ -80,7 +80,7 @@ public class SettingsPanelFXMLController {
         onChangeInfiniteCheckbox();
 
         numberFormatBox.setItems(FXCollections.observableArrayList(NumberFormat.values()));
-        numberFormatBox.setValue(NumberFormat.SCIENTIFIC_2);
+        numberFormatBox.setValue(NumberFormat.ADAPTIVE);
     }
 
     // This method handles the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.

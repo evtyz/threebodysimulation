@@ -10,11 +10,6 @@ import javafx.stage.Stage;
 
 // The "start" method of this class is called when we run the app.
 public class MainApp extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    } // TODO: Check how fast this program actually starts up
-
     @Override
     public void start(Stage stage) throws Exception {
         // Set up the scene.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.

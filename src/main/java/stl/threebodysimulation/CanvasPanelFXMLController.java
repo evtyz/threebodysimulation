@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -28,14 +27,13 @@ public class CanvasPanelFXMLController {
     // UI element declarations
     @FXML
     private Canvas canvas;
+    private CanvasWrapper canvasWrapper;
     @FXML
     private Button pauseButton;
     @FXML
     private Button stopButton;
     @FXML
     private Label timeLabel;
-
-    private GraphicsContext gc = canvas.getGraphicsContext2D();
 
     // The state of the simulation (Not started, running, paused, finished)
     private SimulationState state;
@@ -60,6 +58,7 @@ public class CanvasPanelFXMLController {
     // Sets up particles according to the given array
     public void setParticles(Particle[] particles) {
         this.particles = particles;
+        canvasWrapper.particles = particles;
     }
 
     // Setup method that is called from scene controller
@@ -68,12 +67,13 @@ public class CanvasPanelFXMLController {
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
         currentTime = 0;
+        canvasWrapper = new CanvasWrapper(canvas);
     }
 
     public void breakSimulation() {
         updateParticlesAndCanvas();
         stopPressed();
-        SceneFXMLController.openPopupWindow("Simulation Error", "An asymptote has been detected, and the simulation has ceased. Please make sure your inputs do not lead to asymptotic behavior, and try again.", new Image("/errorIcon.png"), canvas.getScene().getWindow());
+        SceneFXMLController.openPopupWindow(ErrorMessage.ASYMPTOTE_ERROR, canvas.getScene().getWindow());
     }
 
     // This method is called when we want to start running a simulation.
@@ -82,19 +82,22 @@ public class CanvasPanelFXMLController {
         // settings: SimulationSettings, the settings that we are simulating with.
         // Runs the simulation according to these settings.
 
+        canvasWrapper.clearCanvas();
+        canvasWrapper.setSettings(settings);
+
         // Set up the particle differential equation according to the masses of each particle.
         particleDiffEq = new ParticleDiffEq(settings.returnMass());
 
         // TODO: Find reasonable values for parameters here
         // Set up the integrator that we will be using. The minimum step value is set to the minimum value of a double.
-        integrator = new DormandPrince853Integrator(Math.pow(10, -8), 30000, 0.01, 0.01);
+        integrator = new DormandPrince853Integrator(Math.pow(10, -20), 30000, 0.01, 0.01);
         flattenParticles();
 
         currentTime = settings.skip;
         // Get position, velocity, acceleration
         if (currentTime != 0) {
             try {
-                integrate(true);
+                integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 breakSimulation();
@@ -130,14 +133,6 @@ public class CanvasPanelFXMLController {
         updateCanvas();
     }
 
-    public void integrate(boolean start) throws Exception {
-        if (start) {
-            integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
-        } else {
-            integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
-        }
-    }
-
     // Asynchronously start the simulation.
     public void startSimulation() {
 
@@ -149,7 +144,7 @@ public class CanvasPanelFXMLController {
                 while (state == SimulationState.RUNNING) {
                     // Integrate between the current time, and the next time
                     try {
-                        integrate(false);
+                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / FRAMERATE), flattenedParticles);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         Platform.runLater(new Runnable() {
@@ -242,9 +237,6 @@ public class CanvasPanelFXMLController {
     private void updateCanvas() {
         // TODO
         timeLabel.setText(String.format("Time: %.2f secs", currentTime));
-        for(int i = 0; i < 3; i++){
-            gc.setFill(particles[i].color);
-            gc.fillOval(particles[i].position[0], particles[i].position[1], 30, 30);
-        }
+        canvasWrapper.updateCanvas();
     }
 }

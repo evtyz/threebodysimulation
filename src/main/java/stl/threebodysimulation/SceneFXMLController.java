@@ -58,7 +58,7 @@ public class SceneFXMLController implements Initializable {
         settingsPanelController.onRunErrorListener = new Listener() {
             @Override
             public void onEvent() {
-                openPopupWindow("Simulation Error", "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.", new Image("/errorIcon.png"), sceneLayout.getScene().getWindow());
+                openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow());
             }
         };
         canvasPanelController.setup();
@@ -72,7 +72,7 @@ public class SceneFXMLController implements Initializable {
     }
 
     // Method that opens a popup sceneLayout with a message and icon.
-    public static void openPopupWindow(String title, String message, Image icon, Window parent) {
+    public static void openPopupWindow(ErrorMessage message, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
             FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/popupWindow.fxml"));
@@ -80,7 +80,7 @@ public class SceneFXMLController implements Initializable {
 
             // Load the correct message into the layout
             PopupWindowFXMLController errorController = windowLoader.getController();
-            errorController.setLabel(message);
+            errorController.setLabel(message.getMessage());
 
             // Style the scenes
             Scene errorScene = new Scene(root);
@@ -91,8 +91,8 @@ public class SceneFXMLController implements Initializable {
             errorWindow.initModality(Modality.APPLICATION_MODAL);
             errorWindow.initOwner(parent);
             errorWindow.setResizable(false);
-            errorWindow.getIcons().add(icon);
-            errorWindow.setTitle(title);
+            errorWindow.getIcons().add(new Image("/errorIcon.png"));
+            errorWindow.setTitle(message.getTitle());
             errorWindow.setScene(errorScene);
             errorWindow.show();
 
@@ -130,23 +130,5 @@ public class SceneFXMLController implements Initializable {
         infoPanelController.setNumberFormat(settings.numberFormat);
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
-    }
-
-    public static double[] centerOfMass(Particle[] particles) {
-        // Returns the center of mass coordinates for an array of particles
-        // INPUTS:
-        // particles: Particle[], the array of particles that the center of mass is calculated for.
-        // RETURNS:
-        // centerOfMass: double[], the x and y coordinates of the center of mass.
-        double totalMass = 0;
-        double[] centerOfMass = new double[2];
-        for (Particle particle : particles) {
-            totalMass += particle.mass;
-            centerOfMass[0] += particle.position[0] * particle.mass;
-            centerOfMass[1] += particle.position[1] * particle.mass;
-        }
-        centerOfMass[0] /= totalMass;
-        centerOfMass[1] /= totalMass;
-        return centerOfMass;
     }
 }

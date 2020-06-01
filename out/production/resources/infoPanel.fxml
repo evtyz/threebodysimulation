@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" style="-fx-background-color: #FCFCFC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoPanelFXMLController">
+   <children>
+      <fx:include fx:id="object1Info" source="particleInfo.fxml" />
+      <Separator orientation="VERTICAL" prefHeight="150.0" />
+      <fx:include fx:id="object2Info" source="particleInfo.fxml" />
+      <Separator orientation="VERTICAL" prefHeight="150.0" />
+      <fx:include fx:id="object3Info" source="particleInfo.fxml" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+   </padding>
+</HBox>
