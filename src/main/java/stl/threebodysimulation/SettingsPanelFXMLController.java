@@ -9,13 +9,13 @@ import javafx.scene.paint.Color;
 public class SettingsPanelFXMLController {
 
     // Default limits
-    private final double MAX_ABS_TIMESKIP = 10000000;
-    private final double MIN_SIMULATION_SPEED = 0.0001;
-    private final double MAX_SIMULATION_SPEED = 10000;
+    private static final double MAX_ABS_TIMESKIP = 10000000;
+    private static final double MIN_SIMULATION_SPEED = 0.0001;
+    private static final double MAX_SIMULATION_SPEED = 10000;
     // Listeners
-    public Listener onOpenManualListener;
-    public Listener onRunSimulationListener;
-    public Listener onRunErrorListener;
+    private Listener onOpenManualListener;
+    private Listener onRunSimulationListener;
+    private Listener onRunErrorListener;
     // UI element declarations
     @FXML
     private CheckBox infiniteCheckBox;
@@ -58,13 +58,13 @@ public class SettingsPanelFXMLController {
     }
 
     // setup method, called by scenecontroller
-    public void setup() {
+    void setup() {
         // Setup controller arrays.
         parameterControllers = new ParameterFXMLController[]{object1ParameterController, object2ParameterController, object3ParameterController};
 
         // Setup each controller in each array with the correct id.
         for (int i = 0; i < 3; i++) {
-            parameterControllers[i].setup(i + 1, SceneFXMLController.defaultColors[i]);
+            parameterControllers[i].setup(i + 1, SceneFXMLController.getDefaultColors()[i]);
         }
 
         timeskipField.setText("0");
@@ -97,7 +97,19 @@ public class SettingsPanelFXMLController {
         }
     }
 
-    public boolean executeValidityCheck() {
+    void setOnOpenManualListener(Listener listener) {
+        onOpenManualListener = listener;
+    }
+
+    void setOnRunSimulationListener(Listener listener) {
+        onRunSimulationListener = listener;
+    }
+
+    void setOnRunErrorListener(Listener listener) {
+        onRunErrorListener = listener;
+    }
+
+    private boolean executeValidityCheck() {
         // Check if all objects and parameters are ready.
         // RETURNS:
         // readiness: boolean, true if ready, false if not ready.
@@ -174,7 +186,7 @@ public class SettingsPanelFXMLController {
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
     }
 
-    public void setDisabledRunButton(boolean state) {
-        runButton.setDisable(state);
+    void setDisabledRunButton() {
+        runButton.setDisable(false);
     }
 }

@@ -3,13 +3,13 @@ package stl.threebodysimulation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-public class CanvasWrapper {
-    Canvas canvas;
-    Particle[] particles;
-    GraphicsContext gc;
+class CanvasWrapper {
+    private Canvas canvas;
+    private Particle[] particles;
+    private GraphicsContext gc;
 
-    boolean trails;
-    boolean centerOfMass;
+    private boolean trails;
+    private boolean centerOfMass;
 
     CanvasWrapper(Canvas canvas) {
         this.canvas = canvas;
@@ -20,11 +20,12 @@ public class CanvasWrapper {
     void setSettings(SimulationSettings settings) {
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();
+        this.particles = settings.getParticles();
     }
 
     void updateCanvas() {
         // TODO
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
             gc.fillOval(particles[i].getPosition()[0], particles[i].getPosition()[1], 7, 7);
     }
 

@@ -12,20 +12,20 @@ import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 import java.util.Arrays;
 
-// TODO: Documentation
-
 // The controller for the canvas with graphics.
 public class CanvasPanelFXMLController {
 
+    // Object used for synchronization between threads
+    private static final Object synchronizationObject = new Object();
+    // Framerate constants
+    private static final int MAX_FRAMERATE = 100;
+    private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
     // Listener called when stop button is pressed
     private Listener onStopListener;
-
     // Particles managed by our canvas.
     private Particle[] particles;
-
     // Particles in flattened form, where we can manipulate them using math library.
     private double[] flattenedParticles = new double[12];
-
     // UI element declarations
     @FXML
     private Canvas canvas;
@@ -36,20 +36,11 @@ public class CanvasPanelFXMLController {
     private Button stopButton;
     @FXML
     private Label timeLabel;
-
-    // The state of the simulation (Not started, running, paused, finished)
+    // The state of the simulation (active, inactive, paused)
     private SimulationState state;
-
-    // Object used for synchronization between threads
-    private final static Object synchronizationObject = new Object();
-
     // Some handy simulation variables
     private double currentTime;
     private double speed;
-
-    private static final int MAX_FRAMERATE = 100;
-    private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
-
     // Math variables
     private ParticleDiffEq particleDiffEq;
     private DormandPrince853Integrator integrator;
@@ -58,6 +49,7 @@ public class CanvasPanelFXMLController {
     public CanvasPanelFXMLController() {
     }
 
+
     void setOnStopListener(Listener listener) {
         onStopListener = listener;
     }
@@ -65,7 +57,6 @@ public class CanvasPanelFXMLController {
     // Sets up particles according to the given array
     void setParticles(Particle[] particles) {
         this.particles = particles;
-        canvasWrapper.particles = particles;
     }
 
     // Setup method that is called from scene controller
@@ -208,7 +199,6 @@ public class CanvasPanelFXMLController {
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
         onStopListener.onEvent();
-        currentTime = 0;
     }
 
     // Method called when pause button is pressed

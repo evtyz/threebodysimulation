@@ -17,19 +17,20 @@ public class PopupWindowFXMLController implements Initializable {
     @FXML
     private Label messageLabel;
 
-    public PopupWindowFXMLController() {}
+    public PopupWindowFXMLController() {
+    }
 
     public void setLabel(String label) {
         messageLabel.setText(label);
     }
 
     public void closeWindow() {
-        ((Stage)(closeWindowButton.getScene().getWindow())).close();
+        ((Stage) (closeWindowButton.getScene().getWindow())).close();
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) { }
-
+    public void initialize(URL location, ResourceBundle resources) {
+    }
 
 
 }

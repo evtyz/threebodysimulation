@@ -19,7 +19,7 @@ public class ParameterFXMLController {
     @FXML
     private Label objectLabel;
     @FXML
-    public ColorPicker colorPickerField;
+    private ColorPicker colorPickerField;
     @FXML
     private TextField massField;
     @FXML
@@ -45,9 +45,7 @@ public class ParameterFXMLController {
     private int id;
 
     // Empty constructor for use by FXML. Must exist.
-    // Also initializes id to -1 so that other methods know that setup isn't finished yet.
     public ParameterFXMLController() {
-        id = -1;
     }
 
     void setup(int id, Color color) {

@@ -11,37 +11,36 @@ import java.util.HashMap;
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
 public class InfoFXMLController {
 
+    private static final DecimalFormat STANDARD_2_DIGIT = new DecimalFormat("#####,##0.##");
+    private static final DecimalFormat STANDARD_5_DIGIT = new DecimalFormat("#####,##0.#####");
+    private static final int MAX_STANDARD_2_DIGIT_LENGTH = 10;
+    private static final int MAX_STANDARD_5_DIGIT_LENGTH = 7;
     // Declare our UI elements
     @FXML
     private Label objectLabel;
-
     @FXML
     private Label positionInfo;
-
     @FXML
     private Label velocityInfo;
-
     @FXML
     private Label accelerationInfo;
-
     @FXML
-    public Circle colorCircle;
-
-    private static DecimalFormat STANDARD_2_DIGIT =  new DecimalFormat("#####,##0.##");
-    private static DecimalFormat STANDARD_5_DIGIT = new DecimalFormat("#####,##0.#####");
-
-    private final int MAX_STANDARD_2_DIGIT_LENGTH = 10;
-    private final int MAX_STANDARD_5_DIGIT_LENGTH = 7;
-
-    // Declare some other useful variables
-    private int id;
-
+    private Circle colorCircle;
     private HashMap<String, Label> packagedLabels;
 
     public InfoFXMLController() {
         // An empty constructor for FXML to use. This is mandatory for the UI to work properly.
         // Additionally, we initialize id to -1, as a sentinel to show that we haven't fully set-up the UI yet.
-        id = -1;
+    }
+
+    private static String formatNumberWithLimits(DecimalFormat format, double number) {
+        if (Math.abs(number) >= Math.pow(10, format.getMaximumIntegerDigits())) {
+            if (number > 0) {
+                return "+Infinity";
+            }
+            return "-Infinity";
+        }
+        return format.format(number);
     }
 
     void setup(int id) {
@@ -51,7 +50,6 @@ public class InfoFXMLController {
         // USAGE:
         // >> setup(1) would cause objectLabel to show "Object 1".
         objectLabel.setText("Object " + id);
-        this.id = id;
         packagedLabels = new HashMap<>();
         packagedLabels.put("position", positionInfo);
         packagedLabels.put("velocity", velocityInfo);
@@ -67,9 +65,9 @@ public class InfoFXMLController {
         // particle : Particle, the Particle object that we are reading stats from.
 
         for (String key : packagedLabels.keySet()) { // TODO: Improve formatting so there is no overflow.
-            double[] vector = particle.packagedInformation.get(key);
+            double[] vector = particle.getPackage().get(key);
             String labelText;
-            switch (InfoPanelFXMLController.chosenFormat) {
+            switch (InfoPanelFXMLController.getNumberFormat()) {
                 case ADAPTIVE:
                     labelText = String.format("[%.05g, %.05g]", vector[0], vector[1]);
                     break;
@@ -89,17 +87,7 @@ public class InfoFXMLController {
         }
     }
 
-    private static String formatNumberWithLimits(DecimalFormat format, double number) {
-        if (Math.abs(number) >= Math.pow(10, format.getMaximumIntegerDigits())) {
-            if (number > 0) {
-                return "+Infinity";
-            }
-            return "-Infinity";
-        }
-        return format.format(number);
-    }
-
-    void updateFromColor (Color color) {
-            colorCircle.setFill(color);
+    void updateFromColor(Color color) {
+        colorCircle.setFill(color);
     }
 }

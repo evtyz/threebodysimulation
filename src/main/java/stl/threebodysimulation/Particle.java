@@ -14,9 +14,9 @@ public class Particle {
     private double[] velocity;
     private double[] acceleration;
     // Attributes packaged for sending to the InfoFXMLController.
-    HashMap<String, double[]> packagedInformation;
+    private HashMap<String, double[]> packagedInformation;
 
-    Listener infoUpdateListener;
+    private Listener infoUpdateListener;
 
     Particle(double xPos, double yPos, double xVel, double yVel, double mass, int id, Color color) {
         // Constructor for the Particle class.
@@ -48,6 +48,10 @@ public class Particle {
         this.color = color;
     }
 
+    void setInfoUpdateListener(Listener listener) {
+        infoUpdateListener = listener;
+    }
+
     // Flattens a particle's position and velocity into a single array of 4 doubles.
     double[] flatten() {
         return new double[]{position[0], position[1], velocity[0], velocity[1]};
@@ -64,8 +68,8 @@ public class Particle {
 
     // Updates acceleration according to the accelerationStorage variable in the differential equations class.
     void updateAcceleration() {
-        acceleration[0] = ParticleDiffEq.accelerationStorage[id - 1][0];
-        acceleration[1] = ParticleDiffEq.accelerationStorage[id - 1][1];
+        acceleration[0] = ParticleDiffEq.getAcceleration(id, 0);
+        acceleration[1] = ParticleDiffEq.getAcceleration(id, 1);
         infoUpdateListener.onEvent();
     }
 
@@ -79,5 +83,9 @@ public class Particle {
 
     Color getColor() {
         return color;
+    }
+
+    HashMap<String, double[]> getPackage() {
+        return packagedInformation;
     }
 }

@@ -5,24 +5,28 @@ import javafx.fxml.FXML;
 // Controller for particle info panel on top right
 public class InfoPanelFXMLController {
 
+    private static NumberFormat chosenFormat;
     // UI element declarations (controllers represent each individual stat panel for objects)
     @FXML
     private InfoFXMLController object1InfoController;
-
     @FXML
     private InfoFXMLController object2InfoController;
-
     @FXML
     private InfoFXMLController object3InfoController;
-
     private InfoFXMLController[] infoControllers;
-
     private Particle[] particles;
-
-    static NumberFormat chosenFormat;
 
     // Default constructor for FXML
     public InfoPanelFXMLController() {
+    }
+
+    static NumberFormat getNumberFormat() {
+        return chosenFormat;
+    }
+
+    // Sets the number format of the info panel.
+    static void setNumberFormat(NumberFormat format) {
+        chosenFormat = format;
     }
 
     // Setup method called by scenecontroller
@@ -32,7 +36,7 @@ public class InfoPanelFXMLController {
         // setup each individual controller with correct ids
         for (int id = 0; id < 3; id++) {
             infoControllers[id].setup(id + 1);
-            infoControllers[id].updateFromColor(SceneFXMLController.defaultColors[id]);
+            infoControllers[id].updateFromColor(SceneFXMLController.getDefaultColors()[id]);
         }
     }
 
@@ -52,11 +56,6 @@ public class InfoPanelFXMLController {
 
     // Sets up the particle listener for a single particle
     private void setParticleListener(int index) {
-        particles[index].infoUpdateListener = () -> infoControllers[index].updateFromParticle(particles[index]);
-    }
-
-    // Sets the number format of the info panel.
-    void setNumberFormat(NumberFormat format) {
-        chosenFormat = format;
+        particles[index].setInfoUpdateListener(() -> infoControllers[index].updateFromParticle(particles[index]));
     }
 }

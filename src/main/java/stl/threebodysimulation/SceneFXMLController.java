@@ -20,11 +20,11 @@ import java.util.ResourceBundle;
 public class SceneFXMLController implements Initializable {
 
     // Default colors
-    static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+    private static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
 
     private static Window parentWindow;
 
-    public Particle[] particles;
+    private Particle[] particles;
     // Initialize controllers for custom UI elements
     @FXML
     private InfoPanelFXMLController infoPanelController;
@@ -39,19 +39,8 @@ public class SceneFXMLController implements Initializable {
     public SceneFXMLController() {
     }
 
-    // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        infoPanelController.setup();
-        settingsPanelController.setup();
-        settingsPanelController.onOpenManualListener = this::openManual;
-        settingsPanelController.onRunSimulationListener = () -> runSimulation(settingsPanelController.getSimulationSettings());
-        settingsPanelController.onRunErrorListener = () -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow());
-        canvasPanelController.setup();
-        canvasPanelController.setOnStopListener(() -> settingsPanelController.setDisabledRunButton(false));
-    }
-
     // Method that opens a popup sceneLayout with a message and icon.
-    public static void openPopupWindow(ErrorMessage message, Window parent) {
+    static void openPopupWindow(ErrorMessage message, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
             FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/popupWindow.fxml"));
@@ -75,10 +64,22 @@ public class SceneFXMLController implements Initializable {
             errorWindow.setScene(errorScene);
             errorWindow.show();
 
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
-    public void openManual() {
+    // Called by FXMLLoader in MainApp class, to finalize setup. Inputs are necessary because of parent class.
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        infoPanelController.setup();
+        settingsPanelController.setup();
+        settingsPanelController.setOnOpenManualListener(this::openManual);
+        settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings()));
+        settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow()));
+        canvasPanelController.setup();
+        canvasPanelController.setOnStopListener(() -> settingsPanelController.setDisabledRunButton());
+    }
+
+    private void openManual() {
         // Opens user manual popups
         try {
             final Stage stage = new Stage();
@@ -97,17 +98,20 @@ public class SceneFXMLController implements Initializable {
             // Stage the UI.
             stage.setScene(scene);
             stage.show();
-        }
-        catch (Exception ignored){
+        } catch (Exception ignored) {
         }
     }
 
-    public void runSimulation(SimulationSettings settings) {
+    private void runSimulation(SimulationSettings settings) {
         // Runs the simulation according to the given settings
-        particles = settings.particles;
+        particles = settings.getParticles();
         infoPanelController.setParticles(particles);
-        infoPanelController.setNumberFormat(settings.numberFormat);
+        InfoPanelFXMLController.setNumberFormat(settings.getNumberFormat());
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
+    }
+
+    static Color[] getDefaultColors() {
+        return defaultColors;
     }
 }

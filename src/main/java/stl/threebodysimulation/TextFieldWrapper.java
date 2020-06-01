@@ -8,9 +8,11 @@ import javafx.util.Duration;
 import java.text.DecimalFormat;
 
 // This class is a wrapper around a TextField that connects it with related tooltips, limits, and relevant methods.
-public class TextFieldWrapper {
+class TextFieldWrapper {
+    private static final DecimalFormat FORMAT = new DecimalFormat("###,##0.####");
     private final double min;
     private final double max;
+    private final boolean allowBottomInclusive;
     // Instance variables
     private TextField subject;
     private Tooltip tooltip;
@@ -18,9 +20,6 @@ public class TextFieldWrapper {
     private String decimalPattern;
     // This represents whether the TextField is ready to send its value for simulation.
     private boolean readiness;
-    private static final DecimalFormat FORMAT = new DecimalFormat("###,##0.####");
-
-    private final boolean allowBottomInclusive;
 
     // Constructor of object
     TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {

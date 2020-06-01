@@ -3,15 +3,13 @@ package stl.threebodysimulation;
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 
 // This class defines the mathematical relationships between three different masses
-public class ParticleDiffEq implements FirstOrderDifferentialEquations {
-
-    // Storage that shows the x- and y-accelerations of each particle, so other classes can read from it.
-    static double[][] accelerationStorage;
+class ParticleDiffEq implements FirstOrderDifferentialEquations {
 
     // TODO: Precision?
     // Universal Gravitational Constant in km^3 * earthmasses^-1 * seconds^-2
-    static final double G = 398575.0725;
-
+    private static final double G = 398575.0725;
+    // Storage that shows the x- and y-accelerations of each particle, so other classes can read from it.
+    private static double[][] accelerationStorage;
     // Array of masses for each particle
     private final double[] masses;
 
@@ -19,6 +17,10 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
     ParticleDiffEq(double[] masses) {
         this.masses = masses;
         accelerationStorage = new double[3][2];
+    }
+
+    static double getAcceleration(int particleID, int dimension) {
+        return accelerationStorage[particleID - 1][dimension];
     }
 
     // The dimension of the differential equations.

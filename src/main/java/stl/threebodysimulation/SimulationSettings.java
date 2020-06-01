@@ -1,10 +1,10 @@
 package stl.threebodysimulation;
 
 // A class that wraps simulation settings
-public class SimulationSettings {
+class SimulationSettings {
 
     // Settings
-    Particle[] particles;
+    private Particle[] particles;
     private boolean isInfinite;
     private boolean hasTrails;
     private boolean showsCenterOfGravity;
@@ -14,7 +14,7 @@ public class SimulationSettings {
 
 
     // Constructor that builds a Settings object.
-    public SimulationSettings(Particle[] particles, boolean isInfinite, boolean hasTrails, boolean showsCenterOfGravity, double skip, double speed, NumberFormat numberFormat) {
+    SimulationSettings(Particle[] particles, boolean isInfinite, boolean hasTrails, boolean showsCenterOfGravity, double skip, double speed, NumberFormat numberFormat) {
         this.numberFormat = numberFormat;
         this.particles = particles;
         this.isInfinite = isInfinite;
@@ -47,5 +47,13 @@ public class SimulationSettings {
     // Returns the masses of all three particles in an array
     double[] getMass() {
         return new double[]{particles[0].getMass(), particles[1].getMass(), particles[2].getMass()};
+    }
+
+    NumberFormat getNumberFormat() {
+        return numberFormat;
+    }
+
+    Particle[] getParticles() {
+        return particles;
     }
 }
