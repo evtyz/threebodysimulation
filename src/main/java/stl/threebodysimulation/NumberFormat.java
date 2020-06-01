@@ -7,24 +7,20 @@ public enum NumberFormat {
             return "Adaptive";
         }
     },
-    SCIENTIFIC_2 {
+    SCIENTIFIC_7 {
         public String toString() {
-            return "Scientific, 2 decimal places";
-        }
-    },
-    SCIENTIFIC_5 {
-        public String toString() {
-            return "Scientific, 5 decimal places";
-        }
-    },
-    STANDARD_2 {
-        public String toString() {
-            return "Standard, 2 decimal places";
+            return "Scientific, 7 decimal places";
         }
     },
     STANDARD_5 {
         public String toString() {
             return "Standard, 5 decimal places";
         }
+    },
+    STANDARD_2 {
+        public String toString() {
+            return "Standard, 2 decimal places";
+        }
     }
+
 }

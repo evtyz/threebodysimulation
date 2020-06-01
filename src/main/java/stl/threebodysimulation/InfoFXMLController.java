@@ -7,7 +7,6 @@ import javafx.scene.shape.Circle;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.Set;
 
 // This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
 public class InfoFXMLController {
@@ -74,17 +73,14 @@ public class InfoFXMLController {
                 case ADAPTIVE:
                     labelText = String.format("[%.05g, %.05g]", vector[0], vector[1]);
                     break;
-                case SCIENTIFIC_2:
-                    labelText = String.format("[%.02e, %.02e]", vector[0], vector[1]);
-                    break;
-                case SCIENTIFIC_5:
-                    labelText = String.format("[%.05e, %.05e]", vector[0], vector[1]);
-                    break;
-                case STANDARD_2:
-                    labelText = String.format("[%s, %s]", formatNumberWithLimits(STANDARD_2_DIGIT, vector[0]), formatNumberWithLimits(STANDARD_2_DIGIT, vector[1]));
+                case SCIENTIFIC_7:
+                    labelText = String.format("[%.07e, %.07e]", vector[0], vector[1]);
                     break;
                 case STANDARD_5:
                     labelText = String.format("[%s, %s]", formatNumberWithLimits(STANDARD_5_DIGIT, vector[0]), formatNumberWithLimits(STANDARD_5_DIGIT, vector[1]));
+                    break;
+                case STANDARD_2:
+                    labelText = String.format("[%s, %s]", formatNumberWithLimits(STANDARD_2_DIGIT, vector[0]), formatNumberWithLimits(STANDARD_2_DIGIT, vector[1]));
                     break;
                 default:
                     labelText = "N/A";
