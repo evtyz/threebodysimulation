@@ -24,8 +24,20 @@ public class SimulationSettings {
         this.speed = speed;
     }
 
+    boolean getInfinite() {
+        return isInfinite;
+    }
+
+    boolean getTrails() {
+        return hasTrails;
+    }
+
+    boolean getCenterOfGravity() {
+        return showsCenterOfGravity;
+    }
+
     // Returns the masses of all three particles in an array
-    public double[] returnMass() {
+    public double[] getMass() {
         return new double[]{particles[0].mass, particles[1].mass, particles[2].mass};
     }
 }

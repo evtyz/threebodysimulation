@@ -52,12 +52,7 @@ public class InfoPanelFXMLController {
 
     // Sets up the particle listener for a single particle
     public void setParticleListener(int index) {
-        particles[index].infoUpdateListener = new Listener() {
-            @Override
-            public void onEvent() {
-                infoControllers[index].updateFromParticle(particles[index]);
-            }
-        };
+        particles[index].infoUpdateListener = () -> infoControllers[index].updateFromParticle(particles[index]);
     }
 
     // Sets the number format of the info panel.

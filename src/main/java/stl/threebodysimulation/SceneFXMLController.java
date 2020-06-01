@@ -20,9 +20,9 @@ import java.util.ResourceBundle;
 public class SceneFXMLController implements Initializable {
 
     // Default colors
-    public static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+    static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
 
-    public static Window parentWindow;
+    private static Window parentWindow;
 
     public Particle[] particles;
     // Initialize controllers for custom UI elements
@@ -43,32 +43,11 @@ public class SceneFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         infoPanelController.setup();
         settingsPanelController.setup();
-        settingsPanelController.onOpenManualListener = new Listener() {
-            @Override
-            public void onEvent() {
-                openManual();
-            }
-        };
-        settingsPanelController.onRunSimulationListener = new Listener() {
-            @Override
-            public void onEvent() {
-                runSimulation(settingsPanelController.getSimulationSettings());
-            }
-        };
-        settingsPanelController.onRunErrorListener = new Listener() {
-            @Override
-            public void onEvent() {
-                openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow());
-            }
-        };
+        settingsPanelController.onOpenManualListener = this::openManual;
+        settingsPanelController.onRunSimulationListener = () -> runSimulation(settingsPanelController.getSimulationSettings());
+        settingsPanelController.onRunErrorListener = () -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow());
         canvasPanelController.setup();
-        canvasPanelController.onStopListener = new Listener() {
-            @Override
-            public void onEvent() {
-                // TODO: What happens when we stop.
-                settingsPanelController.setDisabledRunButton(false);
-            }
-        };
+        canvasPanelController.setOnStopListener(() -> settingsPanelController.setDisabledRunButton(false));
     }
 
     // Method that opens a popup sceneLayout with a message and icon.

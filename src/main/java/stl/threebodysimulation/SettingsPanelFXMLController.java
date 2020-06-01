@@ -1,12 +1,9 @@
 package stl.threebodysimulation;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
 
 // This class is the controller for the settings panel UI element on the left
 public class SettingsPanelFXMLController {
@@ -109,10 +106,10 @@ public class SettingsPanelFXMLController {
 
         // All wrappers must be called, so that they have an opportunity to highlight red.
 
-        if (!timeskipWrapper.isReady()) {
+        if (timeskipWrapper.isReady()) {
             readiness = false;
         }
-        if (!simSpeedWrapper.isReady()) {
+        if (simSpeedWrapper.isReady()) {
             readiness = false;
         }
 

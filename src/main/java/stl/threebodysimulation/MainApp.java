@@ -13,7 +13,8 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Set up the scene.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.
-        Parent root = FXMLLoader.load(getClass().getResource("/scene.fxml"));
+        FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/scene.fxml"));
+        Parent root = appLoader.load();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
         // We don't want the window to be resizable, to save us the UI headache.

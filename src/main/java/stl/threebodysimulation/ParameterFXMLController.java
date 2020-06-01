@@ -81,7 +81,7 @@ public class ParameterFXMLController {
 
         // All wrappers must be called so that they can highlight themselves if they are not ready.
         for (TextFieldWrapper textField : allTextFields) {
-            if (!textField.isReady()) {
+            if (textField.isReady()) {
                 readiness = false;
             }
         }

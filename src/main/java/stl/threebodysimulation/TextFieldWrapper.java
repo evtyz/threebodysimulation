@@ -1,7 +1,5 @@
 package stl.threebodysimulation;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
@@ -55,11 +53,7 @@ public class TextFieldWrapper {
         // Set up the tooltip with correct text and settings
         setupTooltip();
 
-        if (isValidInput()) {
-            readiness = true;
-        } else {
-            readiness = false;
-        }
+        readiness = isValidInput();
     }
 
     private void setupTooltip() {
@@ -105,20 +99,17 @@ public class TextFieldWrapper {
     // Function that attaches a listener on the TextView to check if the input is within the min and max.
     // Structure modified from Brendan's answer at https://stackoverflow.com/questions/16549296/how-perform-task-on-javafx-textfield-at-onfocus-and-outfocus
     private void attachInputValidator() {
-        subject.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldFocus, Boolean newFocus) {
-                if (!newFocus) {
-                    if (!isValidInput()) {
-                        highlightIncorrect();
-                        readiness = false;
-                    } else {
-                        subject.setStyle("-fx-border-color: #cccccc; -fx-background-color: white;");
-                        readiness = true;
-                    }
+        subject.focusedProperty().addListener((arg0, oldFocus, newFocus) -> {
+            if (!newFocus) {
+                if (!isValidInput()) {
+                    highlightIncorrect();
+                    readiness = false;
                 } else {
-                    subject.setStyle("-fx-border-color: #66afe9; -fx-background-color: white;");
+                    subject.setStyle("-fx-border-color: #cccccc; -fx-background-color: white;");
+                    readiness = true;
                 }
+            } else {
+                subject.setStyle("-fx-border-color: #66afe9; -fx-background-color: white;");
             }
         });
     }
@@ -145,6 +136,6 @@ public class TextFieldWrapper {
         if (!readiness) {
             highlightIncorrect();
         }
-        return readiness;
+        return !readiness;
     }
 }

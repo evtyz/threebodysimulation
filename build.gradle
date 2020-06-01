@@ -30,7 +30,7 @@ mainClassName = 'stl.threebodysimulation.Launcher'
 jar {
     manifest {
         attributes(
-                'Main-Class': 'stl.threebodysimulation.Launcher'
+                'Main-Class': mainClassName
         )
     }
     from {
