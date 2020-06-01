@@ -58,16 +58,11 @@ public class Particle {
     }
 
     // Parses a flattened array into position and velocity, and then updates info
-    void updateFromFlattenedParticle(double[] flattenedParticle) {
+    void update (double[] flattenedParticle) {
         position[0] = flattenedParticle[0];
         position[1] = flattenedParticle[1];
         velocity[0] = flattenedParticle[2];
         velocity[1] = flattenedParticle[3];
-        infoUpdateListener.onEvent();
-    }
-
-    // Updates acceleration according to the accelerationStorage variable in the differential equations class.
-    void updateAcceleration() {
         acceleration[0] = ParticleDiffEq.getAcceleration(id, 0);
         acceleration[1] = ParticleDiffEq.getAcceleration(id, 1);
         infoUpdateListener.onEvent();

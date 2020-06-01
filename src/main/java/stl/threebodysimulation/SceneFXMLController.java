@@ -76,7 +76,7 @@ public class SceneFXMLController implements Initializable {
         settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings()));
         settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow()));
         canvasPanelController.setup();
-        canvasPanelController.setOnStopListener(() -> settingsPanelController.setDisabledRunButton());
+        canvasPanelController.setOnStopListener(() -> settingsPanelController.disableRunButton());
     }
 
     private void openManual() {

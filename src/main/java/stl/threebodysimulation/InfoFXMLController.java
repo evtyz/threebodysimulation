@@ -8,65 +8,120 @@ import javafx.scene.shape.Circle;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
-// This class represents the FXML controller of the information shown for each object during the simulation, in the top right corner.
+/**
+ * A controller that manages each object's info display in the top right.
+ */
 public class InfoFXMLController {
 
+    /**
+     * The decimal format of a standard, 2 decimal place number.
+     */
     private static final DecimalFormat STANDARD_2_DIGIT = new DecimalFormat("#####,##0.##");
+
+    /**
+     * The decimal format of a standard, 5 decimal place number.
+     */
     private static final DecimalFormat STANDARD_5_DIGIT = new DecimalFormat("#####,##0.#####");
+
+    /**
+     * The maximum number of digits to the left of the decimal point in a standard 2 decimal place number.
+     */
     private static final int MAX_STANDARD_2_DIGIT_LENGTH = 10;
+
+    /**
+     * The maximum number of digits to the left of the decimal point in a standard 5 decimal place number.
+     */
     private static final int MAX_STANDARD_5_DIGIT_LENGTH = 7;
-    // Declare our UI elements
+
+    /**
+     * The Label UI element of the object title, e.g. "Object 1"
+     */
     @FXML
     private Label objectLabel;
+
+    /**
+     * The Label UI element that displays position info for an object.
+     */
     @FXML
     private Label positionInfo;
+
+    /**
+     * The Label UI element that displays velocity info for an object.
+     */
     @FXML
     private Label velocityInfo;
+
+    /**
+     * The Label UI element that displays acceleration info for an object.
+     */
     @FXML
     private Label accelerationInfo;
+
+    /**
+     * The Circle UI shape that shows the color of the particle.
+     */
     @FXML
     private Circle colorCircle;
+
+    /**
+     * A hashmap that allows for easy setting of info labels using String keys.
+     */
     private HashMap<String, Label> packagedLabels;
 
+    /**
+     * An empty constructor used by the FXML loader.
+     */
     public InfoFXMLController() {
-        // An empty constructor for FXML to use. This is mandatory for the UI to work properly.
-        // Additionally, we initialize id to -1, as a sentinel to show that we haven't fully set-up the UI yet.
     }
 
+    /**
+     * Formats a number into a string based on input DecimalFormat object.
+     * @param format The chosen format to show the number with.
+     * @param number The number to format.
+     * @return The formatted string that represents the number.
+     */
     private static String formatNumberWithLimits(DecimalFormat format, double number) {
+        // Check for overflow
         if (Math.abs(number) >= Math.pow(10, format.getMaximumIntegerDigits())) {
             if (number > 0) {
                 return "+Infinity";
             }
             return "-Infinity";
         }
+        // Otherwise, regularly format.
         return format.format(number);
     }
 
+    /**
+     * Sets up the info display at the start of the program.
+     * @param id the ID of the object. E.g. object 2 has id 2.
+     */
     void setup(int id) {
-        // Set the label to be "Object {id}"
-        // INPUT:
-        // id : int, the ID of the object. (e.g. object 1, 2, or 3)
-        // USAGE:
-        // >> setup(1) would cause objectLabel to show "Object 1".
+        // Set the id of the display.
         objectLabel.setText("Object " + id);
+
+        // Set up the hashmap with position, velocity, acceleration string keys.
         packagedLabels = new HashMap<>();
         packagedLabels.put("position", positionInfo);
         packagedLabels.put("velocity", velocityInfo);
         packagedLabels.put("acceleration", accelerationInfo);
 
+        // Set up decimal formats with correct maximum digit limits.
         STANDARD_2_DIGIT.setMaximumIntegerDigits(MAX_STANDARD_2_DIGIT_LENGTH);
         STANDARD_5_DIGIT.setMaximumIntegerDigits(MAX_STANDARD_5_DIGIT_LENGTH);
     }
 
+    /**
+     * Updates the info display based on the state of a given particle.
+     * @param particle The particle that the display takes information from.
+     */
     void updateFromParticle(Particle particle) {
-        // This method takes the Particle object and maps information onto corresponding UI labels.
-        // INPUT:
-        // particle : Particle, the Particle object that we are reading stats from.
-
-        for (String key : packagedLabels.keySet()) { // TODO: Improve formatting so there is no overflow.
+        // Iterates through position, velocity, and then acceleration.
+        for (String key : packagedLabels.keySet()) {
+            // Get the vector.
             double[] vector = particle.getPackage().get(key);
             String labelText;
+            // Display it according to the correct number format.
             switch (InfoPanelFXMLController.getNumberFormat()) {
                 case ADAPTIVE:
                     labelText = String.format("[%.05g, %.05g]", vector[0], vector[1]);
@@ -83,10 +138,15 @@ public class InfoFXMLController {
                 default:
                     labelText = "N/A";
             }
+            // Set the text of the specific label.
             packagedLabels.get(key).setText(labelText);
         }
     }
 
+    /**
+     * Changes the color of the circle next to the info display.
+     * @param color The color to update the display with.
+     */
     void updateFromColor(Color color) {
         colorCircle.setFill(color);
     }

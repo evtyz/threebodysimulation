@@ -12,102 +12,169 @@ import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 import java.util.Arrays;
 
-// The controller for the canvas with graphics.
+/**
+ * The controller for the canvas with graphics.
+ */
 public class CanvasPanelFXMLController {
-
-    // Object used for synchronization between threads
+    /**
+     * Object used for synchronization between threads
+     */
     private static final Object synchronizationObject = new Object();
-    // Framerate constants
+
+    /**
+     * Maximum framerate allowed by program.
+     */
     private static final int MAX_FRAMERATE = 100;
+
+    /**
+     * Amount of time in milliseconds that a frame appears on screen
+     */
     private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
-    // Listener called when stop button is pressed
+
+    /**
+     * A Listener that is called when the simulation stops.
+     */
     private Listener onStopListener;
-    // Particles managed by our canvas.
+
+    /**
+     * Array of particles that the controller manages.
+     */
     private Particle[] particles;
-    // Particles in flattened form, where we can manipulate them using math library.
+
+    /**
+     * Flattened version of the particles for input into differential equations.
+     */
     private double[] flattenedParticles = new double[12];
-    // UI element declarations
+
+    /**
+     * The canvas UI object.
+     */
     @FXML
     private Canvas canvas;
+
+    /**
+     * A wrapper object that manages the canvas UI object.
+     */
     private CanvasWrapper canvasWrapper;
+
+    /**
+     * The pause button UI object.
+     */
     @FXML
     private Button pauseButton;
+
+    /**
+     * The stop button UI object.
+     */
     @FXML
     private Button stopButton;
+
+    /**
+     * The label UI object that writes the current time of the simulation.
+     */
     @FXML
     private Label timeLabel;
-    // The state of the simulation (active, inactive, paused)
+
+    /**
+     * The state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
+     */
     private SimulationState state;
-    // Some handy simulation variables
+
+    /**
+     * The current time in the simulation, in seconds.
+     */
     private double currentTime;
+
+    /**
+     * The current speed of the simulation, in simulation seconds / real seconds.
+     */
     private double speed;
-    // Math variables
+
+    /**
+     * A ParticleDiffEq object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
+     */
     private ParticleDiffEq particleDiffEq;
+
+    /**
+     * The ordinary-differential-equation-integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
+     */
     private DormandPrince853Integrator integrator;
 
-    // Blank Constructor for FXML
+    /**
+     * Constructor, for use by the FXML loader.
+     */
     public CanvasPanelFXMLController() {
     }
 
 
+    /**
+     * Sets a listener that is called when the simulation stops.
+     * @param listener The listener that will be called.
+     */
     void setOnStopListener(Listener listener) {
         onStopListener = listener;
     }
 
-    // Sets up particles according to the given array
+    /**
+     * Sets the particle arrays to be simulated.
+     * @param particles An array of 3 particles to be simulated by the canvas controller.
+     */
     void setParticles(Particle[] particles) {
         this.particles = particles;
     }
 
-    // Setup method that is called from scene controller
+    /**
+     * Sets up the initial state of the controller. Only called once.
+     */
     void setup() {
         state = SimulationState.INACTIVE;
+        // Buttons should be disabled until the simulation runs.
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
+        // Initial time.
         currentTime = 0;
+        // Wrap the canvas.
         canvasWrapper = new CanvasWrapper(canvas);
     }
 
-    private void breakSimulation(ErrorMessage errorMessage) {
-        updateAll();
-        stopPressed();
-        SceneFXMLController.openPopupWindow(errorMessage, canvas.getScene().getWindow());
-    }
-
-    // This method is called when we want to start running a simulation.
+    /**
+     * Runs the simulation according to the given settings.
+     * @param settings The SimulationSettings object that supplies properties for the simulation.
+     */
     void runSimulation(SimulationSettings settings) {
-        // INPUTS:
-        // settings: SimulationSettings, the settings that we are simulating with.
-        // Runs the simulation according to these settings.
-
+        // Clear out the canvas and provide the wrapper with settings.
         canvasWrapper.clearCanvas();
         canvasWrapper.setSettings(settings);
 
         // Set up the particle differential equation according to the masses of each particle.
         particleDiffEq = new ParticleDiffEq(settings.getMass());
 
-        // TODO: Find reasonable values for parameters here
-        // Set up the integrator that we will be using.
+        // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
         integrator = new DormandPrince853Integrator(Math.pow(10, -20), 30000, 0.01, 0.01);
 
+        // Flatten particles into the flattenedParticles array.
         flattenParticles();
 
+        // Set current time.
         currentTime = settings.getSkip();
 
-        // Get position, velocity, acceleration
+        // Get position, velocity, acceleration at current time.
         if (currentTime != 0) {
             try {
                 integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
             } catch (NumberIsTooSmallException e) {
+                // Asymptote error (the integrator can't converge and gives up)
                 System.out.println(e.getMessage());
                 breakSimulation(ErrorMessage.ASYMPTOTE_ERROR);
                 return;
             } catch (NumberIsTooLargeException e) {
+                // Double overflow error (inputs too large for double datatype to handle)
                 System.out.println(e.getMessage());
                 breakSimulation(ErrorMessage.OVERFLOW_ERROR);
                 return;
             }
         }
+
         // Update canvas
         updateAll();
 
@@ -122,47 +189,71 @@ public class CanvasPanelFXMLController {
             // Start simulation.
             startSimulation();
         } else {
-            // Instantly done (skips to this time)
+            // We are already done, so set the state to inactive.
             state = SimulationState.INACTIVE;
         }
     }
 
-    // This method is called when an update to the graphics is needed.
+    /**
+     * Updates particles and update canvas.
+     */
     private void updateAll() {
-        // Update the particles according to the state of the FlattenedParticles array.
-        for (int i = 0; i < 3; i++) {
-            particles[i].updateFromFlattenedParticle(Arrays.copyOfRange(flattenedParticles, 4 * i, 4 * i + 4));
-            // Reminds the particles to check for acceleration
-            particles[i].updateAcceleration();
+        for (int id = 0; id < 3; id++) {
+            // Update each of the particles according to the state of the FlattenedParticles array.
+            particles[id].update(Arrays.copyOfRange(flattenedParticles, 4 * id, 4 * id + 4));
         }
 
         // Then update the UI according to the new particles.
         timeLabel.setText(String.format("Time: %.2f secs", currentTime));
         canvasWrapper.updateCanvas();
 
+        // Finally, let the thread that runs the simulation unpause.
         synchronized (synchronizationObject) {
             synchronizationObject.notify();
         }
     }
 
-    // Asynchronously start the simulation.
+    /**
+     * Updates the flattenedParticles array according to the particles array.
+     */
+    private void flattenParticles() {
+        int index = 0;
+        for (int id = 0; id < 3; id++) {
+            // Flatten the particle
+            double[] flattenedParticle = particles[id].flatten();
+            for (double property : flattenedParticle) {
+                // Fill out the array according to the flattened particle.
+                flattenedParticles[index++] = property;
+            }
+        }
+    }
+
+    /**
+     * Starts the simulation in a separate thread.
+     */
     private void startSimulation() {
 
-        // Builds a new task that simulates the particle
+        // Builds a new JavaFX task that simulates the particle
         Task simulation = new Task() {
+            /**
+             * This method is called by the thread and calculates values for the simulation.
+             * @return null: inherited from task interface.
+             * @throws Exception If the task is interrupted.
+             */
             @Override
             protected Object call() throws Exception {
-                // This while loop will end when the state changes
-                while (state == SimulationState.ACTIVE) {
-                    long taskTime = System.currentTimeMillis();
-                    // Integrate between the current time, and the next time
+                while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
+                    long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
                     try {
+                        // Store the state of the particles at the next frame.
                         integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
                     } catch (NumberIsTooSmallException e) {
+                        // Asymptote error catching
                         System.out.println(e.getMessage());
                         Platform.runLater(() -> breakSimulation(ErrorMessage.ASYMPTOTE_ERROR));
                         break;
                     } catch (NumberIsTooLargeException e) {
+                        // Double overflow error catching.
                         System.out.println(e.getMessage());
                         Platform.runLater(() -> breakSimulation(ErrorMessage.OVERFLOW_ERROR));
                         break;
@@ -170,14 +261,17 @@ public class CanvasPanelFXMLController {
 
                     // Update the UI on the main thread
                     Platform.runLater(() -> updateAll());
+
+                    // Wait for the UI to update completely and notify this thread.
                     synchronized (synchronizationObject) {
                         synchronizationObject.wait();
                     }
                     // Update the time
                     currentTime += (speed / MAX_FRAMERATE);
-                    // Slow things down, so the UI can update.
+                    // Check how much time left to wait before next frame
                     long leftoverTime = FRAMETIME - (System.currentTimeMillis() - taskTime);
                     if (leftoverTime > 0) {
+                        // Wait until next frame.
                         // TODO: This lags behind by around 1/30th of a second every loop, fix!
                         Thread.sleep(leftoverTime);
                     }
@@ -188,20 +282,27 @@ public class CanvasPanelFXMLController {
         // Run the thread.
         Thread simulationThread = new Thread(simulation);
         simulationThread.setDaemon(true);
+        // For debugging purposes, an exception handler to terminal output is created.
         simulationThread.setUncaughtExceptionHandler((t, e) -> System.out.println(e.getMessage()));
         simulationThread.start();
     }
 
-    // Method called when stop button is pressed
+    /**
+     * Stops the simulation. Links to stop button.
+     */
     public void stopPressed() {
-        state = SimulationState.INACTIVE;
-        pauseButton.setText("Pause");
+        state = SimulationState.INACTIVE; // Change state
+        pauseButton.setText("Pause"); // Change pause button to say "pause" instead of "unpause"
+        // Disable buttons
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
+        // Let the listener know the simulation stopped.
         onStopListener.onEvent();
     }
 
-    // Method called when pause button is pressed
+    /**
+     * Stop or start the simulation, depending on current state. Links to pause button.
+     */
     public void pausePressed() {
         switch (state) {
             // Resume
@@ -218,14 +319,13 @@ public class CanvasPanelFXMLController {
         }
     }
 
-    // Flattens the properties of all the particles into the FlattenedParticles array
-    private void flattenParticles() {
-        int index = 0;
-        for (int i = 0; i < 3; i++) {
-            double[] flattenedParticle = particles[i].flatten();
-            for (double property : flattenedParticle) {
-                flattenedParticles[index++] = property;
-            }
-        }
+    /**
+     * Breaks the simulation prematurely and sends an error message to the user.
+     * @param errorMessage What error message to send to the user.
+     */
+    private void breakSimulation(ErrorMessage errorMessage) {
+        updateAll();
+        stopPressed();
+        SceneFXMLController.openPopupWindow(errorMessage, canvas.getScene().getWindow());
     }
 }

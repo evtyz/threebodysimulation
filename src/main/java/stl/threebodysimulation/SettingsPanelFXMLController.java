@@ -186,7 +186,7 @@ public class SettingsPanelFXMLController {
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
     }
 
-    void setDisabledRunButton() {
+    void disableRunButton() {
         runButton.setDisable(false);
     }
 }
