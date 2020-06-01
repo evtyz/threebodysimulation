@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import org.apache.commons.math3.exception.NumberIsTooLargeException;
@@ -42,7 +41,7 @@ public class CanvasPanelFXMLController {
     private SimulationState state;
 
     // Object used for synchronization between threads
-    public final static Object synchronizationObject = new Object();
+    private final static Object synchronizationObject = new Object();
 
     // Some handy simulation variables
     private double currentTime;
@@ -102,7 +101,7 @@ public class CanvasPanelFXMLController {
 
         flattenParticles();
 
-        currentTime = settings.skip;
+        currentTime = settings.getSkip();
 
         // Get position, velocity, acceleration
         if (currentTime != 0) {
@@ -122,13 +121,13 @@ public class CanvasPanelFXMLController {
         updateAll();
 
         // Different situations if we are running infinitely or not
-        if (settings.isInfinite) {
+        if (settings.getInfinite()) {
             // Set state and change buttons to active
             state = SimulationState.ACTIVE;
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
             // Speed is relevant now, so set accordingly
-            speed = settings.speed;
+            speed = settings.getSpeed();
             // Start simulation.
             startSimulation();
         } else {

@@ -142,7 +142,7 @@ public class SettingsPanelFXMLController {
         }
     }
 
-    public SimulationSettings getSimulationSettings() {
+    SimulationSettings getSimulationSettings() {
         // A class that packages the inputs in the settingspanel into a SimulationSettings object.
         // RETURNS:
         // new SimulationSettings: a SimulationSettings object that represents settings for the simulation.

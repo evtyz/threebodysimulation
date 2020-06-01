@@ -19,14 +19,14 @@ public class InfoPanelFXMLController {
 
     private Particle[] particles;
 
-    public static NumberFormat chosenFormat;
+    static NumberFormat chosenFormat;
 
     // Default constructor for FXML
     public InfoPanelFXMLController() {
     }
 
     // Setup method called by scenecontroller
-    public void setup() {
+    void setup() {
         // initialize array
         infoControllers = new InfoFXMLController[]{object1InfoController, object2InfoController, object3InfoController};
         // setup each individual controller with correct ids
@@ -37,7 +37,7 @@ public class InfoPanelFXMLController {
     }
 
     // Sets up the particles that the panel reads
-    public void setParticles(Particle[] particles) {
+    void setParticles(Particle[] particles) {
         // INPUTS:
         // particles: Particle[3], the particles whose stats will be shown.
 
@@ -51,12 +51,12 @@ public class InfoPanelFXMLController {
     }
 
     // Sets up the particle listener for a single particle
-    public void setParticleListener(int index) {
+    private void setParticleListener(int index) {
         particles[index].infoUpdateListener = () -> infoControllers[index].updateFromParticle(particles[index]);
     }
 
     // Sets the number format of the info panel.
-    public void setNumberFormat(NumberFormat format) {
+    void setNumberFormat(NumberFormat format) {
         chosenFormat = format;
     }
 }

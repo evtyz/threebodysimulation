@@ -23,7 +23,7 @@ public class TextFieldWrapper {
     private final boolean allowBottomInclusive;
 
     // Constructor of object
-    public TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {
+    TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {
 
         // Initializes textfield and tooltip
         this.subject = subject;
@@ -92,7 +92,7 @@ public class TextFieldWrapper {
     }
 
     // Highlights the textfield as incorrect with colouring.
-    public void highlightIncorrect() {
+    private void highlightIncorrect() {
         subject.setStyle("-fx-border-color: #ff4444; -fx-background-color: #fff9f9;");
     }
 
@@ -115,7 +115,7 @@ public class TextFieldWrapper {
     }
 
     // Disables or enables a textfield.
-    public void changeState(boolean state) {
+    void changeState(boolean state) {
         // INPUTS:
         // state: boolean, true if enabled, false if disabled.
 
@@ -132,7 +132,7 @@ public class TextFieldWrapper {
     }
 
     // returns readiness value
-    public boolean isReady() {
+    boolean isReady() {
         if (!readiness) {
             highlightIncorrect();
         }

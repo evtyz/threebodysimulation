@@ -25,7 +25,7 @@ public class InfoFXMLController {
     private Label accelerationInfo;
 
     @FXML
-    public Circle objectCircle;
+    public Circle colorCircle;
 
     private static DecimalFormat STANDARD_2_DIGIT =  new DecimalFormat("#####,##0.##");
     private static DecimalFormat STANDARD_5_DIGIT = new DecimalFormat("#####,##0.#####");
@@ -61,7 +61,7 @@ public class InfoFXMLController {
         STANDARD_5_DIGIT.setMaximumIntegerDigits(MAX_STANDARD_5_DIGIT_LENGTH);
     }
 
-    public void updateFromParticle(Particle particle) {
+    void updateFromParticle(Particle particle) {
         // This method takes the Particle object and maps information onto corresponding UI labels.
         // INPUT:
         // particle : Particle, the Particle object that we are reading stats from.
@@ -99,7 +99,7 @@ public class InfoFXMLController {
         return format.format(number);
     }
 
-    public void updateFromColor (Color color) {
-            objectCircle.setFill(color);
+    void updateFromColor (Color color) {
+            colorCircle.setFill(color);
     }
 }

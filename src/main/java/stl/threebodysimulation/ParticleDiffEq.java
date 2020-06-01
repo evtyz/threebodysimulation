@@ -16,7 +16,7 @@ public class ParticleDiffEq implements FirstOrderDifferentialEquations {
     private final double[] masses;
 
     // Constructor for class
-    public ParticleDiffEq(double[] masses) {
+    ParticleDiffEq(double[] masses) {
         this.masses = masses;
         accelerationStorage = new double[3][2];
     }
