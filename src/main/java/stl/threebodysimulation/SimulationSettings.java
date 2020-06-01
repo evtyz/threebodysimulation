@@ -38,6 +38,6 @@ public class SimulationSettings {
 
     // Returns the masses of all three particles in an array
     public double[] getMass() {
-        return new double[]{particles[0].mass, particles[1].mass, particles[2].mass};
+        return new double[]{particles[0].getMass(), particles[1].getMass(), particles[2].getMass()};
     }
 }

@@ -46,7 +46,7 @@ public class InfoPanelFXMLController {
         // Set up a listener inside each particle
         for (int i = 0; i < 3; i++) {
             setParticleListener(i);
-            infoControllers[i].updateFromColor(particles[i].color);
+            infoControllers[i].updateFromColor(particles[i].getColor());
         }
     }
 

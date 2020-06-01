@@ -6,13 +6,13 @@ import java.util.HashMap;
 
 // This class represents all the attributes of a single particle object.
 public class Particle {
-    final double mass;
-    final int id;
-    final Color color;
+    private final double mass;
+    private final int id;
+    private final Color color;
     // Attributes of a particle. Arrays represent vectors, with index 0 being x-coordinate and 1 being y-coordinate.
-    double[] position;
-    double[] velocity;
-    double[] acceleration;
+    private double[] position;
+    private double[] velocity;
+    private double[] acceleration;
     // Attributes packaged for sending to the InfoFXMLController.
     HashMap<String, double[]> packagedInformation;
 
@@ -67,5 +67,17 @@ public class Particle {
         acceleration[0] = ParticleDiffEq.accelerationStorage[id - 1][0];
         acceleration[1] = ParticleDiffEq.accelerationStorage[id - 1][1];
         infoUpdateListener.onEvent();
+    }
+
+    double getMass() {
+        return mass;
+    }
+
+    double[] getPosition() {
+        return position;
+    }
+
+    Color getColor() {
+        return color;
     }
 }
