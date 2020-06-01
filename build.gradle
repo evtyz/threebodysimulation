@@ -4,7 +4,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
-group 'ca.ycdsbk12.java'
+group 'stl'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -25,4 +25,15 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
-mainClassName = 'stl.threebodysimulation.MainApp'
+mainClassName = 'stl.threebodysimulation.Launcher'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'stl.threebodysimulation.Launcher'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
