@@ -22,6 +22,16 @@ public class CanvasPanelFXMLController {
     private static final Object synchronizationObject = new Object();
 
     /**
+     * Maximum framerate allowed by program.
+     */
+    private static final int MAX_FRAMERATE = 100;
+
+    /**
+     * Amount of time in milliseconds that a frame appears on screen
+     */
+    private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
+
+    /**
      * A Listener that is called when the simulation stops.
      */
     private Listener onStopListener;
@@ -79,11 +89,6 @@ public class CanvasPanelFXMLController {
      * The current speed of the simulation, in simulation seconds / real seconds.
      */
     private double speed;
-
-    /**
-     * The timespan of a single image frame on the canvas, in milliseconds.
-     */
-    private static final int FRAME_TIME = 5;
 
     /**
      * A ParticleDiffEq object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
@@ -145,7 +150,7 @@ public class CanvasPanelFXMLController {
         particleDiffEq = new ParticleDiffEq(settings.getMass());
 
         // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
-        integrator = new DormandPrince853Integrator(Math.pow(10, -150), 30000, 0.01, 0.01);
+        integrator = new DormandPrince853Integrator(Math.pow(10, -20), 30000, 0.01, 0.01);
 
         // Flatten particles into the flattenedParticles array.
         flattenParticles();
@@ -230,7 +235,6 @@ public class CanvasPanelFXMLController {
 
         // Builds a new JavaFX task that simulates the particle
         Task simulation = new Task() {
-
             /**
              * This method is called by the thread and calculates values for the simulation.
              * @return null: inherited from task interface.
@@ -238,20 +242,11 @@ public class CanvasPanelFXMLController {
              */
             @Override
             protected Object call() throws Exception {
-                double originalSimulationTime = currentTime; // The current simulation time
-                long exactStartTime = System.currentTimeMillis(); // The real time that the simulation starts (or resumes)
-                long exactLastLoopTime = exactStartTime; // The last time that an integration was performed successfully (which is now)
-                double nextTime; // The simulation time where we will perform the next integration.
-                while (state == SimulationState.ACTIVE) {
-                    long exactTime = System.currentTimeMillis(); // Get the current time.
-                    if (exactTime - exactLastLoopTime < FRAME_TIME) { // Make sure we have waited sufficiently long enough after the last integration
-                        continue;
-                    }
-                    exactLastLoopTime = exactTime; // Since we are going to integrate now, update this variable accordingly.
-                    nextTime = originalSimulationTime + ((double)(exactTime - exactStartTime) / 1000 * speed); // Convert the real time to simulation time.
+                while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
+                    long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
                     try {
                         // Store the state of the particles at the next frame.
-                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, nextTime, flattenedParticles);
+                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
                     } catch (NumberIsTooSmallException e) {
                         // Asymptote error catching
                         System.out.println(e.getMessage());
@@ -263,13 +258,22 @@ public class CanvasPanelFXMLController {
                         Platform.runLater(() -> breakSimulation(ErrorMessage.OVERFLOW_ERROR));
                         break;
                     }
-                    currentTime = nextTime; // Update for the next iteration
 
                     // Update the UI on the main thread
                     Platform.runLater(() -> updateAll());
+
                     // Wait for the UI to update completely and notify this thread.
                     synchronized (synchronizationObject) {
                         synchronizationObject.wait();
+                    }
+                    // Update the time
+                    currentTime += (speed / MAX_FRAMERATE);
+                    // Check how much time left to wait before next frame
+                    long leftoverTime = FRAMETIME - (System.currentTimeMillis() - taskTime);
+                    if (leftoverTime > 0) {
+                        // Wait until next frame.
+                        // TODO: This lags behind by around 1/30th of a second every loop, fix!
+                        Thread.sleep(leftoverTime);
                     }
                 }
                 return null;
