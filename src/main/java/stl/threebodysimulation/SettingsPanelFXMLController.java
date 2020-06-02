@@ -181,19 +181,16 @@ public class SettingsPanelFXMLController {
     /**
      * Changes the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
      */
-    public void onChangeInfiniteCheckbox() { // TODO: Add support for center of gravity in non-infinite simulations
+    public void onChangeInfiniteCheckbox() {
         if (infiniteCheckBox.isSelected()) {
             simSpeedLabel.setTextFill(Color.BLACK);
             simSpeedWrapper.changeState(true);
             trailCheckBox.setDisable(false);
-            centerCheckBox.setDisable(false);
         } else {
             simSpeedLabel.setTextFill(Color.LIGHTGRAY);
             simSpeedWrapper.changeState(false);
             trailCheckBox.setSelected(false);
             trailCheckBox.setDisable(true);
-            centerCheckBox.setSelected(false);
-            centerCheckBox.setDisable(true);
         }
     }
 
