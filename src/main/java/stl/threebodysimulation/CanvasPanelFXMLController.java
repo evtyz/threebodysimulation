@@ -242,8 +242,9 @@ public class CanvasPanelFXMLController {
              */
             @Override
             protected Object call() throws Exception {
+                int totalFrames = 1; // How many frames since start time
+                long startTime = System.currentTimeMillis(); // Record current time to sync framerate
                 while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
-                    long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
                     try {
                         // Store the state of the particles at the next frame.
                         integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
@@ -268,13 +269,8 @@ public class CanvasPanelFXMLController {
                     }
                     // Update the time
                     currentTime += (speed / MAX_FRAMERATE);
-                    // Check how much time left to wait before next frame
-                    long leftoverTime = FRAMETIME - (System.currentTimeMillis() - taskTime);
-                    if (leftoverTime > 0) {
-                        // Wait until next frame.
-                        // TODO: This lags behind by around 1/30th of a second every loop, fix!
-                        Thread.sleep(leftoverTime);
-                    }
+                    while (System.currentTimeMillis() - startTime < totalFrames * FRAMETIME); // Wait statement to sync framerate.
+                    totalFrames++;
                 }
                 return null;
             }
