@@ -21,7 +21,7 @@ public class MainApp extends Application {
         // Set up the scene.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.
         FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/scene.fxml"));
         Parent root = appLoader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 1200, 900);
 
         // Load in CSS
         scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
