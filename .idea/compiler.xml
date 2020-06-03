@@ -10,9 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="stl.threebodysimulation" target="11" />
-      <module name="threebodysimulation.main" target="1.8" />
-      <module name="threebodysimulation.test" target="1.8" />
+      <module name="threebodysimulation" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

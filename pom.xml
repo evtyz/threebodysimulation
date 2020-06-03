@@ -4,10 +4,12 @@
     <groupId>stl</groupId>
     <artifactId>threebodysimulation</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <javafx.version>13</javafx.version>
+        <mainClassName>stl.threebodysimulation.Launcher</mainClassName>
     </properties>
     <dependencies>
         <dependency>
@@ -28,6 +30,14 @@
         </dependency>
 
     </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss-sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <plugin>
@@ -49,8 +59,28 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>client-maven-plugin</artifactId>
-                <version>0.1.26</version>
+                <version>0.1.27-SNAPSHOT</version>
                 <configuration>
+                    <reflectionList>
+                        <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
+                        <list>stl.threebodysimulation.CanvasWrapper</list>
+                        <list>stl.threebodysimulation.ErrorMessage</list>
+                        <list>stl.threebodysimulation.InfoFXMLController</list>
+                        <list>stl.threebodysimulation.InfoPanelFXMLController</list>
+                        <list>stl.threebodysimulation.Launcher</list>
+                        <list>stl.threebodysimulation.Listener</list>
+                        <list>stl.threebodysimulation.MainApp</list>
+                        <list>stl.threebodysimulation.NumberFormat</list>
+                        <list>stl.threebodysimulation.ParameterFXMLController</list>
+                        <list>stl.threebodysimulation.Particle</list>
+                        <list>stl.threebodysimulation.ParticleDiffEq</list>
+                        <list>stl.threebodysimulation.PopupWindowFXMLController</list>
+                        <list>stl.threebodysimulation.SceneFXMLController</list>
+                        <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
+                        <list>stl.threebodysimulation.SimulationSettings</list>
+                        <list>stl.threebodysimulation.SimulationState</list>
+                        <list>stl.threebodysimulation.TextFieldWrapper</list>
+                    </reflectionList>
                     <mainClass>stl.threebodysimulation.Launcher</mainClass>
                 </configuration>
             </plugin>

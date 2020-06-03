@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stl.threebodysimulation.iml" filepath="$PROJECT_DIR$/.idea/modules/stl.threebodysimulation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/threebodysimulation.main.iml" filepath="$PROJECT_DIR$/.idea/modules/threebodysimulation.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/threebodysimulation.test.iml" filepath="$PROJECT_DIR$/.idea/modules/threebodysimulation.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/threebodysimulation.iml" filepath="$PROJECT_DIR$/threebodysimulation.iml" />
     </modules>
   </component>
 </project>
