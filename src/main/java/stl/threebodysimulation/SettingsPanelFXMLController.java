@@ -3,13 +3,7 @@ package stl.threebodysimulation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -159,9 +153,8 @@ public class SettingsPanelFXMLController {
             // Setup each controller in each array with the correct id.
             for (int id = 0; id < 3; id++) {
                 FXMLLoader parameterSettingsLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleParametersLayout.fxml"));
-                Parent parameterSettings = parameterSettingsLoader.load(); // Can throw IOException if FXML file doesn't exist.
+                settingsBox.getChildren().add(4 + 2 * id, parameterSettingsLoader.load());  // Slot in settings at right place in the panel. Can throw IOException if FXML file doesn't exist.
                 parameterControllers[id] = parameterSettingsLoader.getController();
-                settingsBox.getChildren().add(4 + 2 * id, parameterSettings); // Slot in settings at right place in the panel.
                 parameterControllers[id].setup(id + 1, SceneFXMLController.getDefaultColors()[id]);
             }
         } catch (IOException ignored) {

@@ -172,6 +172,11 @@ public class CanvasPanelFXMLController {
                 System.out.println(e.getMessage());
                 breakSimulation(ErrorMessage.OVERFLOW_ERROR);
                 return;
+            } catch (Exception e) {
+                // Other errors
+                System.out.println(e.getMessage());
+                breakSimulation(ErrorMessage.UNKNOWN_ERROR);
+                return;
             }
         }
 
@@ -256,6 +261,11 @@ public class CanvasPanelFXMLController {
                         // Double overflow error catching.
                         System.out.println(e.getMessage());
                         Platform.runLater(() -> breakSimulation(ErrorMessage.OVERFLOW_ERROR));
+                        break;
+                    } catch (Exception e) {
+                        // Other errors
+                        System.out.println(e.getMessage());
+                        Platform.runLater(() -> breakSimulation(ErrorMessage.UNKNOWN_ERROR));
                         break;
                     }
 

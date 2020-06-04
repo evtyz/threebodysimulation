@@ -82,15 +82,14 @@ public class SceneFXMLController implements Initializable {
         try {
             // Makes an FXML Loader and loads the fxml files
             FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/popupWindowLayout.fxml"));
-            Parent root = windowLoader.load();
+            Scene errorScene = new Scene(windowLoader.load());
+
+            // Style the scenes
+            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/bootstrap3.css").toExternalForm());
 
             // Load the correct message into the layout
             PopupWindowFXMLController errorController = windowLoader.getController();
             errorController.setLabel(message.getMessage());
-
-            // Style the scenes
-            Scene errorScene = new Scene(root);
-            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/bootstrap3.css").toExternalForm());
 
             // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
             final Stage errorWindow = new Stage();
@@ -116,9 +115,8 @@ public class SceneFXMLController implements Initializable {
         try {
             // Load in settings panel
             FXMLLoader settingsPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/settingsPanelLayout.fxml"));
-            Parent settingsPanel = settingsPanelLoader.load();
+            settingsTab.setContent(settingsPanelLoader.load());
             settingsPanelController = settingsPanelLoader.getController();
-            settingsTab.setContent(settingsPanel);
             settingsPanelController.setup(); // Set up settings panel.
             settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
             settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
@@ -126,16 +124,14 @@ public class SceneFXMLController implements Initializable {
 
             // Load in info panel.
             FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/infoPanelLayout.fxml"));
-            Parent infoPanel = infoPanelLoader.load();
+            actionPane.setTop(infoPanelLoader.load());
             infoPanelController = infoPanelLoader.getController();
-            actionPane.setTop(infoPanel);
             infoPanelController.setup();
 
             // Load in canvas panel.
             FXMLLoader canvasPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/canvasPanelLayout.fxml"));
-            Parent canvasPanel = canvasPanelLoader.load();
+            actionPane.setCenter(canvasPanelLoader.load());
             canvasPanelController = canvasPanelLoader.getController();
-            actionPane.setCenter(canvasPanel);
             canvasPanelController.setup(); // Sets up canvas.
             canvasPanelController.setOnStopListener(() -> settingsPanelController.enableRunButton()); // Enables rerunning the simulation if it is stopped.
         } catch (IOException ignored) {

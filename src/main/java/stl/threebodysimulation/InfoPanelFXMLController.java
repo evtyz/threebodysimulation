@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -64,9 +63,8 @@ public class InfoPanelFXMLController {
             // setup each individual controller with correct ids and colors.
             for (int id = 0; id < 3; id++) {
                 FXMLLoader infoLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleInfoLayout.fxml"));
-                Parent infoDisplay = infoLoader.load();
+                panelBox.getChildren().add(2 * id, infoLoader.load());
                 infoControllers[id] = infoLoader.getController();
-                panelBox.getChildren().add(2 * id, infoDisplay);
                 infoControllers[id].setup(id + 1);
                 infoControllers[id].updateFromColor(SceneFXMLController.getDefaultColors()[id]);
             }

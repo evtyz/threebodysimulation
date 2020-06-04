@@ -48,6 +48,7 @@ public enum ErrorMessage {
         public String getTitle() {
             return "Simulation Error";
         }
+
         public String getMessage() {
             return "An unknown error occurred during the simulation. Please let the developers know, and try your simulation again.";
         }
