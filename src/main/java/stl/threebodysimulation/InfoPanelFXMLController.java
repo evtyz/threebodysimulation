@@ -1,6 +1,11 @@
 package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.HBox;
+
+import java.io.IOException;
 
 /**
  * This controller manages the entire info panel of info displays in the top right of the UI.
@@ -12,23 +17,8 @@ public class InfoPanelFXMLController {
      */
     private static NumberFormat chosenFormat;
 
-    /**
-     * The UI element that corresponds with Object 1's info display.
-     */
     @FXML
-    private InfoFXMLController object1InfoController;
-
-    /**
-     * The UI element that corresponds with Object 2's info display.
-     */
-    @FXML
-    private InfoFXMLController object2InfoController;
-
-    /**
-     * The UI element that corresponds with Object 3's info display.
-     */
-    @FXML
-    private InfoFXMLController object3InfoController;
+    private HBox panelBox;
 
     /**
      * An array that stores all info-display UI elements.
@@ -65,12 +55,20 @@ public class InfoPanelFXMLController {
      * The setup method that is called by the FXML loader.
      */
     void setup() {
-        // initialize array
-        infoControllers = new InfoFXMLController[]{object1InfoController, object2InfoController, object3InfoController};
-        // setup each individual controller with correct ids and colors.
-        for (int id = 0; id < 3; id++) {
-            infoControllers[id].setup(id + 1);
-            infoControllers[id].updateFromColor(SceneFXMLController.getDefaultColors()[id]);
+        try {
+            // initialize array
+            infoControllers = new InfoFXMLController[3];
+            // setup each individual controller with correct ids and colors.
+            for (int id = 0; id < 3; id++) {
+                FXMLLoader infoLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleInfoLayout.fxml"));
+                Parent infoDisplay = infoLoader.load();
+                infoControllers[id] = infoLoader.getController();
+                panelBox.getChildren().add(2 * id, infoDisplay);
+                infoControllers[id].setup(id + 1);
+                infoControllers[id].updateFromColor(SceneFXMLController.getDefaultColors()[id]);
+            }
+        } catch (IOException ignored) {
+            // Should never happen.
         }
     }
 

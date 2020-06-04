@@ -18,19 +18,19 @@ public class MainApp extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        // Set up the scene.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.
-        FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/scene.fxml"));
+        // Set up the sceneLayout.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.
+        FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/sceneLayout.fxml"));
         Parent root = appLoader.load();
         Scene scene = new Scene(root, 1200, 900);
 
         // Load in CSS
-        scene.getStylesheets().add(getClass().getResource("/bootstrap3.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/bootstrap3.css").toExternalForm());
 
         // We don't want the window to be resizable, to save us the UI headache.
         stage.setResizable(false);
 
         // Icon of app
-        stage.getIcons().add(new Image("/appIcon.png"));
+        stage.getIcons().add(new Image("/stl/threebodysimulation/appIcon.png"));
 
         // Title of app
         stage.setTitle("Three-Body Simulation");

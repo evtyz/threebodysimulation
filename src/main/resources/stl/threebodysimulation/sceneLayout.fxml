@@ -9,12 +9,9 @@
     <left>
         <TabPane prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab text="Settings">
-                    <content>
-                        <fx:include fx:id="settingsPanel" source="settingsPanel.fxml" />
-                    </content>
+                <Tab fx:id="settingsTab" text="Settings">
                 </Tab>
-                <Tab text="Saves">
+                <Tab fx:id="savesTab" text="Saves">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
@@ -23,13 +20,7 @@
         </TabPane>
     </left>
     <center>
-        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
-            <center>
-                <fx:include fx:id="canvasPanel" source="canvasPanel.fxml" />
-            </center>
-            <top>
-                <fx:include fx:id="infoPanel" source="infoPanel.fxml" />
-            </top>
+        <BorderPane fx:id="mainBorderPane" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
         </BorderPane>
     </center>
 </BorderPane>

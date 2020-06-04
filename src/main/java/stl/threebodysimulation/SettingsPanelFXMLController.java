@@ -2,13 +2,18 @@ package stl.threebodysimulation;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
+import java.io.IOException;
 
 /**
  * The controller for the setting panel UI layout.
@@ -127,23 +132,8 @@ public class SettingsPanelFXMLController {
     @FXML
     private Button saveButton;
 
-    /**
-     * The controller for the settings UI of object 1.
-     */
     @FXML
-    private ParameterFXMLController object1ParameterController;
-
-    /**
-     * The controller for the settings UI of object 2.
-     */
-    @FXML
-    private ParameterFXMLController object2ParameterController;
-
-    /**
-     * The controller for the settings UI of object 3.
-     */
-    @FXML
-    private ParameterFXMLController object3ParameterController;
+    private VBox settingsBox;
 
     /**
      * An array that holds all controllers for object settings UIs.
@@ -160,13 +150,23 @@ public class SettingsPanelFXMLController {
      * Sets up the initial state of the settings panel.
      */
     void setup() {
-        // Setup controller arrays.
-        parameterControllers = new ParameterFXMLController[]{object1ParameterController, object2ParameterController, object3ParameterController};
+        try {
+            // Setup controller arrays.
+            parameterControllers = new ParameterFXMLController[3];
 
-        // Setup each controller in each array with the correct id.
-        for (int i = 0; i < 3; i++) {
-            parameterControllers[i].setup(i + 1, SceneFXMLController.getDefaultColors()[i]);
+            // Setup each controller in each array with the correct id.
+            for (int id = 0; id < 3; id++) {
+                FXMLLoader parameterSettingsLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleParametersLayout.fxml"));
+                Parent parameterSettings = parameterSettingsLoader.load();
+                parameterControllers[id] = parameterSettingsLoader.getController();
+                settingsBox.getChildren().add(4 + 2 * id, parameterSettings);
+                parameterControllers[id].setup(id + 1, SceneFXMLController.getDefaultColors()[id]);
+            }
+        } catch (IOException ignored) {
+            // This should never happen.
+            return;
         }
+
 
         // Default value of timeskip.
         timeskipField.setText("0");

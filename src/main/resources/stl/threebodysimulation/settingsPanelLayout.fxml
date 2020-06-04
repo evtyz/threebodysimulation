@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
     <children>
         <Label text="Global Settings">
             <font>
@@ -65,11 +65,8 @@
             </children>
         </GridPane>
         <Separator prefWidth="200.0" />
-        <fx:include fx:id="object1Parameter" source="particleParameters.fxml" />
         <Separator prefWidth="200.0" />
-        <fx:include fx:id="object2Parameter" source="particleParameters.fxml" />
         <Separator prefWidth="200.0" />
-        <fx:include fx:id="object3Parameter" source="particleParameters.fxml" />
         <Separator prefWidth="200.0" />
         <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#runSimulation" style="-fx-font-weight: bold;" styleClass="primary" text="Run Simulation">
             <font>
