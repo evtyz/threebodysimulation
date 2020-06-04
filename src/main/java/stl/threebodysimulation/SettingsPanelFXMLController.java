@@ -65,7 +65,7 @@ public class SettingsPanelFXMLController {
     /**
      * The TextWrapper that the timeskip elements are wrapped in.
      */
-    private TextFieldWrapper timeskipWrapper;
+    private LimitedTextFieldWrapper timeskipWrapper;
 
     /**
      * The Label UI element for the simulation speed.
@@ -88,7 +88,7 @@ public class SettingsPanelFXMLController {
     /**
      * The TextWrapper that the simulation speed elements are wrapped in.
      */
-    private TextFieldWrapper simSpeedWrapper;
+    private LimitedTextFieldWrapper simSpeedWrapper;
 
     /**
      * The CheckBox UI element that records whether trails should be shown.
@@ -115,10 +115,50 @@ public class SettingsPanelFXMLController {
     private Button runButton;
 
     /**
+     * The CheckBox UI element that enables saving CSVs.
+     */
+    @FXML
+    private CheckBox saveCSVCheckBox;
+
+    /**
+     * The Label UI element that is greyed out if saving CSVs is disabled.
+     */
+    @FXML
+    private Label CSVIDLabel;
+
+    /**
+     * The TextField UI element that is filled in with the CSV file name.
+     */
+    @FXML
+    private TextField CSVIDField;
+
+    /**
+     * The Tooltip UI element that is attached to the CSVIDField.
+     */
+    @FXML
+    private Tooltip CSVIDFieldTooltip;
+
+    /**
+     * A wrapper that manages CSVIDField.
+     */
+    private TextFieldWrapper CSVIDWrapper;
+
+    /**
      * The TextField UI element that holds a template ID for saving.
      */
     @FXML
     private TextField templateIDField;
+
+    /**
+     * The Tooltip UI element that is attached to the templateIDField.
+     */
+    @FXML
+    private Tooltip templateIDTooltip;
+
+    /**
+     * A wrapper that manages templateIDField.
+     */
+    private TextFieldWrapper templateIDFieldWrapper;
 
     /**
      * The Button UI element that is clicked to save a template.
@@ -166,21 +206,26 @@ public class SettingsPanelFXMLController {
         timeskipField.setText("0");
 
         // Wrap text fields and related tooltips, along with limits, into one object.
-        timeskipWrapper = new TextFieldWrapper(timeskipField, timeskipTooltip, -MAX_ABS_TIMESKIP, MAX_ABS_TIMESKIP, true);
-        simSpeedWrapper = new TextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, true);
+        timeskipWrapper = new LimitedTextFieldWrapper(timeskipField, timeskipTooltip, -MAX_ABS_TIMESKIP, MAX_ABS_TIMESKIP, true);
+        simSpeedWrapper = new LimitedTextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, true);
 
         // Change UI elements based on default state of checkbox
-        onChangeInfiniteCheckbox();
+        infiniteToggle();
 
         // Sets up number formats and default format.
         numberFormatBox.setItems(FXCollections.observableArrayList(NumberFormat.values()));
         numberFormatBox.setValue(NumberFormat.ADAPTIVE);
+
+        CSVIDWrapper = new TextFieldWrapper(CSVIDField, CSVIDFieldTooltip, "CSV Filename");
+        templateIDFieldWrapper = new TextFieldWrapper(templateIDField, templateIDTooltip, "Template Filename");
+
+        saveCSVToggle();
     }
 
     /**
      * Changes the state of various UI elements depending on whether the "run infinitely" checkbox is ticked or not.
      */
-    public void onChangeInfiniteCheckbox() {
+    public void infiniteToggle() {
         if (infiniteCheckBox.isSelected()) {
             simSpeedLabel.setTextFill(Color.BLACK);
             simSpeedWrapper.changeState(true);
@@ -229,6 +274,9 @@ public class SettingsPanelFXMLController {
             readiness = false;
         }
         if (!simSpeedWrapper.isReady()) {
+            readiness = false;
+        }
+        if (!CSVIDWrapper.isReady()) {
             readiness = false;
         }
 
@@ -296,6 +344,16 @@ public class SettingsPanelFXMLController {
         }
 
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
+    }
+
+    public void saveCSVToggle() {
+        if (saveCSVCheckBox.isSelected()) {
+            CSVIDLabel.setTextFill(Color.BLACK);
+            CSVIDWrapper.changeState(true);
+        } else {
+            CSVIDLabel.setTextFill(Color.LIGHTGRAY);
+            CSVIDWrapper.changeState(false);
+        }
     }
 
     /**

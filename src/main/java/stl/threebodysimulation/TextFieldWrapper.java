@@ -1,133 +1,66 @@
 package stl.threebodysimulation;
 
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 
-import java.text.DecimalFormat;
-
-
-/**
- * This class is a wrapper around a TextField that connects it with related tooltips, limits, and relevant methods.
- */
-class TextFieldWrapper {
-
-    /**
-     * The DecimalFormat that the tooltip is in.
-     */
-    private static final DecimalFormat TOOLTIP_FORMAT = new DecimalFormat("###,##0.####");
-
-    /**
-     * The minimum value of the TextField.
-     */
-    private final double min;
-
-    /**
-     * The maximum value of the TextField.
-     */
-    private final double max;
-
-    /**
-     * Whether the minimum value is inclusive or not.
-     */
-    private final boolean allowBottomInclusive;
-
+public class TextFieldWrapper {
     /**
      * The TextField that is being wrapped.
      */
-    private TextField subject;
+    TextField subject;
 
     /**
      * The Tooltip that is being used with the TextField.
      */
-    private Tooltip tooltip;
+    Tooltip tooltip;
 
     /**
-     * The regex format pattern that inputs must follow.
+     * Whether the LimitedTextFieldWrapper is ready for simulation.
      */
-    private String decimalPattern;
+    boolean readiness;
+
+    String prompt;
 
     /**
-     * Whether the TextFieldWrapper is ready for simulation.
+     * Constructor for a basic TextFieldWrapper that does not allow empty inputs.
+     * @param subject The TextField the wrapper manages.
+     * @param tooltip the Tooltip that attaches to the TextField.
+     * @param prompt The prompt shown in the TextField's tooltip.
      */
-    private boolean readiness;
-
-    /**
-     * @param subject The TextField to be managed.
-     * @param tooltip The Tooltip of the TextField.
-     * @param min The minimum value of the TextField.
-     * @param max The maximum value of the TextField.
-     * @param allowBottomInclusive Whether the minimum value of the TextField is valid or not.
-     */
-    TextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {
-
-        // Initializes textfield and tooltip
+    TextFieldWrapper(TextField subject, Tooltip tooltip, String prompt) {
         this.subject = subject;
         this.tooltip = tooltip;
-
-        // Setup mins and maxes
-        this.min = min;
-        this.max = max;
-
-        // Whether the max and min are valid or not
-        this.allowBottomInclusive = allowBottomInclusive;
-
-
-        // Checks if the minimum value allows negative numbers
-        boolean allowNegative = min < 0;
-
-        // Regexes modified from P. Jowko's implementation at https://stackoverflow.com/questions/40485521/javafx-textfield-validation-decimal-value.
-        if (allowNegative) {
-            decimalPattern = "[-]?[0-9]*(\\.[0-9]*)?";
-        } else {
-            decimalPattern = "[0-9]*(\\.[0-9]*)?";
-        }
-
-        limitToNumericalInput();
+        this.prompt = prompt;
         attachInputValidator();
-
-        // Set up the tooltip with correct text and settings
         setupTooltip();
-
         readiness = isValidInput();
+    }
+
+    /**
+     * Default constructor used by child classes.
+     */
+    TextFieldWrapper() {
+
     }
 
     /**
      * Initializes a tooltip with a label.
      */
-    private void setupTooltip() {
+    void setupTooltip() {
         // Tooltips show up after 100 milliseconds of hovering
         tooltip.setShowDelay(new Duration(100));
 
         // Set the text of the tooltip to display the min and max.
-        tooltip.setText(String.format("Must be between %s and %s", TOOLTIP_FORMAT.format(min), TOOLTIP_FORMAT.format(max)));
+        tooltip.setText(prompt);
     }
 
     /**
-     * Limits the TextField with a TextFormatter that enforces the regex pattern.
+     * Checks if the textfield included in the wrapper is not empty.
+     * @return True if not empty, False if empty.
      */
-    // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
-    private void limitToNumericalInput() {
-        // Ensures that the text-field only accepts numerical inputs.
-        subject.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches(decimalPattern)) ? change : null));
-    }
-
-    /**
-     * Checks if the textfield included in the wrapper has a valid input or not.
-     * @return True if valid, False if invalid.
-     */
-    private boolean isValidInput() {
-        try {
-            double value = Double.parseDouble(subject.getText());
-            if (allowBottomInclusive) {
-                return (min <= value && value <= max);
-            }
-            return (min < value && value <= max);
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    boolean isValidInput() {
+        return (!subject.getText().equals(""));
     }
 
     /**
@@ -141,7 +74,7 @@ class TextFieldWrapper {
      * Attaches a listener on the TextView to check if the input is within the min and max.
      */
     // Structure modified from Brendan's answer at https://stackoverflow.com/questions/16549296/how-perform-task-on-javafx-textfield-at-onfocus-and-outfocus
-    private void attachInputValidator() {
+    void attachInputValidator() {
         subject.focusedProperty().addListener((arg0, oldFocus, newFocus) -> {
             // If clicked away.
             if (!newFocus) {

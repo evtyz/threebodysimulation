@@ -102,7 +102,7 @@ public class ParameterFXMLController {
     /**
      * The array that contains wrappers for all the text fields for this particular particle.
      */
-    private TextFieldWrapper[] allTextFields;
+    private LimitedTextFieldWrapper[] allTextFields;
 
     /**
      * The id of the particle, one of {1, 2, 3}
@@ -128,13 +128,13 @@ public class ParameterFXMLController {
         // Set up default color for this object
         colorPickerField.setValue(color);
 
-        // Wrap all text-fields and related tooltips into cohesive TextFieldWrapper class with min and max values.
-        allTextFields = new TextFieldWrapper[]{
-                new TextFieldWrapper(massField, massTooltip, 0, MAX_MASS, false), // can't have zero mass
-                new TextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
-                new TextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
-                new TextFieldWrapper(xVelocityField, xVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true),
-                new TextFieldWrapper(yVelocityField, yVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true)
+        // Wrap all text-fields and related tooltips into cohesive LimitedTextFieldWrapper class with min and max values.
+        allTextFields = new LimitedTextFieldWrapper[]{
+                new LimitedTextFieldWrapper(massField, massTooltip, 0, MAX_MASS, false), // can't have zero mass
+                new LimitedTextFieldWrapper(xPositionField, xPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
+                new LimitedTextFieldWrapper(yPositionField, yPositionTooltip, -MAX_ABS_STARTING_POSITION, MAX_ABS_STARTING_POSITION, true),
+                new LimitedTextFieldWrapper(xVelocityField, xVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true),
+                new LimitedTextFieldWrapper(yVelocityField, yVelocityTooltip, -MAX_ABS_STARTING_VELOCITY, MAX_ABS_STARTING_VELOCITY, true)
         };
     }
 
@@ -147,7 +147,7 @@ public class ParameterFXMLController {
         boolean readiness = true;
 
         // All wrappers must be called so that they can highlight themselves if they are not ready.
-        for (TextFieldWrapper textField : allTextFields) {
+        for (LimitedTextFieldWrapper textField : allTextFields) {
             if (!textField.isReady()) {
                 readiness = false;
             }

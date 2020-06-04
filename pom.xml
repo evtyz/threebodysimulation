@@ -132,7 +132,7 @@
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
                         <list>stl.threebodysimulation.SimulationSettings</list>
                         <list>stl.threebodysimulation.SimulationState</list>
-                        <list>stl.threebodysimulation.TextFieldWrapper</list>
+                        <list>stl.threebodysimulation.LimitedTextFieldWrapper</list>
                     </reflectionList>
                     <mainClass>stl.threebodysimulation.Launcher</mainClass>
                 </configuration>
