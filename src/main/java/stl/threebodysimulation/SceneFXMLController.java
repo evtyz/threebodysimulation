@@ -75,8 +75,9 @@ public class SceneFXMLController implements Initializable {
 
     /**
      * Opens a new popup window with an error message
+     *
      * @param message The error message to display.
-     * @param parent The window that the error popup must block.
+     * @param parent  The window that the error popup must block.
      */
     static void openPopupWindow(ErrorMessage message, Window parent) {
         try {
@@ -106,8 +107,18 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
+     * Gets the default colors of particles.
+     *
+     * @return Default colors of all three particles.
+     */
+    static Color[] getDefaultColors() {
+        return defaultColors;
+    }
+
+    /**
      * Sets up initial states of UI elements after the FXML loader is done linking. Called by the FXML loader.
-     * @param url Unused. From parent class.
+     *
+     * @param url            Unused. From parent class.
      * @param resourceBundle Unused. From parent class.
      */
     @Override
@@ -169,6 +180,7 @@ public class SceneFXMLController implements Initializable {
 
     /**
      * Runs the simulation.
+     *
      * @param settings Settings to run the simulation with.
      */
     private void runSimulation(SimulationSettings settings) {
@@ -181,13 +193,5 @@ public class SceneFXMLController implements Initializable {
         // Sets up visualization.
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
-    }
-
-    /**
-     * Gets the default colors of particles.
-     * @return Default colors of all three particles.
-     */
-    static Color[] getDefaultColors() {
-        return defaultColors;
     }
 }

@@ -1,5 +1,6 @@
 package stl.threebodysimulation;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
@@ -38,10 +39,12 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
     private String decimalPattern;
 
     /**
-     * @param subject The TextField to be managed.
-     * @param tooltip The Tooltip of the TextField.
-     * @param min The minimum value of the TextField.
-     * @param max The maximum value of the TextField.
+     * Basic constructor for a LimitedTextFieldWrapper that manages a TextField and related objects.
+     *
+     * @param subject              The TextField to be managed.
+     * @param tooltip              The Tooltip of the TextField.
+     * @param min                  The minimum value of the TextField.
+     * @param max                  The maximum value of the TextField.
      * @param allowBottomInclusive Whether the minimum value of the TextField is valid or not.
      */
     LimitedTextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive) {
@@ -79,17 +82,37 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
     }
 
     /**
+     * Constructor for a LimitedTextFieldWrapper that manages a TextField and related objects, including a Label that can be disabled with the TextField.
+     *
+     * @param subject              The TextField to be managed.
+     * @param tooltip              The Tooltip of the TextField.
+     * @param min                  The minimum value of the TextField.
+     * @param max                  The maximum value of the TextField.
+     * @param allowBottomInclusive Whether the minimum value of the TextField is valid or not.
+     * @param subjectLabel         The Label UI object that corresponds with the TextField.
+     */
+    LimitedTextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive, Label subjectLabel) {
+        this(subject, tooltip, min, max, allowBottomInclusive);
+        this.subjectLabel = subjectLabel;
+    }
+
+    /**
      * Limits the TextField with a TextFormatter that enforces the regex pattern.
      */
     // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
     private void limitToNumericalInput() {
         // Ensures that the text-field only accepts numerical inputs.
-        subject.setTextFormatter(new TextFormatter<>(change ->
-                (change.getControlNewText().matches(decimalPattern)) ? change : null));
+        subject.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches(decimalPattern)) {
+                return change;
+            }
+            return null;
+        }));
     }
 
     /**
      * Checks if the textfield included in the wrapper can be validly formatted into a double within the limits.
+     *
      * @return True if valid, False if invalid.
      */
     @Override
@@ -100,7 +123,7 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
                 return (min <= value && value <= max);
             }
             return (min < value && value <= max);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) { // Not parsable as a double for whatever reason. Should never occur.
             return false;
         }
     }

@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -207,7 +206,7 @@ public class SettingsPanelFXMLController {
 
         // Wrap text fields and related tooltips, along with limits, into one object.
         timeskipWrapper = new LimitedTextFieldWrapper(timeskipField, timeskipTooltip, -MAX_ABS_TIMESKIP, MAX_ABS_TIMESKIP, true);
-        simSpeedWrapper = new LimitedTextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, true);
+        simSpeedWrapper = new LimitedTextFieldWrapper(simSpeedField, simSpeedTooltip, MIN_SIMULATION_SPEED, MAX_SIMULATION_SPEED, true, simSpeedLabel);
 
         // Change UI elements based on default state of checkbox
         infiniteToggle();
@@ -216,7 +215,7 @@ public class SettingsPanelFXMLController {
         numberFormatBox.setItems(FXCollections.observableArrayList(NumberFormat.values()));
         numberFormatBox.setValue(NumberFormat.ADAPTIVE);
 
-        CSVIDWrapper = new TextFieldWrapper(CSVIDField, CSVIDFieldTooltip, "CSV Filename");
+        CSVIDWrapper = new TextFieldWrapper(CSVIDField, CSVIDFieldTooltip, "CSV Filename", CSVIDLabel);
         templateIDFieldWrapper = new TextFieldWrapper(templateIDField, templateIDTooltip, "Template Filename");
 
         saveCSVToggle();
@@ -227,11 +226,9 @@ public class SettingsPanelFXMLController {
      */
     public void infiniteToggle() {
         if (infiniteCheckBox.isSelected()) {
-            simSpeedLabel.setTextFill(Color.BLACK);
             simSpeedWrapper.changeState(true);
             trailCheckBox.setDisable(false);
         } else {
-            simSpeedLabel.setTextFill(Color.LIGHTGRAY);
             simSpeedWrapper.changeState(false);
             trailCheckBox.setSelected(false);
             trailCheckBox.setDisable(true);
@@ -240,6 +237,7 @@ public class SettingsPanelFXMLController {
 
     /**
      * Sets the listener for the manual button.
+     *
      * @param listener The listener that will be called when the manual button is pressed.
      */
     void setOnOpenManualListener(Listener listener) {
@@ -248,6 +246,7 @@ public class SettingsPanelFXMLController {
 
     /**
      * Sets the listener for the simulation button.
+     *
      * @param listener The listener that will be called when the simulation button is pressed.
      */
     void setOnRunSimulationListener(Listener listener) {
@@ -256,6 +255,7 @@ public class SettingsPanelFXMLController {
 
     /**
      * Sets the listener for when errors occur.
+     *
      * @param listener The listener that will be called when an error happens.
      */
     void setOnRunErrorListener(Listener listener) {
@@ -264,6 +264,7 @@ public class SettingsPanelFXMLController {
 
     /**
      * Checks if all object and parameter settings are ready.
+     *
      * @return True if ready, False if not ready.
      */
     private boolean executeValidityCheck() {
@@ -312,6 +313,7 @@ public class SettingsPanelFXMLController {
 
     /**
      * Packages the inputs in the settings panel into a SimulationSettings object.
+     *
      * @return The SimulationSettings that the simulation will run with.
      */
     SimulationSettings getSimulationSettings() {
@@ -357,10 +359,8 @@ public class SettingsPanelFXMLController {
      */
     public void saveCSVToggle() {
         if (saveCSVCheckBox.isSelected()) {
-            CSVIDLabel.setTextFill(Color.BLACK);
             CSVIDWrapper.changeState(true);
         } else {
-            CSVIDLabel.setTextFill(Color.LIGHTGRAY);
             CSVIDWrapper.changeState(false);
         }
     }

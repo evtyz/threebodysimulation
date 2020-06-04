@@ -117,7 +117,8 @@ public class ParameterFXMLController {
 
     /**
      * Sets up the initial state of the particle settings UI.
-     * @param id The id of the particle that the settings represent.
+     *
+     * @param id    The id of the particle that the settings represent.
      * @param color The color of the particle that the settings represent.
      */
     void setup(int id, Color color) {
@@ -140,6 +141,7 @@ public class ParameterFXMLController {
 
     /**
      * Checks if all inputs are valid.
+     *
      * @return Whether the object parameters are ready to be simulated
      */
     boolean isReady() {
@@ -157,6 +159,7 @@ public class ParameterFXMLController {
 
     /**
      * Packages user input into a particle object.
+     *
      * @return The particle object that the settings represent
      */
     Particle convertToParticle() {

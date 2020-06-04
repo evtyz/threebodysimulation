@@ -35,6 +35,7 @@ class CanvasWrapper {
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
+     *
      * @param canvas The canvas that the wrapper manages.
      */
     CanvasWrapper(Canvas canvas) {
@@ -45,6 +46,7 @@ class CanvasWrapper {
 
     /**
      * Sets the graphics options and particles for the canvas.
+     *
      * @param settings The SimulationSettings object that options and particles will be read from.
      */
     void setSettings(SimulationSettings settings) {

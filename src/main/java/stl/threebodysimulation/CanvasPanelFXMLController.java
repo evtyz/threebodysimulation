@@ -16,10 +16,6 @@ import java.util.Arrays;
  * The controller for the Canvas with graphics.
  */
 public class CanvasPanelFXMLController {
-    /**
-     * Object used for synchronization between threads
-     */
-    private static final Object synchronizationObject = new Object();
 
     /**
      * Maximum framerate allowed by program.
@@ -30,6 +26,11 @@ public class CanvasPanelFXMLController {
      * Amount of time in milliseconds that a frame appears on screen
      */
     private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
+
+    /**
+     * Object used for synchronization between threads
+     */
+    private static final Object synchronizationObject = new Object();
 
     /**
      * A Listener that is called when the simulation stops.
@@ -45,6 +46,31 @@ public class CanvasPanelFXMLController {
      * Flattened version of the Particle array for input into a ParticleDifferentialEquations object.
      */
     private double[] flattenedParticles = new double[12];
+
+    /**
+     * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
+     */
+    private SimulationState state;
+
+    /**
+     * The current time in the simulation, in seconds.
+     */
+    private double currentTime;
+
+    /**
+     * The current speed of the simulation, in simulation seconds / real seconds.
+     */
+    private double speed;
+
+    /**
+     * A ParticleDifferentialEquations object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
+     */
+    private ParticleDifferentialEquations particleDifferentialEquations;
+
+    /**
+     * The DormandPrince853Integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
+     */
+    private DormandPrince853Integrator integrator;
 
     /**
      * The Canvas UI object.
@@ -76,51 +102,9 @@ public class CanvasPanelFXMLController {
     private Label timeLabel;
 
     /**
-     * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
-     */
-    private SimulationState state;
-
-    /**
-     * The current time in the simulation, in seconds.
-     */
-    private double currentTime;
-
-    /**
-     * The current speed of the simulation, in simulation seconds / real seconds.
-     */
-    private double speed;
-
-    /**
-     * A ParticleDifferentialEquations object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
-     */
-    private ParticleDifferentialEquations particleDifferentialEquations;
-
-    /**
-     * The DormandPrince853Integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
-     */
-    private DormandPrince853Integrator integrator;
-
-    /**
      * Constructor, for use by the FXML loader.
      */
     public CanvasPanelFXMLController() {
-    }
-
-
-    /**
-     * Sets a Listener that is called when the simulation stops.
-     * @param listener The listener that will be called.
-     */
-    void setOnStopListener(Listener listener) {
-        onStopListener = listener;
-    }
-
-    /**
-     * Sets the Particle arrays to be simulated.
-     * @param particles An array of 3 particles to be simulated by the canvas controller.
-     */
-    void setParticles(Particle[] particles) {
-        this.particles = particles;
     }
 
     /**
@@ -138,7 +122,26 @@ public class CanvasPanelFXMLController {
     }
 
     /**
+     * Sets a Listener that is called when the simulation stops.
+     *
+     * @param listener The listener that will be called.
+     */
+    void setOnStopListener(Listener listener) {
+        onStopListener = listener;
+    }
+
+    /**
+     * Sets the Particle arrays to be simulated.
+     *
+     * @param particles An array of 3 particles to be simulated by the canvas controller.
+     */
+    void setParticles(Particle[] particles) {
+        this.particles = particles;
+    }
+
+    /**
      * Runs the simulation according to the given settings.
+     *
      * @param settings The SimulationSettings object that supplies properties for the simulation.
      */
     void runSimulation(SimulationSettings settings) {
@@ -161,6 +164,7 @@ public class CanvasPanelFXMLController {
         // Get position, velocity, acceleration at current time.
         if (currentTime != 0) {
             try {
+                // Get the position and velocity of particles at currentTime
                 integrator.integrate(particleDifferentialEquations, 0, flattenedParticles, currentTime, flattenedParticles);
             } catch (NumberIsTooSmallException e) {
                 // Asymptote error (the integrator can't converge and gives up)
@@ -200,6 +204,21 @@ public class CanvasPanelFXMLController {
     }
 
     /**
+     * Updates the flattenedParticles array according to the particles array.
+     */
+    private void flattenParticles() {
+        int index = 0;
+        for (int id = 0; id < 3; id++) {
+            // Flatten the particle
+            double[] flattenedParticle = particles[id].flatten();
+            for (double property : flattenedParticle) {
+                // Fill out the array according to the flattened particle.
+                flattenedParticles[index++] = property;
+            }
+        }
+    }
+
+    /**
      * Updates particles and update canvas.
      */
     private void updateAll() {
@@ -215,21 +234,6 @@ public class CanvasPanelFXMLController {
         // Finally, let the thread that runs the simulation unpause.
         synchronized (synchronizationObject) {
             synchronizationObject.notify();
-        }
-    }
-
-    /**
-     * Updates the flattenedParticles array according to the particles array.
-     */
-    private void flattenParticles() {
-        int index = 0;
-        for (int id = 0; id < 3; id++) {
-            // Flatten the particle
-            double[] flattenedParticle = particles[id].flatten();
-            for (double property : flattenedParticle) {
-                // Fill out the array according to the flattened particle.
-                flattenedParticles[index++] = property;
-            }
         }
     }
 
@@ -331,6 +335,7 @@ public class CanvasPanelFXMLController {
 
     /**
      * Breaks the simulation prematurely and sends an error message to the user.
+     *
      * @param errorMessage What error message to send to the user.
      */
     private void breakSimulation(ErrorMessage errorMessage) {

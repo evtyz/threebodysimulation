@@ -39,6 +39,8 @@ public class InfoPanelFXMLController {
     }
 
     /**
+     * Gets the number format for displaying info.
+     *
      * @return The number format that displays should use.
      */
     static NumberFormat getNumberFormat() {
@@ -47,6 +49,7 @@ public class InfoPanelFXMLController {
 
     /**
      * Sets the info display NumberFormat to the given format.
+     *
      * @param format The NumberFormat chosen by the user.
      */
     static void setNumberFormat(NumberFormat format) {
@@ -75,6 +78,7 @@ public class InfoPanelFXMLController {
 
     /**
      * Sets the particle array whose information will be displayed.
+     *
      * @param particles The array whose information will be displayed.
      */
     void setParticles(Particle[] particles) {
@@ -89,6 +93,7 @@ public class InfoPanelFXMLController {
 
     /**
      * Sets up a listener for property changes inside each particle, and links the listener to the correct info display.
+     *
      * @param index The id of both the particle and the info display. (object 1 has display 1, etc)
      */
     private void setParticleListener(int index) {

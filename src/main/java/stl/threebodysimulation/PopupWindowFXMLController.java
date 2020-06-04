@@ -32,7 +32,18 @@ public class PopupWindowFXMLController implements Initializable {
     }
 
     /**
+     * Initializes the window, according to the Application parent class. Empty.
+     *
+     * @param location  Not used.
+     * @param resources Not used.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    /**
      * Sets the error message to be displayed.
+     *
      * @param label The error message.
      */
     public void setLabel(String label) {
@@ -44,14 +55,5 @@ public class PopupWindowFXMLController implements Initializable {
      */
     public void closeWindow() {
         ((Stage) (closeWindowButton.getScene().getWindow())).close();
-    }
-
-    /**
-     * Initializes the window, according to the Application parent class. Empty.
-     * @param location Not used.
-     * @param resources Not used.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
     }
 }

@@ -76,6 +76,7 @@ public class InfoFXMLController {
 
     /**
      * Formats a number into a string based on input DecimalFormat object.
+     *
      * @param format The chosen format to show the number with.
      * @param number The number to format.
      * @return The formatted string that represents the number.
@@ -94,6 +95,7 @@ public class InfoFXMLController {
 
     /**
      * Sets up the info display at the start of the program.
+     *
      * @param id the ID of the object. E.g. object 2 has id 2.
      */
     void setup(int id) {
@@ -113,6 +115,7 @@ public class InfoFXMLController {
 
     /**
      * Updates the info display based on the state of a given particle.
+     *
      * @param particle The particle that the display takes information from.
      */
     void updateFromParticle(Particle particle) {
@@ -145,6 +148,7 @@ public class InfoFXMLController {
 
     /**
      * Changes the color of the circle next to the info display.
+     *
      * @param color The color to update the display with.
      */
     void updateFromColor(Color color) {

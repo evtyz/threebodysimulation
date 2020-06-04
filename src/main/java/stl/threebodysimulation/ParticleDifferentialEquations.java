@@ -24,6 +24,7 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Initializes a differential equation set based on given masses.
+     *
      * @param masses The masses of each particle, in an array.
      */
     ParticleDifferentialEquations(double[] masses) {
@@ -33,8 +34,9 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Gets the acceleration for a particle and a dimension.
+     *
      * @param particleID The particle with acceleration.
-     * @param dimension The dimension of acceleration.
+     * @param dimension  The dimension of acceleration.
      * @return The acceleration.
      */
     static double getAcceleration(int particleID, int dimension) {
@@ -43,6 +45,7 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Gets the dimensions of the differential equations. From the interface.
+     *
      * @return The dimensions of the equations. Always 12.
      */
     @Override
@@ -52,8 +55,9 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Takes the derivative of an array and stores it an another array. From the interface.
-     * @param t The current time. Parameter inherited from interface, not used.
-     * @param y The initial state of the function. <br>[X-pos of particle 1, Y-pos of particle 1, X-vel of particle 1, Y-vel of particle 1, X-pos of particle 2, Y-pos of particle 2, X-vel of particle 2, Y-vel of particle 2, X-pos of particle 3, Y-pos of particle 3, X-vel of particle 3, Y-vel of particle 3]
+     *
+     * @param t    The current time. Parameter inherited from interface, not used.
+     * @param y    The initial state of the function. <br>[X-pos of particle 1, Y-pos of particle 1, X-vel of particle 1, Y-vel of particle 1, X-pos of particle 2, Y-pos of particle 2, X-vel of particle 2, Y-vel of particle 2, X-pos of particle 3, Y-pos of particle 3, X-vel of particle 3, Y-vel of particle 3]
      * @param yDot The array where the derivatives are stored. <br>[X-vel of particle 1, Y-vel of particle 1, X-acc of particle 1, Y-acc of particle 1, X-vel of particle 2, Y-vel of particle 2, X-acc of particle 2, Y-acc of particle 2, X-vel of particle 3, Y-vel of particle 3, X-acc of particle 3, Y-acc of particle 3]
      */
     @Override
@@ -81,11 +85,12 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Calculates acceleration due to gravity between two different objects and stores it in the accelerationStorage array.
+     *
      * @param vector The distance between the objects.
-     * @param mass1 The mass of object 1.
-     * @param mass2 The mass of object 2.
-     * @param id1 The id of object 1 in the storage array.
-     * @param id2 The id of object 2 in the storage array.
+     * @param mass1  The mass of object 1.
+     * @param mass2  The mass of object 2.
+     * @param id1    The id of object 1 in the storage array.
+     * @param id2    The id of object 2 in the storage array.
      */
     private void addToAcceleration(double[] vector, double mass1, double mass2, int id1, int id2) {
         // Absolute value of vector, according to pythagorean theorem

@@ -50,12 +50,13 @@ class Particle {
 
     /**
      * Constructor for the particle class.
-     * @param xPos X-position (km)
-     * @param yPos Y-position (km)
-     * @param xVel X-velocity (km/s)
-     * @param yVel Y-velocity (km/s)
-     * @param mass Mass (earths)
-     * @param id ID of particle
+     *
+     * @param xPos  X-position (km)
+     * @param yPos  Y-position (km)
+     * @param xVel  X-velocity (km/s)
+     * @param yVel  Y-velocity (km/s)
+     * @param mass  Mass (earths)
+     * @param id    ID of particle
      * @param color color of particle
      */
     Particle(double xPos, double yPos, double xVel, double yVel, double mass, int id, Color color) {
@@ -76,6 +77,7 @@ class Particle {
 
     /**
      * Sets a listener that is called when the particle updates.
+     *
      * @param listener The listener to be called.
      */
     void setInfoUpdateListener(Listener listener) {
@@ -84,6 +86,7 @@ class Particle {
 
     /**
      * Flattens a particle into an array.
+     *
      * @return An array of 4 doubles that represent the {x-position, y-position, x-velocity, y-velocity}.
      */
     double[] flatten() {
@@ -92,9 +95,10 @@ class Particle {
 
     /**
      * Updates the particle according to a given input array, as well as a static acceleration array from ParticleDifferentialEquations.
+     *
      * @param flattenedParticle The double array that represents {x-position, y-position, x-velocity, y-velocity}.
      */
-    void update (double[] flattenedParticle) {
+    void update(double[] flattenedParticle) {
         position[0] = flattenedParticle[0];
         position[1] = flattenedParticle[1];
         velocity[0] = flattenedParticle[2];
@@ -106,6 +110,7 @@ class Particle {
 
     /**
      * Gets mass.
+     *
      * @return The mass of the particle.
      */
     double getMass() {
@@ -114,6 +119,7 @@ class Particle {
 
     /**
      * Gets position.
+     *
      * @return The position of the particle.
      */
     double[] getPosition() {
@@ -122,6 +128,7 @@ class Particle {
 
     /**
      * Gets color.
+     *
      * @return The color of the particle.
      */
     Color getColor() {
@@ -130,6 +137,7 @@ class Particle {
 
     /**
      * Gets all displayable information.
+     *
      * @return A hashmap with position, velocity, and acceleration.
      */
     HashMap<String, double[]> getPackage() {

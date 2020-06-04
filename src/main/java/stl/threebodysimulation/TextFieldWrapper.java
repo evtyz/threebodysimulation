@@ -1,13 +1,15 @@
 package stl.threebodysimulation;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
  * This class is a wrapper around a TextField that connects it to a tooltip and ensures that inputs are valid.
  */
-public class TextFieldWrapper {
+class TextFieldWrapper {
     /**
      * The TextField that is being wrapped.
      */
@@ -23,13 +25,22 @@ public class TextFieldWrapper {
      */
     boolean readiness;
 
+    /**
+     * The prompt shown in the tooltip for the textfield.
+     */
     String prompt;
 
     /**
+     * The label next to the textfield, if applicable.
+     */
+    Label subjectLabel = new Label();
+
+    /**
      * Constructor for a basic TextFieldWrapper that does not allow empty inputs.
+     *
      * @param subject The TextField the wrapper manages.
-     * @param tooltip the Tooltip that attaches to the TextField.
-     * @param prompt The prompt shown in the TextField's tooltip.
+     * @param tooltip The Tooltip that attaches to the TextField.
+     * @param prompt  The prompt shown in the TextField's tooltip.
      */
     TextFieldWrapper(TextField subject, Tooltip tooltip, String prompt) {
         this.subject = subject;
@@ -38,6 +49,19 @@ public class TextFieldWrapper {
         attachInputValidator();
         setupTooltip();
         readiness = isValidInput();
+    }
+
+    /**
+     * Constructor for a TextFieldWrapper with a corresponding Label that can be disabled.
+     *
+     * @param subject      The TextField the wrapper manages.
+     * @param tooltip      The Tooltip that attaches to the TextField.
+     * @param prompt       The prompt shown in the TextField's tooltip.
+     * @param subjectLabel The Label that corresponds to the TextField.
+     */
+    TextFieldWrapper(TextField subject, Tooltip tooltip, String prompt, Label subjectLabel) {
+        this(subject, tooltip, prompt);
+        this.subjectLabel = subjectLabel;
     }
 
     /**
@@ -60,6 +84,7 @@ public class TextFieldWrapper {
 
     /**
      * Checks if the textfield included in the wrapper is not empty.
+     *
      * @return True if not empty, False if empty.
      */
     boolean isValidInput() {
@@ -98,12 +123,14 @@ public class TextFieldWrapper {
 
     /**
      * Disables or enables a TextField.
+     *
      * @param state Whether to enable or disable the TextField.
      */
     void changeState(boolean state) {
         if (state) {
             readiness = false;
             subject.setDisable(false);
+            subjectLabel.setTextFill(Color.BLACK);
             return;
         }
         readiness = true;
@@ -111,10 +138,12 @@ public class TextFieldWrapper {
         subject.setStyle("-fx-border-color: #cccccc;");
         subject.setStyle("-fx-background-color: white;");
         subject.setDisable(true);
+        subjectLabel.setTextFill(Color.LIGHTGRAY);
     }
 
     /**
      * Checks if the TextFieldWrapper is ready for simulation.
+     *
      * @return True if ready, False if not ready.
      */
     boolean isReady() {

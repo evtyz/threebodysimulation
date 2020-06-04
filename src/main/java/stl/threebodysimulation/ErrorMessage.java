@@ -56,12 +56,14 @@ public enum ErrorMessage {
 
     /**
      * Gets the title of the error.
+     *
      * @return The title of the error, to be displayed in the window border.
      */
     public abstract String getTitle();
 
     /**
      * Gets the message of the error.
+     *
      * @return The message of the error, to be displayed in the body of the error popup.
      */
     public abstract String getMessage();

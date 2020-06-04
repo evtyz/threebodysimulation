@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -14,6 +13,7 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
     /**
      * Starts the application.
+     *
      * @param stage The window that the app will be run in. Supplied by the Application parent class.
      * @throws Exception An exception that occurs if the layout files are not found. Should never occur.
      */
@@ -21,8 +21,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws Exception {
         // Set up the sceneLayout.fxml files and the CSS files. The inputs and outputs exist to implement the parent class Application.
         FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/sceneLayout.fxml"));
-        Parent root = appLoader.load();
-        Scene scene = new Scene(root, 1200, 900);
+        Scene scene = new Scene(appLoader.load(), 1200, 900);
 
         // Load in CSS
         scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
