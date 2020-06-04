@@ -126,7 +126,7 @@
                         <list>stl.threebodysimulation.NumberFormat</list>
                         <list>stl.threebodysimulation.ParameterFXMLController</list>
                         <list>stl.threebodysimulation.Particle</list>
-                        <list>stl.threebodysimulation.ParticleDiffEq</list>
+                        <list>stl.threebodysimulation.ParticleDifferentialEquations</list>
                         <list>stl.threebodysimulation.PopupWindowFXMLController</list>
                         <list>stl.threebodysimulation.SceneFXMLController</list>
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>

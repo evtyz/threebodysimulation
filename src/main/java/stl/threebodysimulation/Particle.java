@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * This class represents a particle to be simulated.
  */
-public class Particle {
+class Particle {
     /**
      * Mass, in earths.
      */
@@ -91,7 +91,7 @@ public class Particle {
     }
 
     /**
-     * Updates the particle according to a given input array, as well as a static acceleration array from ParticleDiffEq.
+     * Updates the particle according to a given input array, as well as a static acceleration array from ParticleDifferentialEquations.
      * @param flattenedParticle The double array that represents {x-position, y-position, x-velocity, y-velocity}.
      */
     void update (double[] flattenedParticle) {
@@ -99,8 +99,8 @@ public class Particle {
         position[1] = flattenedParticle[1];
         velocity[0] = flattenedParticle[2];
         velocity[1] = flattenedParticle[3];
-        acceleration[0] = ParticleDiffEq.getAcceleration(id, 0);
-        acceleration[1] = ParticleDiffEq.getAcceleration(id, 1);
+        acceleration[0] = ParticleDifferentialEquations.getAcceleration(id, 0);
+        acceleration[1] = ParticleDifferentialEquations.getAcceleration(id, 1);
         infoUpdateListener.onEvent();
     }
 

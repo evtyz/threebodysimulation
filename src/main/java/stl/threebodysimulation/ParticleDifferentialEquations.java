@@ -5,7 +5,7 @@ import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 /**
  * A class that represents the differential equations, which govern the movement of three masses.
  */
-class ParticleDiffEq implements FirstOrderDifferentialEquations {
+class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
 
     /**
      * Universal gravitational constant, in in km^3 * earthmasses^-1 * seconds^-2
@@ -26,7 +26,7 @@ class ParticleDiffEq implements FirstOrderDifferentialEquations {
      * Initializes a differential equation set based on given masses.
      * @param masses The masses of each particle, in an array.
      */
-    ParticleDiffEq(double[] masses) {
+    ParticleDifferentialEquations(double[] masses) {
         this.masses = masses;
         accelerationStorage = new double[3][2];
     }

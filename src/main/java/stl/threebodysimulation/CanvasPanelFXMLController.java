@@ -42,7 +42,7 @@ public class CanvasPanelFXMLController {
     private Particle[] particles;
 
     /**
-     * Flattened version of the Particle array for input into a ParticleDiffEq object.
+     * Flattened version of the Particle array for input into a ParticleDifferentialEquations object.
      */
     private double[] flattenedParticles = new double[12];
 
@@ -91,9 +91,9 @@ public class CanvasPanelFXMLController {
     private double speed;
 
     /**
-     * A ParticleDiffEq object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
+     * A ParticleDifferentialEquations object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
      */
-    private ParticleDiffEq particleDiffEq;
+    private ParticleDifferentialEquations particleDifferentialEquations;
 
     /**
      * The DormandPrince853Integrator provided by Apache Commons Math that we used to approximate values according to the differential equation.
@@ -147,7 +147,7 @@ public class CanvasPanelFXMLController {
         canvasWrapper.setSettings(settings);
 
         // Set up the particle differential equation according to the masses of each particle.
-        particleDiffEq = new ParticleDiffEq(settings.getMass());
+        particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
 
         // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
         integrator = new DormandPrince853Integrator(Math.pow(10, -20), 30000, 0.01, 0.01);
@@ -161,7 +161,7 @@ public class CanvasPanelFXMLController {
         // Get position, velocity, acceleration at current time.
         if (currentTime != 0) {
             try {
-                integrator.integrate(particleDiffEq, 0, flattenedParticles, currentTime, flattenedParticles);
+                integrator.integrate(particleDifferentialEquations, 0, flattenedParticles, currentTime, flattenedParticles);
             } catch (NumberIsTooSmallException e) {
                 // Asymptote error (the integrator can't converge and gives up)
                 System.out.println(e.getMessage());
@@ -251,7 +251,7 @@ public class CanvasPanelFXMLController {
                     long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
                     try {
                         // Store the state of the particles at the next frame.
-                        integrator.integrate(particleDiffEq, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
+                        integrator.integrate(particleDifferentialEquations, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
                     } catch (NumberIsTooSmallException e) {
                         // Asymptote error catching
                         System.out.println(e.getMessage());
