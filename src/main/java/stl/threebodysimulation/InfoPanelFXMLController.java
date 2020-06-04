@@ -17,6 +17,9 @@ public class InfoPanelFXMLController {
      */
     private static NumberFormat chosenFormat;
 
+    /**
+     * The HBox UI element that all the displays are formatted in.
+     */
     @FXML
     private HBox panelBox;
 
@@ -55,9 +58,9 @@ public class InfoPanelFXMLController {
      * The setup method that is called by the FXML loader.
      */
     void setup() {
+        // initialize array
+        infoControllers = new InfoFXMLController[3];
         try {
-            // initialize array
-            infoControllers = new InfoFXMLController[3];
             // setup each individual controller with correct ids and colors.
             for (int id = 0; id < 3; id++) {
                 FXMLLoader infoLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleInfoLayout.fxml"));

@@ -132,6 +132,9 @@ public class SettingsPanelFXMLController {
     @FXML
     private Button saveButton;
 
+    /**
+     * The VBox UI element that the entire settings panel fits into.
+     */
     @FXML
     private VBox settingsBox;
 
@@ -150,23 +153,21 @@ public class SettingsPanelFXMLController {
      * Sets up the initial state of the settings panel.
      */
     void setup() {
+        // Setup controller arrays.
+        parameterControllers = new ParameterFXMLController[3];
         try {
-            // Setup controller arrays.
-            parameterControllers = new ParameterFXMLController[3];
-
             // Setup each controller in each array with the correct id.
             for (int id = 0; id < 3; id++) {
                 FXMLLoader parameterSettingsLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleParametersLayout.fxml"));
-                Parent parameterSettings = parameterSettingsLoader.load();
+                Parent parameterSettings = parameterSettingsLoader.load(); // Can throw IOException if FXML file doesn't exist.
                 parameterControllers[id] = parameterSettingsLoader.getController();
-                settingsBox.getChildren().add(4 + 2 * id, parameterSettings);
+                settingsBox.getChildren().add(4 + 2 * id, parameterSettings); // Slot in settings at right place in the panel.
                 parameterControllers[id].setup(id + 1, SceneFXMLController.getDefaultColors()[id]);
             }
         } catch (IOException ignored) {
             // This should never happen.
             return;
         }
-
 
         // Default value of timeskip.
         timeskipField.setText("0");

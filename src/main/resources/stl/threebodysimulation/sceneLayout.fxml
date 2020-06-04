@@ -20,7 +20,7 @@
         </TabPane>
     </left>
     <center>
-        <BorderPane fx:id="mainBorderPane" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
+        <BorderPane fx:id="actionPane" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent  #C0C0C0;" BorderPane.alignment="CENTER">
         </BorderPane>
     </center>
 </BorderPane>

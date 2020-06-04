@@ -38,14 +38,23 @@ public class SceneFXMLController implements Initializable {
      */
     private SettingsPanelFXMLController settingsPanelController;
 
+    /**
+     * The Tab UI element for the settings panel.
+     */
     @FXML
     private Tab settingsTab;
 
+    /**
+     * The Tab UI element for the saves panel.
+     */
     @FXML
     private Tab savesTab;
 
+    /**
+     * The UI element that contains everything outside of the tabs to the left.
+     */
     @FXML
-    private BorderPane mainBorderPane;
+    private BorderPane actionPane;
 
     /**
      * The visualization canvas and controls in the UI.
@@ -119,14 +128,14 @@ public class SceneFXMLController implements Initializable {
             FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/infoPanelLayout.fxml"));
             Parent infoPanel = infoPanelLoader.load();
             infoPanelController = infoPanelLoader.getController();
-            mainBorderPane.setTop(infoPanel);
+            actionPane.setTop(infoPanel);
             infoPanelController.setup();
 
             // Load in canvas panel.
             FXMLLoader canvasPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/canvasPanelLayout.fxml"));
             Parent canvasPanel = canvasPanelLoader.load();
             canvasPanelController = canvasPanelLoader.getController();
-            mainBorderPane.setCenter(canvasPanel);
+            actionPane.setCenter(canvasPanel);
             canvasPanelController.setup(); // Sets up canvas.
             canvasPanelController.setOnStopListener(() -> settingsPanelController.enableRunButton()); // Enables rerunning the simulation if it is stopped.
         } catch (IOException ignored) {
