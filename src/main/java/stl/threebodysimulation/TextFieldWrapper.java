@@ -4,6 +4,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 
+/**
+ * This class is a wrapper around a TextField that connects it to a tooltip and ensures that inputs are valid.
+ */
 public class TextFieldWrapper {
     /**
      * The TextField that is being wrapped.
