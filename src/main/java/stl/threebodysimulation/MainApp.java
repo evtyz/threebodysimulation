@@ -13,6 +13,7 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
     /**
+     * Starts the application.
      * @param stage The window that the app will be run in. Supplied by the Application parent class.
      * @throws Exception An exception that occurs if the layout files are not found. Should never occur.
      */
