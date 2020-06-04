@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
     <children>
         <Label text="Global Settings">
             <font>

@@ -15,7 +15,7 @@
          <children>
             <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@errorIcon.png" />
+                  <Image url="@../icons/errorIcon.png" />
                </image>
             </ImageView>
             <Label fx:id="messageLabel" text="The simulation could not run, because some parameters were invalid. Please add valid inputs, and then try again." wrapText="true">
@@ -28,7 +28,7 @@
             <Insets />
          </VBox.margin>
       </HBox>
-      <Button fx:id="closeWindowButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow" prefHeight="40.0" styleClass="primary" stylesheets="@bootstrap3.css" text="OK" />
+      <Button fx:id="closeWindowButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow" prefHeight="40.0" styleClass="primary" stylesheets="@../styles/bootstrap3.css" text="OK" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

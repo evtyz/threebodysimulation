@@ -62,7 +62,7 @@ public class InfoPanelFXMLController {
         try {
             // setup each individual controller with correct ids and colors.
             for (int id = 0; id < 3; id++) {
-                FXMLLoader infoLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/particleInfoLayout.fxml"));
+                FXMLLoader infoLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/particleInfoLayout.fxml"));
                 panelBox.getChildren().add(2 * id, infoLoader.load());
                 infoControllers[id] = infoLoader.getController();
                 infoControllers[id].setup(id + 1);

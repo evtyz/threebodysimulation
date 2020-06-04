@@ -81,11 +81,11 @@ public class SceneFXMLController implements Initializable {
     static void openPopupWindow(ErrorMessage message, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
-            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/popupWindowLayout.fxml"));
+            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/popupWindowLayout.fxml"));
             Scene errorScene = new Scene(windowLoader.load());
 
             // Style the scenes
-            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/bootstrap3.css").toExternalForm());
+            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
 
             // Load the correct message into the layout
             PopupWindowFXMLController errorController = windowLoader.getController();
@@ -96,7 +96,7 @@ public class SceneFXMLController implements Initializable {
             errorWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
             errorWindow.initOwner(parent);
             errorWindow.setResizable(false); // Not resizable
-            errorWindow.getIcons().add(new Image("/stl/threebodysimulation/errorIcon.png")); // Error icon.
+            errorWindow.getIcons().add(new Image("/stl/threebodysimulation/icons/errorIcon.png")); // Error icon.
             errorWindow.setTitle(message.getTitle());
             errorWindow.setScene(errorScene);
             errorWindow.show();
@@ -114,7 +114,7 @@ public class SceneFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // Load in settings panel
-            FXMLLoader settingsPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/settingsPanelLayout.fxml"));
+            FXMLLoader settingsPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/settingsPanelLayout.fxml"));
             settingsTab.setContent(settingsPanelLoader.load());
             settingsPanelController = settingsPanelLoader.getController();
             settingsPanelController.setup(); // Set up settings panel.
@@ -123,13 +123,13 @@ public class SceneFXMLController implements Initializable {
             settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
 
             // Load in info panel.
-            FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/infoPanelLayout.fxml"));
+            FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/infoPanelLayout.fxml"));
             actionPane.setTop(infoPanelLoader.load());
             infoPanelController = infoPanelLoader.getController();
             infoPanelController.setup();
 
             // Load in canvas panel.
-            FXMLLoader canvasPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/canvasPanelLayout.fxml"));
+            FXMLLoader canvasPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/canvasPanelLayout.fxml"));
             actionPane.setCenter(canvasPanelLoader.load());
             canvasPanelController = canvasPanelLoader.getController();
             canvasPanelController.setup(); // Sets up canvas.
@@ -147,15 +147,15 @@ public class SceneFXMLController implements Initializable {
         try {
             // Load up a new window with user manual layout.
             final Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/stl/threebodysimulation/userManualLayout.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/stl/threebodysimulation/layouts/userManualLayout.fxml"));
             Scene scene = new Scene(root);
             // Enable css
-            scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/bootstrap3.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
             // We don't want the sceneLayout to be resizable, to save us the UI headache.
             stage.setResizable(false);
 
             // Icon of app
-            stage.getIcons().add(new Image("/stl/threebodysimulation/appIcon.png"));
+            stage.getIcons().add(new Image("/stl/threebodysimulation/icons/appIcon.png"));
 
             // Title of app
             stage.setTitle("User Manual");
