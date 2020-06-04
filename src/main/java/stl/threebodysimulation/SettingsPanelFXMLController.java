@@ -337,15 +337,24 @@ public class SettingsPanelFXMLController {
         } catch (NumberFormatException ignored) { // Should never happen.
             speed = 0;
         }
+        String CSVFileName;
+        if (saveCSVCheckBox.isSelected()) {
+            CSVFileName = CSVIDField.getText();
+        } else {
+            CSVFileName = "";
+        }
 
         // Disable run button if the simulation is going to continuously run.
         if (infiniteEnabled) {
             runButton.setDisable(true);
         }
 
-        return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue());
+        return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue(), CSVFileName);
     }
 
+    /**
+     * Changes UI elements based on if CSV toggle is enabled.
+     */
     public void saveCSVToggle() {
         if (saveCSVCheckBox.isSelected()) {
             CSVIDLabel.setTextFill(Color.BLACK);
