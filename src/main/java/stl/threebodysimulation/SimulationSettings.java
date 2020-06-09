@@ -8,42 +8,42 @@ class SimulationSettings {
     /**
      * Particle array to be simulated.
      */
-    private Particle[] particles;
+    private final Particle[] particles;
 
     /**
      * Whether the simulation runs continuously.
      */
-    private boolean isInfinite;
+    private final boolean isInfinite;
 
     /**
      * Whether the simulation shows trails.
      */
-    private boolean hasTrails;
+    private final boolean hasTrails;
 
     /**
      * Whether the simulation shows the center of gravity/mass.
      */
-    private boolean showsCenterOfGravity;
+    private final boolean showsCenterOfGravity;
 
     /**
      * The amount of time that the simulation skips.
      */
-    private double skip;
+    private final double skip;
 
     /**
      * The simulation speed multiplier.
      */
-    private double speed;
+    private final double speed;
 
     /**
      * The format of numerical information display.
      */
-    private NumberFormat numberFormat;
+    private final NumberFormat numberFormat;
 
     /**
      * The name of the CSV file that information is saved to.
      */
-    private String CSVFileName;
+    private final String CSVFileName;
 
 
     /**

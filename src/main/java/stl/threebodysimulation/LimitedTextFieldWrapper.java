@@ -36,7 +36,7 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
     /**
      * The regex format pattern that inputs must follow.
      */
-    private String decimalPattern;
+    private final String decimalPattern;
 
     /**
      * Basic constructor for a LimitedTextFieldWrapper that manages a TextField and related objects.

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -143,6 +144,11 @@ public class SettingsPanelFXMLController {
     private TextFieldWrapper CSVIDWrapper;
 
     /**
+     * Whether we should overwrite an existing CSV file.
+     */
+    private boolean forceCSV;
+
+    /**
      * The TextField UI element that holds a template ID for saving.
      */
     @FXML
@@ -200,6 +206,9 @@ public class SettingsPanelFXMLController {
             // This should never happen.
             return;
         }
+
+        // Default: no overwriting CSVs!
+        forceCSV = false;
 
         // Default value of timeskip.
         timeskipField.setText("0");
@@ -288,9 +297,47 @@ public class SettingsPanelFXMLController {
         }
         if (!readiness) {
             onRunErrorListener.onEvent();
+            return false;
         }
 
-        return readiness;
+        if (!forceCSV) {
+            if (CSVFileConflict()) {
+                return false;
+            }
+        }
+
+        // Reset forceCSV.
+        forceCSV = false;
+
+        return true;
+    }
+
+    /**
+     * Checks if the CSV file the user wants to save should be overwritten.
+     *
+     * @return true if the user chooses not to overwrite the file, false if no conflict exists or if the user wants to overwrite the file.
+     */
+    private boolean CSVFileConflict() {
+        // Check if the user wants to save CSV files in the first place
+        if (!saveCSVCheckBox.isSelected()) {
+            return false; // No conflict exists since the CSV file won't be written anyways
+        }
+
+        File CSVFile = new File("CSV" + SceneFXMLController.fileSeparator + CSVIDField.getText() + ".csv");
+
+        if (!CSVFile.exists()) {
+            return false; // No conflict exists since no CSV file already exists with the same name.
+        }
+
+        SceneFXMLController.openWarningWindow(
+                "This simulation will overwrite an existing CSV file. Are you sure you want to proceed?",
+                settingsBox.getScene().getWindow(),
+                () -> {
+                    forceCSV = true;
+                    runSimulation();
+                });
+
+        return true;
     }
 
     /**
@@ -358,11 +405,7 @@ public class SettingsPanelFXMLController {
      * Changes UI elements based on if CSV toggle is enabled.
      */
     public void saveCSVToggle() {
-        if (saveCSVCheckBox.isSelected()) {
-            CSVIDWrapper.changeState(true);
-        } else {
-            CSVIDWrapper.changeState(false);
-        }
+        CSVIDWrapper.changeState(saveCSVCheckBox.isSelected());
     }
 
     /**
