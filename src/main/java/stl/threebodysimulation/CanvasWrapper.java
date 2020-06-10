@@ -11,7 +11,7 @@ class CanvasWrapper {
     /**
      * The canvas to be drawn on.
      */
-    private Canvas canvas;
+    private final Canvas canvas;
 
     /**
      * The particles to draw on the canvas.
@@ -21,7 +21,7 @@ class CanvasWrapper {
     /**
      * The graphics supplied to the canvas.
      */
-    private GraphicsContext gc;
+    private final GraphicsContext gc;
 
     /**
      * Whether the canvas should show particle trails.

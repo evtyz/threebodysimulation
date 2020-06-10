@@ -6,11 +6,20 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.math3.exception.NumberIsTooLargeException;
 import org.apache.commons.math3.exception.NumberIsTooSmallException;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 /**
  * The controller for the Canvas with graphics.
@@ -45,7 +54,7 @@ public class CanvasPanelFXMLController {
     /**
      * Flattened version of the Particle array for input into a ParticleDifferentialEquations object.
      */
-    private double[] flattenedParticles = new double[12];
+    private final double[] flattenedParticles = new double[12];
 
     /**
      * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
@@ -61,6 +70,11 @@ public class CanvasPanelFXMLController {
      * The current speed of the simulation, in simulation seconds / real seconds.
      */
     private double speed;
+
+    /**
+     * The name of the CSV file we save stats to.
+     */
+    private String CSVFilePath = "";
 
     /**
      * A ParticleDifferentialEquations object that represents the unique differential equation of the particles, with respect to their masses in Earth units.
@@ -149,6 +163,8 @@ public class CanvasPanelFXMLController {
         canvasWrapper.clearCanvas();
         canvasWrapper.setSettings(settings);
 
+        CSVFilePath = setupCSV(settings.getCSVFileName());
+
         // Set up the particle differential equation according to the masses of each particle.
         particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
 
@@ -204,6 +220,63 @@ public class CanvasPanelFXMLController {
     }
 
     /**
+     * Sets up a CSV file with the specified filename
+     *
+     * @param filename The name of the CSV file to be setup
+     * @return The path of the new CSV file.
+     */
+    private String setupCSV(String filename) {
+        if (filename.equals("")) {
+            return ""; // Sentinal value, means that the user doesn't want to save anything.
+        }
+        String directory = "CSV";
+        String filepath = directory + SceneFXMLController.fileSeparator + filename + ".csv";
+        File CSVDirectory = new File(directory);
+        File CSVFile = new File(filepath);
+        try {
+            CSVDirectory.mkdir(); // Make the CSV folder if it doesn't exist
+
+            if (!CSVFile.createNewFile()) { // Create a new file
+                CSVFile.delete(); // If there already is one, delete the old file
+                CSVFile.createNewFile(); // And try creating the new file again.
+            }
+
+            BufferedWriter headerWriter = Files.newBufferedWriter(Paths.get(filepath)); // A FileWriter object to modify the file
+
+            CSVPrinter headerPrinter = new CSVPrinter(headerWriter, CSVFormat.DEFAULT); // CSVPrinter to parse data and write in CSV format using a FileWriter
+            String[] headers = new String[]{ // Column headers for a CSV file.
+                    "Time",
+                    "1 X Pos",
+                    "1 Y Pos",
+                    "1 X Vel",
+                    "1 Y Vel",
+                    "1 X Acc",
+                    "1 Y Acc",
+                    "2 X Pos",
+                    "2 Y Pos",
+                    "2 X Vel",
+                    "2 Y Vel",
+                    "2 X Acc",
+                    "2 Y Acc",
+                    "3 X Pos",
+                    "3 Y Pos",
+                    "3 X Vel",
+                    "3 Y Vel",
+                    "3 X Acc",
+                    "3 Y Acc",
+            };
+            headerPrinter.printRecord(headers); // Write the headers into the file.
+            headerWriter.close(); // Close the file.
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Should never happen.
+        }
+
+        return filepath;
+    }
+
+
+    /**
      * Updates the flattenedParticles array according to the particles array.
      */
     private void flattenParticles() {
@@ -231,10 +304,40 @@ public class CanvasPanelFXMLController {
         timeLabel.setText(String.format("Time: %.5f secs", currentTime));
         canvasWrapper.updateCanvas();
 
+        if (!CSVFilePath.equals("")) { // Check if the user wants to save CSVs. If not, CSVFileName should equal an empty string.
+            try {
+                BufferedWriter dataWriter = Files.newBufferedWriter(Paths.get(CSVFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+                CSVPrinter dataPrinter = new CSVPrinter(dataWriter, CSVFormat.DEFAULT);
+                dataPrinter.printRecord(getRecord());
+                dataWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace(); // Should never occur, unless the user deletes the file midway through a simulation.
+            }
+        }
+
         // Finally, let the thread that runs the simulation unpause.
         synchronized (synchronizationObject) {
             synchronizationObject.notify();
         }
+    }
+
+    /**
+     * Converts particle information into an array of strings.
+     *
+     * @return The array of strings to be stored as the next row in a CSV file.
+     */
+    private String[] getRecord() {
+        String[] record = new String[1 + 6 * 3]; // Time + 3 particles * 6 attributes for each particle
+        int index = 0;
+        record[index++] = String.format("%.07f", currentTime);
+        for (Particle particle : particles) {
+            LinkedHashMap<String, double[]> information = particle.getPackage();
+            for (String vectorKey : information.keySet()) {
+                record[index++] = String.format("%.07f", information.get(vectorKey)[0]);
+                record[index++] = String.format("%.07f", information.get(vectorKey)[1]);
+            }
+        }
+        return record;
     }
 
     /**
@@ -341,6 +444,6 @@ public class CanvasPanelFXMLController {
     private void breakSimulation(ErrorMessage errorMessage) {
         updateAll();
         stopPressed();
-        SceneFXMLController.openPopupWindow(errorMessage, canvas.getScene().getWindow());
+        SceneFXMLController.openErrorWindow(errorMessage, canvas.getScene().getWindow());
     }
 }

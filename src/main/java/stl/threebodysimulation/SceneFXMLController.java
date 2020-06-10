@@ -27,40 +27,37 @@ public class SceneFXMLController implements Initializable {
      * Default colors that each particle is initialized to.
      */
     private static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
-
+    /**
+     * The separator between directory names. Depends on operating system. e.g. "/" vs "\\" vs others.
+     */
+    static String fileSeparator;
     /**
      * The info display panel in the UI.
      */
     private InfoPanelFXMLController infoPanelController;
-
     /**
      * The settings panel in the UI.
      */
     private SettingsPanelFXMLController settingsPanelController;
-
     /**
      * The Tab UI element for the settings panel.
      */
     @FXML
     private Tab settingsTab;
-
     /**
      * The Tab UI element for the saves panel.
      */
     @FXML
     private Tab savesTab;
-
     /**
      * The UI element that contains everything outside of the tabs to the left.
      */
     @FXML
     private BorderPane actionPane;
-
     /**
      * The visualization canvas and controls in the UI.
      */
     private CanvasPanelFXMLController canvasPanelController;
-
     /**
      * The entire UI scene, as a single element.
      */
@@ -71,6 +68,7 @@ public class SceneFXMLController implements Initializable {
      * Constructor used by the FXML loader.
      */
     public SceneFXMLController() {
+        fileSeparator = System.getProperty("file.separator");
     }
 
     /**
@@ -79,17 +77,17 @@ public class SceneFXMLController implements Initializable {
      * @param message The error message to display.
      * @param parent  The window that the error popup must block.
      */
-    static void openPopupWindow(ErrorMessage message, Window parent) {
+    static void openErrorWindow(ErrorMessage message, Window parent) {
         try {
             // Makes an FXML Loader and loads the fxml files
-            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/popupWindowLayout.fxml"));
+            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/errorWindowLayout.fxml"));
             Scene errorScene = new Scene(windowLoader.load());
 
             // Style the scenes
             errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
 
             // Load the correct message into the layout
-            PopupWindowFXMLController errorController = windowLoader.getController();
+            ErrorWindowFXMLController errorController = windowLoader.getController();
             errorController.setLabel(message.getMessage());
 
             // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
@@ -103,6 +101,43 @@ public class SceneFXMLController implements Initializable {
             errorWindow.show();
 
         } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * Opens a new popup window with an confirmation warning message
+     *
+     * @param message         The warning message to display.
+     * @param parent          The window that the warning popup must block.
+     * @param confirmListener The listener that will be called if the user confirms.
+     */
+    static void openWarningWindow(String message, Window parent, Listener confirmListener) {
+        try {
+            // Makes an FXML Loader and loads the fxml files
+            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/warningWindowLayout.fxml"));
+            Scene warningScene = new Scene(windowLoader.load());
+
+            // Style the scenes
+            warningScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
+
+            // Load the correct message into the layout
+            WarningWindowFXMLController warningController = windowLoader.getController();
+            warningController.setLabel(message);
+            warningController.setConfirmListener(confirmListener);
+
+
+            // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
+            final Stage warningWindow = new Stage();
+            warningWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
+            warningWindow.initOwner(parent);
+            warningWindow.setResizable(false); // Not resizable
+            warningWindow.getIcons().add(new Image("/stl/threebodysimulation/icons/warningIcon.png")); // Error icon.
+            warningWindow.setTitle("Confirmation Warning");
+            warningWindow.setScene(warningScene);
+            warningWindow.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -131,7 +166,7 @@ public class SceneFXMLController implements Initializable {
             settingsPanelController.setup(); // Set up settings panel.
             settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
             settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
-            settingsPanelController.setOnRunErrorListener(() -> openPopupWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
+            settingsPanelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
 
             // Load in info panel.
             FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/infoPanelLayout.fxml"));

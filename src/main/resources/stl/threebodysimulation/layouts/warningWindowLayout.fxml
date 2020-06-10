@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.WarningWindowFXMLController">
+    <children>
+        <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
+            <children>
+                <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../icons/warningIcon.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="messageLabel" text="The simulation could not run, because some parameters were invalid. Please add valid inputs, and then try again." wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </HBox>
+      <HBox alignment="CENTER" layoutX="30.0" layoutY="30.0" nodeOrientation="RIGHT_TO_LEFT" prefWidth="200.0" spacing="15.0">
+         <children>
+              <Button alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow" prefHeight="40.0" styleClass="primary" stylesheets="@../styles/bootstrap3.css" text="No" />
+            <Button alignment="CENTER" layoutX="170.0" layoutY="10.0" mnemonicParsing="false" onAction="#confirm" prefHeight="40.0" stylesheets="@../styles/bootstrap3.css" text="Yes" />
+         </children>
+      </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

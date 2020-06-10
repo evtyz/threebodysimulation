@@ -2,7 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.scene.paint.Color;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This class represents a particle to be simulated.
@@ -26,22 +26,22 @@ class Particle {
     /**
      * x and y components of particle's position.
      */
-    private double[] position;
+    private final double[] position;
 
     /**
      * x and y components of particle's velocity.
      */
-    private double[] velocity;
+    private final double[] velocity;
 
     /**
      * x and y components of particle's acceleration.
      */
-    private double[] acceleration;
+    private final double[] acceleration;
 
     /**
      * A hashmap that represents packaged displayable information from the particle.
      */
-    private HashMap<String, double[]> packagedInformation;
+    private final LinkedHashMap<String, double[]> packagedInformation;
 
     /**
      * A Listener object that is called when the particle's properties change.
@@ -65,7 +65,7 @@ class Particle {
         acceleration = new double[]{0, 0}; // users cannot provide starting acceleration to a particle.
 
         // Packages above vectors into a convenient hashmap for later use.
-        packagedInformation = new HashMap<>();
+        packagedInformation = new LinkedHashMap<>();
         packagedInformation.put("position", position);
         packagedInformation.put("velocity", velocity);
         packagedInformation.put("acceleration", acceleration);
@@ -140,7 +140,7 @@ class Particle {
      *
      * @return A hashmap with position, velocity, and acceleration.
      */
-    HashMap<String, double[]> getPackage() {
+    LinkedHashMap<String, double[]> getPackage() {
         return packagedInformation;
     }
 }
