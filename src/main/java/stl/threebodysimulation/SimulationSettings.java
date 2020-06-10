@@ -1,9 +1,11 @@
 package stl.threebodysimulation;
 
+import java.io.Serializable;
+
 /**
  * A class that packages simulation settings
  */
-class SimulationSettings {
+class SimulationSettings implements Serializable {
 
     /**
      * Particle array to be simulated.

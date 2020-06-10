@@ -17,6 +17,15 @@ public enum ErrorMessage {
             return "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.";
         }
     },
+    SAVE_ERROR {
+        public String getTitle() {
+            return "Template Error";
+        }
+
+        public String getMessage() {
+            return "The template cannot be saved, because some parameters are not valid. Please provide valid inputs, and then try again.";
+        }
+    },
     /**
      * An error that occurs when an asymptote is detected in the simulation and it must stop.
      */

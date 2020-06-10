@@ -5,15 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -45,10 +47,10 @@ public class SceneFXMLController implements Initializable {
     @FXML
     private Tab settingsTab;
     /**
-     * The Tab UI element for the saves panel.
+     * The VBox UI element for the saves panel.
      */
     @FXML
-    private Tab savesTab;
+    private VBox savesBox;
     /**
      * The UI element that contains everything outside of the tabs to the left.
      */
@@ -111,7 +113,7 @@ public class SceneFXMLController implements Initializable {
      * @param parent          The window that the warning popup must block.
      * @param confirmListener The listener that will be called if the user confirms.
      */
-    static void openWarningWindow(String message, Window parent, Listener confirmListener) {
+    static void openWarningWindow(ConfirmationMessage message, Window parent, Listener confirmListener) {
         try {
             // Makes an FXML Loader and loads the fxml files
             FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/warningWindowLayout.fxml"));
@@ -122,7 +124,7 @@ public class SceneFXMLController implements Initializable {
 
             // Load the correct message into the layout
             WarningWindowFXMLController warningController = windowLoader.getController();
-            warningController.setLabel(message);
+            warningController.setLabel(message.getMessage());
             warningController.setConfirmListener(confirmListener);
 
 
@@ -132,7 +134,7 @@ public class SceneFXMLController implements Initializable {
             warningWindow.initOwner(parent);
             warningWindow.setResizable(false); // Not resizable
             warningWindow.getIcons().add(new Image("/stl/threebodysimulation/icons/warningIcon.png")); // Error icon.
-            warningWindow.setTitle("Confirmation Warning");
+            warningWindow.setTitle(message.getTitle());
             warningWindow.setScene(warningScene);
             warningWindow.show();
 
@@ -167,6 +169,7 @@ public class SceneFXMLController implements Initializable {
             settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
             settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
             settingsPanelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
+            settingsPanelController.setOnSaveTemplateListener(this::refreshSaves);
 
             // Load in info panel.
             FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/infoPanelLayout.fxml"));
@@ -179,11 +182,82 @@ public class SceneFXMLController implements Initializable {
             actionPane.setCenter(canvasPanelLoader.load());
             canvasPanelController = canvasPanelLoader.getController();
             canvasPanelController.setup(); // Sets up canvas.
-            canvasPanelController.setOnStopListener(() -> settingsPanelController.enableRunButton()); // Enables rerunning the simulation if it is stopped.
+            canvasPanelController.setOnStopListener(() -> settingsPanelController.setActiveRunButton(true)); // Enables rerunning the simulation if it is stopped.
+
+            refreshSaves();
+
         } catch (IOException ignored) {
             // This only happens when FXML files aren't found, which should never happen.
         }
     }
+
+    /**
+     * Refreshes the saves display for new saves.
+     */
+    private void refreshSaves() {
+        try {
+            savesBox.getChildren().clear();
+        } catch (NullPointerException ignored) {}
+        File saveDirectory = new File("Saves");
+        saveDirectory.mkdir(); // Create a directory if none exists.
+        File[] filesList = saveDirectory.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".tbsettings");
+            }
+        });
+        try {
+            if (filesList.length == 0) {
+                showNoSavesMessage();
+            } else {
+                for (File saveFile : filesList) {
+                    // TODO
+                    // Reads a file and saves it as a node.
+                    FileInputStream fileStream = new FileInputStream(saveFile);
+                    ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+
+                    try {
+                        SimulationSettings settings = (SimulationSettings) objectStream.readObject();
+                        FXMLLoader saveLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/savePreviewLayout.fxml"));
+                        savesBox.getChildren().add(saveLoader.load());
+                        SavePreviewFXMLController saveController = saveLoader.getController();
+                        saveController.setSettings(settings);
+                        saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
+                        saveController.setClickListener(new Listener() {
+                            @Override
+                            public void onEvent() {
+                                showPreview(saveController.getSettings());
+                            }
+                        });
+
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+            showNoSavesMessage();
+        }
+    }
+
+    /**
+     * Shows a messsage when no saves are found.
+     */
+    private void showNoSavesMessage() {
+        Label emptyMessage = new Label();
+        emptyMessage.setText("No saves found.");
+        savesBox.getChildren().add(0, emptyMessage);
+    }
+
+    /**
+     * Shows a preview of loaded settings.
+     * @param settings Settings that are about to be loaded.
+     */
+    private void showPreview(SimulationSettings settings) {
+        // TODO
+    }
+
 
     /**
      * Opens the user manual.

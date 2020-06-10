@@ -10,8 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * The controller for the setting panel UI layout.
@@ -47,6 +46,11 @@ public class SettingsPanelFXMLController {
      * The listener that is called when an error occurs with inputs.
      */
     private Listener onRunErrorListener;
+
+    /**
+     * The listener that is called when a new template is saved.
+     */
+    private Listener onSaveTemplateListener;
 
     /**
      * The CheckBox UI element for running infinitely.
@@ -153,6 +157,11 @@ public class SettingsPanelFXMLController {
     private boolean forceCSV;
 
     /**
+     * Whether we should overwrite an existing template.
+     */
+    private boolean forceTemplateSave;
+
+    /**
      * The TextField UI element that holds a template ID for saving.
      */
     @FXML
@@ -211,8 +220,9 @@ public class SettingsPanelFXMLController {
             return;
         }
 
-        // Default: no overwriting CSVs!
+        // Default: no overwriting!
         forceCSV = false;
+        forceTemplateSave = false;
 
         // Default value of timeskip.
         timeskipField.setText("0");
@@ -278,9 +288,10 @@ public class SettingsPanelFXMLController {
     /**
      * Checks if all object and parameter settings are ready.
      *
+     * @param forSimulation True if the validation check is for simulation purposes, false otherwise.
      * @return True if ready, False if not ready.
      */
-    private boolean executeValidityCheck() {
+    private boolean executeValidityCheck(boolean forSimulation) {
         boolean readiness = true;
 
         // All wrappers must be called, so that they have an opportunity to highlight red.
@@ -299,17 +310,22 @@ public class SettingsPanelFXMLController {
                 readiness = false;
             }
         }
+
+        if (forSimulation) {
+            if (!readiness) {
+                onRunErrorListener.onEvent();
+                return false;
+            }
+            if (CSVFileConflict()) {
+                return false;
+            }
+            forceCSV = false; // Reset forceCSV.
+            return true;
+        }
+
         if (!readiness) {
-            onRunErrorListener.onEvent();
             return false;
         }
-
-        if (CSVFileConflict()) {
-            return false;
-        }
-
-        // Reset forceCSV.
-        forceCSV = false;
 
         return true;
     }
@@ -339,9 +355,7 @@ public class SettingsPanelFXMLController {
 
         // If the user presses yes, we will restart the runSimulation method from the start (with forceCSV true this time).
         SceneFXMLController.openWarningWindow(
-                "This simulation will overwrite the following file:\n'"
-                        + CSVFile.getAbsolutePath()
-                        + "'\nAre you sure you want to proceed?",
+                new ConfirmationMessage(ConfirmationMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
                 settingsBox.getScene().getWindow(),
                 () -> {
                     forceCSV = true;
@@ -355,9 +369,11 @@ public class SettingsPanelFXMLController {
      * Runs the simulation, if the settings are valid. Links to FXML.
      */
     public void runSimulation() {
-        // TODO: Finish this method.
-        if (!executeValidityCheck()) {
+        if (!executeValidityCheck(true)) {
             return;
+        }
+        if (infiniteCheckBox.isSelected()) {
+            setActiveRunButton(false);
         }
         onRunSimulationListener.onEvent();
     }
@@ -404,11 +420,6 @@ public class SettingsPanelFXMLController {
             CSVFileName = "";
         }
 
-        // Disable run button if the simulation is going to continuously run.
-        if (infiniteEnabled) {
-            runButton.setDisable(true);
-        }
-
         return new SimulationSettings(particles, infiniteEnabled, trailsEnabled, centerOfGravityEnabled, skip, speed, numberFormatBox.getValue(), CSVFileName);
     }
 
@@ -420,10 +431,12 @@ public class SettingsPanelFXMLController {
     }
 
     /**
-     * Enables the run button.
+     * Enables/Disables the run button.
+     *
+     * @param state The state the run button is changed to. True if enabled, false if disabled.
      */
-    void enableRunButton() {
-        runButton.setDisable(false);
+    void setActiveRunButton(boolean state) {
+        runButton.setDisable(!state);
     }
 
     /**
@@ -433,5 +446,75 @@ public class SettingsPanelFXMLController {
         File CSVDirectory = new File("CSV");
         CSVDirectory.mkdir();
         DesktopAPI.open(CSVDirectory);
+    }
+
+    /**
+     * Tries to save the current template into a .tbsettings file.
+     */
+    public void saveTemplate() {
+        boolean readiness = true;
+
+        if (!templateIDFieldWrapper.isReady()) {
+            readiness = false;
+        }
+        if (!executeValidityCheck(false)) {
+            readiness = false;
+        }
+
+        if (!readiness) {
+            SceneFXMLController.openErrorWindow(ErrorMessage.SAVE_ERROR, settingsBox.getScene().getWindow());
+            return;
+        }
+
+        SimulationSettings settings = getSimulationSettings();
+
+        String saveDirectoryPath = "Saves";
+        File saveDirectory = new File(saveDirectoryPath);
+        saveDirectory.mkdir();
+
+        String filepath = saveDirectoryPath + SceneFXMLController.fileSeparator + templateIDField.getText() + ".tbsettings";
+
+        File saveFile = new File(filepath);
+
+        if (forceTemplateSave || !saveFile.exists()) {
+            storeTemplate(settings, filepath);
+        } else {
+            SceneFXMLController.openWarningWindow(
+                    new ConfirmationMessage(ConfirmationMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
+                    settingsBox.getScene().getWindow(),
+                    () -> {
+                        forceTemplateSave = true;
+                        saveTemplate();
+                    });
+        }
+
+        forceTemplateSave = false;
+    }
+
+    /**
+     * Tries to store a settings object into a file.
+     *
+     * @param settings The SimulationSettings object to be stored.
+     * @param filepath The path of the file where the object will be stored.
+     */
+    void storeTemplate(SimulationSettings settings, String filepath) {
+        try {
+            FileOutputStream fileOutput = new FileOutputStream(filepath);
+            ObjectOutputStream objectFileOutput = new ObjectOutputStream(fileOutput);
+            objectFileOutput.writeObject(settings);
+            objectFileOutput.close();
+            onSaveTemplateListener.onEvent();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets the listener that is called when the user saves a template.
+     *
+     * @param onSaveTemplateListener The listener that will be called.
+     */
+    void setOnSaveTemplateListener(Listener onSaveTemplateListener) {
+        this.onSaveTemplateListener = onSaveTemplateListener;
     }
 }

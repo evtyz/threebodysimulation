@@ -2,51 +2,57 @@ package stl.threebodysimulation;
 
 import javafx.scene.paint.Color;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
  * This class represents a particle to be simulated.
  */
-class Particle {
+class Particle implements Serializable {
     /**
      * Mass, in earths.
      */
-    private final double mass;
+    private double mass;
 
     /**
      * ID of particle, one of {1, 2, 3}
      */
-    private final int id;
+    private int id;
 
     /**
      * Color of particle.
      */
-    private final Color color;
+    private transient Color color;
+
+    /**
+     * Color of particle as an array of doubles for serialization.
+     */
+    private double[] colorDoubles;
 
     /**
      * x and y components of particle's position.
      */
-    private final double[] position;
+    private double[] position;
 
     /**
      * x and y components of particle's velocity.
      */
-    private final double[] velocity;
+    private double[] velocity;
 
     /**
      * x and y components of particle's acceleration.
      */
-    private final double[] acceleration;
+    private double[] acceleration;
 
     /**
      * A hashmap that represents packaged displayable information from the particle.
      */
-    private final LinkedHashMap<String, double[]> packagedInformation;
+    private transient LinkedHashMap<String, double[]> packagedInformation;
 
     /**
      * A Listener object that is called when the particle's properties change.
      */
-    private Listener infoUpdateListener;
+    private transient Listener infoUpdateListener;
 
     /**
      * Constructor for the particle class.
@@ -63,6 +69,7 @@ class Particle {
         position = new double[]{xPos, yPos};
         velocity = new double[]{xVel, yVel};
         acceleration = new double[]{0, 0}; // users cannot provide starting acceleration to a particle.
+        colorDoubles = new double[]{color.getRed(), color.getGreen(), color.getBlue()};
 
         // Packages above vectors into a convenient hashmap for later use.
         packagedInformation = new LinkedHashMap<>();
@@ -73,6 +80,13 @@ class Particle {
         this.mass = mass;
         this.id = id;
         this.color = color;
+    }
+
+    /**
+     * Reconstructs a color from a colorDoubles array.
+     */
+    void reconstructColor() {
+        color = Color.color(colorDoubles[0], colorDoubles[1], colorDoubles[2]);
     }
 
     /**
