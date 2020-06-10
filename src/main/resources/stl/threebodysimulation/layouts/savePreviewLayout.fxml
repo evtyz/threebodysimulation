@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SavePreviewFXMLController">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
@@ -99,7 +98,7 @@
             <Separator orientation="VERTICAL" />
             <VBox alignment="CENTER" prefWidth="75.0" spacing="20.0">
                <children>
-                  <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="selectButton" fitHeight="40.0" fitWidth="200.0" onMouseClicked="#select" onMouseEntered="#startHoverSelect" onMouseExited="#stopHoverSelect" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.3;">
                      <image>
                         <Image url="@../icons/confirmIcon.png" />
                      </image>
@@ -107,7 +106,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="deleteButton" fitHeight="40.0" fitWidth="200.0" onMouseClicked="#delete" onMouseEntered="#startHoverDelete" onMouseExited="#stopHoverDelete" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.3;">
                      <image>
                         <Image url="@../icons/deleteIcon.png" />
                      </image>

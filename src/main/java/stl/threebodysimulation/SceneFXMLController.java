@@ -217,15 +217,21 @@ public class SceneFXMLController implements Initializable {
                 showNoSavesMessage();
             } else {
                 for (File saveFile : filesList) {
-                    // TODO
+                    // TODO Documentation
                     // Reads a file and saves it as a node.
                     ArrayList<String> serializedForm = new ArrayList<>();
 
-                    for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
-                        for (int index = 0; index < record.size(); index++) {
-                            serializedForm.add(record.get(index));
+                    try {
+                        for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
+                            for (int index = 0; index < record.size(); index++) {
+                                serializedForm.add(record.get(index));
+                            }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        // Should never happen.
                     }
+
 
                     SimulationSettings settings = new SimulationSettings(serializedForm);
                     FXMLLoader saveLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/savePreviewLayout.fxml"));
@@ -233,16 +239,15 @@ public class SceneFXMLController implements Initializable {
                     SavePreviewFXMLController saveController = saveLoader.getController();
                     saveController.setSettings(settings);
                     saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
-                    saveController.setClickListener(new Listener() {
-                        @Override
-                        public void onEvent() {
-                            showPreview(saveController.getSettings());
-                        }
+                    saveController.setSelectListener(() -> showPreview(saveController.getSettings()));
+                    saveController.setDeleteListener(() -> {
+                        saveFile.delete();
+                        refreshSaves();
                     });
 
                 }
             }
-        } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
+        } catch (NullPointerException | IOException e) {
             e.printStackTrace();
             showNoSavesMessage();
         }

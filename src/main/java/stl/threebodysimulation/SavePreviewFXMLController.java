@@ -1,7 +1,10 @@
 package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+
 
 /**
  * The FXMLController for the UI element that shows previews of saved templates.
@@ -16,7 +19,9 @@ public class SavePreviewFXMLController {
     /**
      * The listener that is called when the user selects this preview.
      */
-    private Listener clickListener;
+    private Listener selectListener;
+
+    private Listener deleteListener;
 
     /**
      * The label that shows the filename of the settings.
@@ -60,6 +65,12 @@ public class SavePreviewFXMLController {
     @FXML
     private Label massLabel3;
 
+    @FXML
+    private ImageView deleteButton;
+
+    @FXML
+    private ImageView selectButton;
+
     /**
      * The constructor for the FXMLLoader.
      */
@@ -99,10 +110,20 @@ public class SavePreviewFXMLController {
     /**
      * Sets the click listener for when the user selects the preview.
      *
-     * @param listener The listener to set.
+     * @param selectListener The listener to set.
      */
-    void setClickListener(Listener listener) {
-        clickListener = listener;
+    void setSelectListener(Listener selectListener) {
+        this.selectListener = selectListener;
+    }
+
+
+    /**
+     * Sets the delete listener for when the user deletes the preview.
+     *
+     * @param deleteListener The listener to set.
+     */
+    void setDeleteListener(Listener deleteListener) {
+        this.deleteListener = deleteListener;
     }
 
     /**
@@ -113,4 +134,63 @@ public class SavePreviewFXMLController {
     SimulationSettings getSettings() {
         return settings;
     }
+
+    /**
+     * Handles when the user starts hovering the select button.
+     */
+    public void startHoverSelect() {
+        hover(selectButton, true);
+    }
+
+    /**
+     * Handles when the user stops hovering the select button.
+     */
+    public void stopHoverSelect() {
+        hover(selectButton, false);
+    }
+
+    /**
+     * Called when the user clicks the select button.
+     */
+    public void select() {
+        selectListener.onEvent();
+    }
+
+    /**
+     * Handles when the user starts hovering the delete button.
+     */
+    public void startHoverDelete() {
+        hover(deleteButton, true);
+    }
+
+    /**
+     * Handles when the user stops hovering the delete button.
+     */
+    public void stopHoverDelete() {
+        hover(deleteButton, false);
+    }
+
+    /**
+     * Called when the user clicks the delete button.
+     */
+    public void delete() {
+        deleteListener.onEvent();
+    }
+
+    /**
+     * Handles changing the opacity of a button depending on if it is hovered or not.
+     *
+     * @param button The button whose opacity is being changed.
+     * @param state True if it is being hovered, false if not.
+     */
+    static void hover(ImageView button, boolean state) {
+        String opacity;
+        if (state) {
+            opacity = "1";
+        } else {
+            opacity = "0.3";
+        }
+        button.setStyle(String.format("-fx-opacity: %s", opacity));
+    }
+
 }
