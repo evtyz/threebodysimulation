@@ -135,6 +135,7 @@
                         <list>org.apache.commons.math3.ode.FirstOrderDifferentialEquations</list>
                         <list>org.apache.commons.csv.CSVFormat</list>
                         <list>org.apache.commons.csv.CSVPrinter</list>
+                        <list>java.awt.Desktop</list>
                         <list>java.io.BufferedWriter</list>
                         <list>java.io.File</list>
                         <list>java.io.IOException</list>
@@ -142,6 +143,8 @@
                         <list>java.nio.file.Paths</list>
                         <list>java.nio.file.StandardOpenOption</list>
                         <list>java.util.Arrays</list>
+                        <list>java.util.ArrayList</list>
+                        <list>java.util.List</list>
                         <list>java.util.LinkedHashMap</list>
                         <list>java.util.HashMap</list>
                         <list>java.util.ResourceBundle</list>
@@ -149,6 +152,7 @@
                         <list>java.net.URL</list>
                         <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
                         <list>stl.threebodysimulation.CanvasWrapper</list>
+                        <list>stl.threebodysimulation.DesktopAPI</list>
                         <list>stl.threebodysimulation.ErrorMessage</list>
                         <list>stl.threebodysimulation.InfoFXMLController</list>
                         <list>stl.threebodysimulation.InfoPanelFXMLController</list>
