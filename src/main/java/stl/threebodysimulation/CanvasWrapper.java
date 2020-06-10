@@ -43,6 +43,10 @@ class CanvasWrapper {
         gc = canvas.getGraphicsContext2D();
     }
 
+    double posX;
+    double posY;
+    double avgMass;
+    double[] circleRad = {0, 0, 0};
 
     /**
      * Sets the graphics options and particles for the canvas.
@@ -53,15 +57,25 @@ class CanvasWrapper {
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
+
+        avgMass = particles[0].getMass() * particles[1].getMass() * particles[2].getMass();
+        for (int i = 0; i < 3; i++){
+            circleRad[i] = Math.sqrt(particles[i].getMass() / avgMass);
+        }
     }
 
     /**
      * Updates the canvas according to the current state of the particles.
      */
+
     void updateCanvas() {
         // TODO
-        for (int i = 0; i < 3; i++)
-            gc.fillOval(particles[i].getPosition()[0], particles[i].getPosition()[1], 7, 7);
+        for (int i = 0; i < 3; i++) {
+            posX = particles[i].getPosition()[0] + 400;
+            posY = particles[i].getPosition()[1] + 360;
+            gc.setFill(particles[i].getColor());
+            gc.fillOval(posX, posY, 7, 7);
+        }
     }
 
     /**
@@ -69,5 +83,6 @@ class CanvasWrapper {
      */
     void clearCanvas() {
         // TODO
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }
