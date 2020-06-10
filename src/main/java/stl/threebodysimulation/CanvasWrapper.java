@@ -42,7 +42,7 @@ class CanvasWrapper {
         this.canvas = canvas;
         gc = canvas.getGraphicsContext2D();
     }
-    
+
     double[] canvasPos = {0,0};
     double avgMass;
     double[] circleRad = {0, 0, 0};
@@ -69,6 +69,7 @@ class CanvasWrapper {
 
     void updateCanvas() {
         // TODO
+        clearCanvas();
         for (int i = 0; i < 3; i++) {
             canvasPos[0] = particles[i].getPosition()[0] + 400;
             canvasPos[1] = particles[i].getPosition()[1] + 360;
