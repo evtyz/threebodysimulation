@@ -3,14 +3,23 @@ package stl.threebodysimulation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
-import java.awt.*;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
 
 /**
  * The controller for the setting panel UI layout.
@@ -177,12 +186,6 @@ public class SettingsPanelFXMLController {
      * A wrapper that manages templateIDField.
      */
     private TextFieldWrapper templateIDFieldWrapper;
-
-    /**
-     * The Button UI element that is clicked to save a template.
-     */
-    @FXML
-    private Button saveButton;
 
     /**
      * The VBox UI element that the entire settings panel fits into.
@@ -498,15 +501,17 @@ public class SettingsPanelFXMLController {
      * @param filepath The path of the file where the object will be stored.
      */
     void storeTemplate(SimulationSettings settings, String filepath) {
+        ArrayList<String> serializedForm = settings.serialize();
         try {
-            FileOutputStream fileOutput = new FileOutputStream(filepath);
-            ObjectOutputStream objectFileOutput = new ObjectOutputStream(fileOutput);
-            objectFileOutput.writeObject(settings);
-            objectFileOutput.close();
+            BufferedWriter serializedWriter = Files.newBufferedWriter(Paths.get(filepath));
+            CSVPrinter serializedPrinter = new CSVPrinter(serializedWriter, CSVFormat.DEFAULT);
+            serializedPrinter.printRecord(serializedForm);
+            serializedWriter.close();
             onSaveTemplateListener.onEvent();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     /**

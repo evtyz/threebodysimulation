@@ -15,6 +15,9 @@ public class WarningWindowFXMLController implements Initializable {
     @FXML
     private Label messageLabel;
 
+    /**
+     * A listener that is called when the user confirms the warning.
+     */
     private Listener confirmListener;
 
     /**

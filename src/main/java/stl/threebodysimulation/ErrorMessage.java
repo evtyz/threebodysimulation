@@ -17,6 +17,9 @@ public enum ErrorMessage {
             return "The simulation cannot be run, because some parameters are not valid. Please input valid numbers, and then try again.";
         }
     },
+    /**
+     * An error that occurs if the user tries to save a template without incorrect parameters.
+     */
     SAVE_ERROR {
         public String getTitle() {
             return "Template Error";

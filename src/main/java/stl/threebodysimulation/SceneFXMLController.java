@@ -14,9 +14,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -213,29 +219,30 @@ public class SceneFXMLController implements Initializable {
                 for (File saveFile : filesList) {
                     // TODO
                     // Reads a file and saves it as a node.
-                    FileInputStream fileStream = new FileInputStream(saveFile);
-                    ObjectInputStream objectStream = new ObjectInputStream(fileStream);
+                    ArrayList<String> serializedForm = new ArrayList<>();
 
-                    try {
-                        SimulationSettings settings = (SimulationSettings) objectStream.readObject();
-                        FXMLLoader saveLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/savePreviewLayout.fxml"));
-                        savesBox.getChildren().add(saveLoader.load());
-                        SavePreviewFXMLController saveController = saveLoader.getController();
-                        saveController.setSettings(settings);
-                        saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
-                        saveController.setClickListener(new Listener() {
-                            @Override
-                            public void onEvent() {
-                                showPreview(saveController.getSettings());
-                            }
-                        });
-
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                    for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
+                        for (int index = 0; index < record.size(); index++) {
+                            serializedForm.add(record.get(index));
+                        }
                     }
+
+                    SimulationSettings settings = new SimulationSettings(serializedForm);
+                    FXMLLoader saveLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/savePreviewLayout.fxml"));
+                    savesBox.getChildren().add(saveLoader.load());
+                    SavePreviewFXMLController saveController = saveLoader.getController();
+                    saveController.setSettings(settings);
+                    saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
+                    saveController.setClickListener(new Listener() {
+                        @Override
+                        public void onEvent() {
+                            showPreview(saveController.getSettings());
+                        }
+                    });
+
                 }
             }
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException | IOException | IndexOutOfBoundsException e) {
             e.printStackTrace();
             showNoSavesMessage();
         }

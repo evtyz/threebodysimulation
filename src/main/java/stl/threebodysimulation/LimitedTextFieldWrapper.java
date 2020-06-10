@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 
 import java.text.DecimalFormat;
@@ -33,10 +32,6 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
      */
     private final boolean allowBottomInclusive;
 
-    /**
-     * The regex format pattern that inputs must follow.
-     */
-    private final String decimalPattern;
 
     /**
      * Basic constructor for a LimitedTextFieldWrapper that manages a TextField and related objects.
@@ -67,12 +62,12 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
 
         // Regexes modified from P. Jowko's implementation at https://stackoverflow.com/questions/40485521/javafx-textfield-validation-decimal-value.
         if (allowNegative) {
-            decimalPattern = "[-]?[0-9]*(\\.[0-9]*)?";
+            regexPattern = "[-]?[0-9]*(\\.[0-9]*)?";
         } else {
-            decimalPattern = "[0-9]*(\\.[0-9]*)?";
+            regexPattern = "[0-9]*(\\.[0-9]*)?";
         }
 
-        limitToNumericalInput();
+        limitInput();
         attachInputValidator();
 
         // Set up the tooltip with correct text and settings
@@ -94,20 +89,6 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
     LimitedTextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive, Label subjectLabel) {
         this(subject, tooltip, min, max, allowBottomInclusive);
         this.subjectLabel = subjectLabel;
-    }
-
-    /**
-     * Limits the TextField with a TextFormatter that enforces the regex pattern.
-     */
-    // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
-    private void limitToNumericalInput() {
-        // Ensures that the text-field only accepts numerical inputs.
-        subject.setTextFormatter(new TextFormatter<>(change -> {
-            if (change.getControlNewText().matches(decimalPattern)) {
-                return change;
-            }
-            return null;
-        }));
     }
 
     /**
