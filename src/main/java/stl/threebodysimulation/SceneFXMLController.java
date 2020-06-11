@@ -3,6 +3,7 @@ package stl.threebodysimulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -214,7 +215,7 @@ public class SceneFXMLController implements Initializable {
      * Refreshes the saves display for new saves.
      */
     @SuppressWarnings("ConstantConditions") // Already caught by a try-catch.
-    private void refreshSaves() {
+    public void refreshSaves() {
         try {
             savesBox.getChildren().clear();
         } catch (NullPointerException ignored) {
@@ -269,6 +270,7 @@ public class SceneFXMLController implements Initializable {
     private void showNoSavesMessage() {
         Label emptyMessage = new Label();
         emptyMessage.setText("No saves found.");
+        emptyMessage.setPadding(new Insets(15, 15, 5, 15));
         savesBox.getChildren().add(0, emptyMessage);
     }
 
