@@ -1,3 +1,6 @@
+/**
+ * An app built in JavaFX to graphically simulate the Three-Body Problem in classical mechanics.
+ */
 module threebodysimulation {
     requires javafx.controls;
     requires javafx.fxml;
