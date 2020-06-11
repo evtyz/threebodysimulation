@@ -15,23 +15,21 @@
             </Tab>
             <Tab text="Saves">
                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px;">
-               <VBox alignment="TOP_CENTER" style="-fx-background-color: white;">
-                  <children>
-                           <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
-                               <padding>
-                                   <Insets top="5.0" />
-                               </padding>
-                           </VBox>
-                     <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="primary" text="Refresh">
-                        <VBox.margin>
-                           <Insets top="10.0" />
-                        </VBox.margin>
-                     </Button>
-                  </children>
-                  <padding>
-                     <Insets top="5.0" />
-                  </padding>
-               </VBox>
+                     <VBox alignment="TOP_CENTER" style="-fx-background-color: white;">
+                         <padding>
+                             <Insets top="5.0"/>
+                         </padding>
+                         <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
+                             <padding>
+                                 <Insets top="5.0"/>
+                             </padding>
+                         </VBox>
+                         <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="primary" text="Refresh">
+                             <VBox.margin>
+                                 <Insets top="10.0"/>
+                             </VBox.margin>
+                         </Button>
+                     </VBox>
                  </ScrollPane>
             </Tab>
         </TabPane>

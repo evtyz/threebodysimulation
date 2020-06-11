@@ -7,36 +7,36 @@
 <?import javafx.scene.text.Font?>
 
 
-<TitledPane fx:id="titleInfo" alignment="CENTER" animated="false" collapsible="false" contentDisplay="RIGHT" graphicTextGap="8.0" text="Object" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoFXMLController">
-   <content>
-      <VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@../styles/bootstrap3.css">
-          <StackPane prefWidth="225.0">
-              <VBox prefWidth="100.0" spacing="15.0">
-                  <Label text="POS:">
-                      <font>
-                          <Font name="System Bold" size="12.0" />
-                      </font>
-                  </Label>
-                  <Label text="VEL:">
-                      <font>
-                          <Font name="System Bold" size="12.0" />
-                      </font>
-                  </Label>
-                  <Label text="ACC:">
-                      <font>
-                          <Font name="System Bold" size="12.0" />
-                      </font>
-                  </Label>
-              </VBox>
-              <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefWidth="100.0" spacing="15.0">
-                  <Label fx:id="positionInfo" text="N/A" textAlignment="RIGHT" />
-                  <Label fx:id="velocityInfo" text="N/A" textAlignment="RIGHT" />
-                  <Label fx:id="accelerationInfo" text="N/A" />
-              </VBox>
-          </StackPane>
-      </VBox>
-   </content>
-   <font>
-      <Font name="System Bold" size="14.0" />
-   </font>
+<TitledPane fx:id="titleInfo" alignment="CENTER" animated="false" collapsible="false" contentDisplay="RIGHT"
+            graphicTextGap="8.0" text="Object" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoFXMLController">
+    <font>
+        <Font name="System Bold" size="14.0"/>
+    </font>
+    <VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@../styles/bootstrap3.css">
+        <StackPane prefWidth="225.0">
+            <VBox prefWidth="100.0" spacing="15.0">
+                <Label text="POS:">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <Label text="VEL:">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+                <Label text="ACC:">
+                    <font>
+                        <Font name="System Bold" size="12.0"/>
+                    </font>
+                </Label>
+            </VBox>
+            <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefWidth="100.0" spacing="15.0">
+                <Label fx:id="positionInfo" text="N/A" textAlignment="RIGHT"/>
+                <Label fx:id="velocityInfo" text="N/A" textAlignment="RIGHT"/>
+                <Label fx:id="accelerationInfo" text="N/A"/>
+            </VBox>
+        </StackPane>
+    </VBox>
 </TitledPane>
