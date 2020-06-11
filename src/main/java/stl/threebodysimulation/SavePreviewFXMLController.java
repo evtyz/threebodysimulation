@@ -1,9 +1,10 @@
 package stl.threebodysimulation;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -21,6 +22,9 @@ public class SavePreviewFXMLController {
      */
     private Listener selectListener;
 
+    /**
+     * The listener that is called when the user deletes this preview.
+     */
     private Listener deleteListener;
 
     /**
@@ -65,11 +69,17 @@ public class SavePreviewFXMLController {
     @FXML
     private Label massLabel3;
 
+    /**
+     * The delete button.
+     */
     @FXML
-    private ImageView deleteButton;
+    private FontAwesomeIconView deleteButton;
 
+    /**
+     * The select button.
+     */
     @FXML
-    private ImageView selectButton;
+    private FontAwesomeIconView selectButton;
 
     /**
      * The constructor for the FXMLLoader.
@@ -83,14 +93,14 @@ public class SavePreviewFXMLController {
      * @param button The button whose opacity is being changed.
      * @param state  True if it is being hovered, false if not.
      */
-    static void hover(ImageView button, boolean state) {
-        String opacity;
+    static void hover(FontAwesomeIconView button, boolean state) {
+        Color color;
         if (state) {
-            opacity = "1";
+            color = Color.BLACK;
         } else {
-            opacity = "0.3";
+            color = Color.SILVER;
         }
-        button.setStyle(String.format("-fx-opacity: %s", opacity));
+        button.setFill(color);
     }
 
     /**

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -81,22 +80,16 @@
             </GridPane>
             <VBox alignment="CENTER" prefWidth="65.0" spacing="20.0">
                <children>
-                  <ImageView fx:id="selectButton" fitHeight="40.0" fitWidth="200.0" onMouseClicked="#select" onMouseEntered="#startHoverSelect" onMouseExited="#stopHoverSelect" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.3;">
+                  <FontAwesomeIconView fx:id="selectButton" fill="SILVER" glyphName="CHECK_CIRCLE" onMouseClicked="#select" onMouseEntered="#startHoverSelect" onMouseExited="#stopHoverSelect" size="30">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <image>
-                        <Image url="@../icons/confirmIcon.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="deleteButton" fitHeight="40.0" fitWidth="200.0" onMouseClicked="#delete" onMouseEntered="#startHoverDelete" onMouseExited="#stopHoverDelete" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.3;">
+                  </FontAwesomeIconView>
+                  <FontAwesomeIconView fx:id="deleteButton" fill="SILVER" glyphName="TIMES_CIRCLE" onMouseClicked="#delete" onMouseEntered="#startHoverDelete" onMouseExited="#stopHoverDelete" size="30">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <image>
-                        <Image url="@../icons/deleteIcon.png" />
-                     </image>
-                  </ImageView>
+                  </FontAwesomeIconView>
                </children>
             </VBox>
          </children>
