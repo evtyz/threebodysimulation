@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The FXML controller for the confirmation dialog that appears when overwriting a file.
+ */
 public class WarningWindowFXMLController implements Initializable {
     /**
      * The label UI element that holds the error message.
@@ -15,6 +18,9 @@ public class WarningWindowFXMLController implements Initializable {
     @FXML
     private Label messageLabel;
 
+    /**
+     * A listener that is called when the user confirms the warning.
+     */
     private Listener confirmListener;
 
     /**

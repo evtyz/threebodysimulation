@@ -1,6 +1,6 @@
 package stl.threebodysimulation;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * This class is a modified version of a class freely provided by user MightyPork, from StackOverflow at https://stackoverflow.com/questions/18004150/desktop-api-is-not-supported-on-the-current-platform.
  * All credit is theirs.
+ * No documentation on our part is provided. The code is as-is.
  */
 public class DesktopAPI {
 

@@ -17,7 +17,7 @@ public enum NumberFormat {
      */
     SCIENTIFIC_7 {
         public String toString() {
-            return "Scientific, 7 decimal places";
+            return "Scientific: 7 decimal places";
         }
     },
     /**
@@ -25,7 +25,7 @@ public enum NumberFormat {
      */
     STANDARD_5 {
         public String toString() {
-            return "Standard, 5 decimal places";
+            return "Standard: 5 decimal places";
         }
     },
     /**
@@ -33,8 +33,8 @@ public enum NumberFormat {
      */
     STANDARD_2 {
         public String toString() {
-            return "Standard, 2 decimal places";
+            return "Standard: 2 decimal places";
         }
-    }
+    };
 
 }

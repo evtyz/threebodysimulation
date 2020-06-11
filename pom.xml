@@ -95,14 +95,18 @@
                         <list>javafx.fxml.FXMLLoader</list>
                         <list>javafx.fxml.Initializable</list>
                         <list>javafx.geometry.Insets</list>
+                        <list>javafx.geometry.NodeOrientation</list>
                         <list>javafx.scene.Parent</list>
                         <list>javafx.scene.Scene</list>
                         <list>javafx.scene.image.Image</list>
                         <list>javafx.stage.Stage</list>
                         <list>javafx.stage.Modality</list>
                         <list>javafx.stage.Window</list>
+                        <list>javafx.scene.Cursor</list>
                         <list>javafx.scene.image.Image</list>
                         <list>javafx.scene.image.ImageView</list>
+                        <list>javafx.scene.layout.AnchorPane</list>
+                        <list>javafx.scene.control.ScrollPane</list>
                         <list>javafx.scene.layout.BorderPane</list>
                         <list>javafx.scene.layout.HBox</list>
                         <list>javafx.scene.layout.StackPane</list>
@@ -152,6 +156,7 @@
                         <list>java.net.URL</list>
                         <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
                         <list>stl.threebodysimulation.CanvasWrapper</list>
+                        <list>stl.threebodysimulation.ConfirmationMessage</list>
                         <list>stl.threebodysimulation.DesktopAPI</list>
                         <list>stl.threebodysimulation.ErrorMessage</list>
                         <list>stl.threebodysimulation.InfoFXMLController</list>
@@ -165,11 +170,13 @@
                         <list>stl.threebodysimulation.ParticleDifferentialEquations</list>
                         <list>stl.threebodysimulation.ErrorWindowFXMLController</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
+                        <list>stl.threebodysimulation.SavePreviewFXMLController</list>
                         <list>stl.threebodysimulation.SceneFXMLController</list>
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
                         <list>stl.threebodysimulation.SimulationSettings</list>
                         <list>stl.threebodysimulation.SimulationState</list>
                         <list>stl.threebodysimulation.LimitedTextFieldWrapper</list>
+                        <list>stl.threebodysimulation.WarningWindowFXMLController</list>
                     </reflectionList>
                     <mainClass>stl.threebodysimulation.Launcher</mainClass>
                 </configuration>

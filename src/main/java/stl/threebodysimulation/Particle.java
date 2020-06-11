@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 /**
@@ -11,37 +12,37 @@ class Particle {
     /**
      * Mass, in earths.
      */
-    private final double mass;
+    private double mass;
 
     /**
      * ID of particle, one of {1, 2, 3}
      */
-    private final int id;
+    private int id;
 
     /**
      * Color of particle.
      */
-    private final Color color;
+    private Color color;
 
     /**
      * x and y components of particle's position.
      */
-    private final double[] position;
+    private double[] position;
 
     /**
      * x and y components of particle's velocity.
      */
-    private final double[] velocity;
+    private double[] velocity;
 
     /**
      * x and y components of particle's acceleration.
      */
-    private final double[] acceleration;
+    private double[] acceleration;
 
     /**
      * A hashmap that represents packaged displayable information from the particle.
      */
-    private final LinkedHashMap<String, double[]> packagedInformation;
+    private LinkedHashMap<String, double[]> packagedInformation;
 
     /**
      * A Listener object that is called when the particle's properties change.
@@ -63,16 +64,47 @@ class Particle {
         position = new double[]{xPos, yPos};
         velocity = new double[]{xVel, yVel};
         acceleration = new double[]{0, 0}; // users cannot provide starting acceleration to a particle.
+        this.mass = mass;
+        this.id = id;
+        this.color = color;
 
+        setupPackage();
+    }
+
+    /**
+     * Constructor for a particle from a serialized String ArrayList.
+     *
+     * @param serializedParticle The particle in serialized form.
+     * @param id The id of the particle.
+     */
+    Particle(ArrayList<String> serializedParticle, int id) {
+        this.id = id;
+        int index = 0;
+
+        this.mass = Double.parseDouble(serializedParticle.get(index++));
+        this.color = Color.color(
+                Double.parseDouble(serializedParticle.get(index++)),
+                Double.parseDouble(serializedParticle.get(index++)),
+                Double.parseDouble(serializedParticle.get(index++)));
+        this.position = new double[] {
+                Double.parseDouble(serializedParticle.get(index++)),
+                Double.parseDouble(serializedParticle.get(index++))};
+        this.velocity = new double[] {
+                Double.parseDouble(serializedParticle.get(index++)),
+                Double.parseDouble(serializedParticle.get(index++))};
+
+        setupPackage();
+    }
+
+    /**
+     * Sets up the packagedInformation hashmap.
+     */
+    void setupPackage() {
         // Packages above vectors into a convenient hashmap for later use.
         packagedInformation = new LinkedHashMap<>();
         packagedInformation.put("position", position);
         packagedInformation.put("velocity", velocity);
         packagedInformation.put("acceleration", acceleration);
-
-        this.mass = mass;
-        this.id = id;
-        this.color = color;
     }
 
     /**
@@ -142,5 +174,25 @@ class Particle {
      */
     LinkedHashMap<String, double[]> getPackage() {
         return packagedInformation;
+    }
+
+    /**
+     * Returns a serialized version of the particle.
+     *
+     * @return A serialized version of the particle, as an ArrayList of strings.
+     */
+    ArrayList<String> serialize() {
+        ArrayList<String> serializedForm = new ArrayList<>();
+        serializedForm.add(String.valueOf(mass));
+        for (double colorValue : new double[] {color.getRed(), color.getGreen(), color.getBlue()}) {
+            serializedForm.add(String.valueOf(colorValue));
+        }
+        for (double positionValue : position) {
+            serializedForm.add(String.valueOf(positionValue));
+        }
+        for (double velocityValue : velocity) {
+            serializedForm.add(String.valueOf(velocityValue));
+        }
+        return serializedForm;
     }
 }

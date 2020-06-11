@@ -115,7 +115,7 @@
                   </Tooltip>
                </tooltip>
                 </TextField>
-                <Button fx:id="saveButton" mnemonicParsing="false" text="Save">
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveTemplate" text="Save">
                <HBox.margin>
                   <Insets right="15.0" />
                </HBox.margin></Button>

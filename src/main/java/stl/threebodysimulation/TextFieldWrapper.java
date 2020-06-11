@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -36,6 +37,11 @@ class TextFieldWrapper {
     Label subjectLabel = new Label();
 
     /**
+     * The regex format pattern that inputs must follow.
+     */
+    String regexPattern;
+
+    /**
      * Constructor for a basic TextFieldWrapper that does not allow empty inputs.
      *
      * @param subject The TextField the wrapper manages.
@@ -48,7 +54,10 @@ class TextFieldWrapper {
         this.prompt = prompt;
         attachInputValidator();
         setupTooltip();
+        limitInput();
         readiness = isValidInput();
+        // Regex below from John Knoeller's answer at https://stackoverflow.com/questions/2338044/regex-letters-numbers-dashes-and-underscores.
+        regexPattern = "([A-Za-z0-9\\-\\_]+)"; // Only accept these characters.
     }
 
     /**
@@ -68,7 +77,21 @@ class TextFieldWrapper {
      * Default constructor used by child classes.
      */
     TextFieldWrapper() {
+    }
 
+
+    /**
+     * Limits the TextField with a TextFormatter that enforces the regex pattern.
+     */
+    // Anonymous function modified from DVarga's solution at https://stackoverflow.com/questions/49918079/javafx-textfield-text-validation.
+    void limitInput() {
+        // Ensures that the text-field only accepts numerical inputs.
+        subject.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches(regexPattern) || change.getControlNewText().equals("")) {
+                return change;
+            }
+            return null;
+        }));
     }
 
     /**
@@ -81,6 +104,7 @@ class TextFieldWrapper {
         // Set the text of the tooltip to display the min and max.
         tooltip.setText(prompt);
     }
+
 
     /**
      * Checks if the textfield included in the wrapper is not empty.
@@ -128,7 +152,11 @@ class TextFieldWrapper {
      */
     void changeState(boolean state) {
         if (state) {
-            readiness = false;
+            if (!isValidInput()) {
+                readiness = false;
+            } else {
+                readiness = true;
+            }
             subject.setDisable(false);
             subjectLabel.setTextFill(Color.BLACK);
             return;
@@ -139,6 +167,21 @@ class TextFieldWrapper {
         subject.setStyle("-fx-background-color: white;");
         subject.setDisable(true);
         subjectLabel.setTextFill(Color.LIGHTGRAY);
+    }
+
+    /**
+     * Set the text of the TextField.
+     *
+     * @param text The text that the TextField will be set to.
+     */
+    void setText(String text) {
+        subject.setText(text);
+        if (!isValidInput()) {
+            highlightIncorrect();
+            readiness = false;
+        } else {
+            readiness = true;
+        }
     }
 
     /**

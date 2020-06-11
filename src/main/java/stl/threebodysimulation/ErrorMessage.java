@@ -18,6 +18,18 @@ public enum ErrorMessage {
         }
     },
     /**
+     * An error that occurs if the user tries to save a template without incorrect parameters.
+     */
+    SAVE_ERROR {
+        public String getTitle() {
+            return "Template Error";
+        }
+
+        public String getMessage() {
+            return "The template cannot be saved, because some parameters are not valid. Please provide valid inputs, and then try again.";
+        }
+    },
+    /**
      * An error that occurs when an asymptote is detected in the simulation and it must stop.
      */
     ASYMPTOTE_ERROR {
