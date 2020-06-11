@@ -117,6 +117,7 @@
                         <list>javafx.scene.layout.AnchorPane</list>
                         <list>javafx.scene.canvas.Canvas</list>
                         <list>javafx.scene.canvas.GraphicsContext</list>
+                        <list>javafx.scene.control.TitledPane</list>
                         <list>javafx.scene.control.Tab</list>
                         <list>javafx.scene.control.TabPane</list>
                         <list>javafx.scene.control.Button</list>

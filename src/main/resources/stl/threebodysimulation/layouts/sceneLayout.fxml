@@ -24,10 +24,13 @@
                            </VBox>
                      <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="primary" text="Refresh">
                         <VBox.margin>
-                           <Insets top="20.0" />
+                           <Insets top="10.0" />
                         </VBox.margin>
                      </Button>
                   </children>
+                  <padding>
+                     <Insets top="5.0" />
+                  </padding>
                </VBox>
                  </ScrollPane>
             </Tab>

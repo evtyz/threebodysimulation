@@ -177,6 +177,7 @@ class TextFieldWrapper {
             highlightIncorrect();
             readiness = false;
         } else {
+            subject.setStyle("-fx-border-color: #cccccc; -fx-background-color: white;");
             readiness = true;
         }
     }

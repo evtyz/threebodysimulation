@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.ImageView;
 
 
@@ -26,7 +27,7 @@ public class SavePreviewFXMLController {
      * The label that shows the filename of the settings.
      */
     @FXML
-    private Label saveIDLabel;
+    private TitledPane fileTitle;
 
     /**
      * The label that shows whether infinite simulation is enabled in the settings.
@@ -98,7 +99,7 @@ public class SavePreviewFXMLController {
      * @param title The title.
      */
     void setTitle(String title) {
-        saveIDLabel.setText(title);
+        fileTitle.setText(title);
     }
 
     /**
