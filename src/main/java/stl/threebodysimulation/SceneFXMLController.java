@@ -284,7 +284,9 @@ public class SceneFXMLController implements Initializable {
                 new ConfirmationMessage(ConfirmationMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
                 sceneLayout.getScene().getWindow(),
                 () -> {
-                    saveFile.delete();
+                    if (!saveFile.delete()) {
+                        openErrorWindow(ErrorMessage.DELETE_ERROR, sceneLayout.getScene().getWindow());
+                    }
                     refreshSaves();
                 }
         );

@@ -53,6 +53,15 @@ public enum ErrorMessage {
             return "One of the numbers being processed is too large to fit in a Java double. Please ensure that all your inputs are reasonably scaled.";
         }
     },
+    DELETE_ERROR {
+        public String getTitle() {
+            return "Delete File Error";
+        }
+
+        public String getMessage() {
+            return "The file cannot be deleted. It might be open in another window. Close all other instances of this app before trying again.";
+        }
+    },
     /**
      * An unknown error that occurs.
      */

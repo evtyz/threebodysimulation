@@ -26,24 +26,23 @@
                                  <Insets top="5.0" />
                              </padding>
                          </VBox>
-                  <HBox alignment="TOP_CENTER">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <children>
-                               <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="first" text="Refresh">
-                           <HBox.margin>
-                              <Insets right="-1.0" />
-                           </HBox.margin>
-                               </Button>
-                        <Button layoutX="176.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSavesDirectory" text="Browse">
-                           <styleClass>
-                              <String fx:value="last" />
-                              <String fx:value="primary" />
-                           </styleClass>
-                        </Button>
-                     </children>
-                  </HBox>
+                         <HBox alignment="TOP_CENTER">
+                             <VBox.margin>
+                                 <Insets top="10.0"/>
+                             </VBox.margin>
+                             <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="first" text="Refresh">
+                                 <HBox.margin>
+                                     <Insets right="-1.0"/>
+                                 </HBox.margin>
+                             </Button>
+                             <Button layoutX="176.0" layoutY="10.0" mnemonicParsing="false"
+                                     onAction="#openSavesDirectory" text="Browse">
+                                 <styleClass>
+                                     <String fx:value="last"/>
+                                     <String fx:value="primary"/>
+                                 </styleClass>
+                             </Button>
+                         </HBox>
                      </VBox>
                  </ScrollPane>
             </Tab>
