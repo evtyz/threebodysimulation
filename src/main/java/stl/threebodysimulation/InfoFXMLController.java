@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -34,10 +35,10 @@ public class InfoFXMLController {
     private static final int MAX_STANDARD_5_DIGIT_LENGTH = 7;
 
     /**
-     * The Label UI element of the object title, e.g. "Object 1"
+     * The TitledPane that contains the information and the title.
      */
     @FXML
-    private Label objectLabel;
+    private TitledPane titleInfo;
 
     /**
      * The Label UI element that displays position info for an object.
@@ -56,12 +57,6 @@ public class InfoFXMLController {
      */
     @FXML
     private Label accelerationInfo;
-
-    /**
-     * The Circle UI shape that shows the color of the particle.
-     */
-    @FXML
-    private Circle colorCircle;
 
     /**
      * A hashmap that allows for easy setting of info labels using String keys.
@@ -100,7 +95,7 @@ public class InfoFXMLController {
      */
     void setup(int id) {
         // Set the id of the display.
-        objectLabel.setText("Object " + id);
+        titleInfo.setText("Object " + id);
 
         // Set up the hashmap with position, velocity, acceleration string keys.
         packagedLabels = new HashMap<>();
@@ -152,6 +147,8 @@ public class InfoFXMLController {
      * @param color The color to update the display with.
      */
     void updateFromColor(Color color) {
+        Circle colorCircle = new Circle(7);
         colorCircle.setFill(color);
+        titleInfo.setGraphic(colorCircle);
     }
 }

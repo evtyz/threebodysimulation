@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TitledPane fx:id="fileTitle" expanded="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles/bootstrap3.css" text="untitled" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SavePreviewFXMLController">
+<TitledPane fx:id="fileTitle" alignment="CENTER" expanded="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" stylesheets="@../styles/bootstrap3.css" text="untitled" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SavePreviewFXMLController">
    <content>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <children>
@@ -79,7 +79,7 @@
                   <Label fx:id="massLabel3" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <VBox alignment="CENTER" prefWidth="75.0" spacing="20.0">
+            <VBox alignment="CENTER" prefWidth="65.0" spacing="20.0">
                <children>
                   <ImageView fx:id="selectButton" fitHeight="40.0" fitWidth="200.0" onMouseClicked="#select" onMouseEntered="#startHoverSelect" onMouseExited="#stopHoverSelect" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.3;">
                      <cursor>
