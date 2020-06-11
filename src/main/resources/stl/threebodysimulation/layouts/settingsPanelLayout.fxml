@@ -70,7 +70,7 @@
          </GridPane.margin>
         </CheckBox>
        <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
-           <Button mnemonicParsing="false" onAction="#browseCSVDirectory" style="-fx-font-size: 13;" text="Browse">
+           <Button mnemonicParsing="false" onAction="#openCSVDirectory" style="-fx-font-size: 13;" text="Browse">
             <padding>
                <Insets bottom="-1.0" left="7.0" right="6.0" top="-1.0" />
             </padding>

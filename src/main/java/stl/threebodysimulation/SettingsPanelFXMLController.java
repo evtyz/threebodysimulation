@@ -442,10 +442,8 @@ public class SettingsPanelFXMLController {
     /**
      * Opens the CSV directory in a file explorer window.
      */
-    public void browseCSVDirectory() {
-        File CSVDirectory = new File("CSV");
-        CSVDirectory.mkdir();
-        DesktopAPI.open(CSVDirectory);
+    public void openCSVDirectory() {
+        DesktopAPI.openDirectory("CSV");
     }
 
     /**

@@ -351,4 +351,11 @@ public class SceneFXMLController implements Initializable {
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
     }
+
+    /**
+     * Opens the saves directory in a file explorer.
+     */
+    public void openSavesDirectory() {
+        DesktopAPI.openDirectory("Saves");
+    }
 }
