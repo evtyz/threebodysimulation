@@ -12,27 +12,25 @@ class CanvasWrapper {
      * The canvas to be drawn on.
      */
     private final Canvas canvas;
-
-    /**
-     * The particles to draw on the canvas.
-     */
-    private Particle[] particles;
-
     /**
      * The graphics supplied to the canvas.
      */
     private final GraphicsContext gc;
-
+    final double[] canvasPos = {0, 0};
+    double avgMass;
+    final double[] circleRad = {0, 0, 0};
+    /**
+     * The particles to draw on the canvas.
+     */
+    private Particle[] particles;
     /**
      * Whether the canvas should show particle trails.
      */
     private boolean trails;
-
     /**
      * Whether the canvas should show the center of mass of the particles.
      */
     private boolean centerOfMass;
-
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
      *
@@ -42,10 +40,6 @@ class CanvasWrapper {
         this.canvas = canvas;
         gc = canvas.getGraphicsContext2D();
     }
-
-    double[] canvasPos = {0,0};
-    double avgMass;
-    double[] circleRad = {0, 0, 0};
 
     /**
      * Sets the graphics options and particles for the canvas.
@@ -58,7 +52,7 @@ class CanvasWrapper {
         this.particles = settings.getParticles();
 
         avgMass = particles[0].getMass() * particles[1].getMass() * particles[2].getMass();
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             circleRad[i] = Math.sqrt(particles[i].getMass() / avgMass) * 7;
         }
     }

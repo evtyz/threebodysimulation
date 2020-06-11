@@ -9,28 +9,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.ErrorWindowFXMLController">
-   <children>
-      <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
-         <children>
-            <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../icons/errorIcon.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="messageLabel" text="The simulation could not run, because some parameters were invalid. Please add valid inputs, and then try again." wrapText="true">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
-      <Button fx:id="closeWindowButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow" prefHeight="40.0" styleClass="primary" stylesheets="@../styles/bootstrap3.css" text="OK" />
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="stl.threebodysimulation.ErrorWindowFXMLController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <HBox alignment="CENTER" prefWidth="200.0" spacing="15.0">
+        <VBox.margin>
+            <Insets/>
+        </VBox.margin>
+        <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../icons/errorIcon.png"/>
+        </ImageView>
+        <Label fx:id="messageLabel"
+               text="The simulation could not run, because some parameters were invalid. Please add valid inputs, and then try again."
+               wrapText="true">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <Button fx:id="closeWindowButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow"
+            prefHeight="40.0" styleClass="primary" stylesheets="@../styles/bootstrap3.css" text="OK"/>
 </VBox>

@@ -3,6 +3,7 @@ package stl.threebodysimulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -20,7 +21,6 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -214,18 +214,15 @@ public class SceneFXMLController implements Initializable {
     /**
      * Refreshes the saves display for new saves.
      */
-    private void refreshSaves() {
+    @SuppressWarnings("ConstantConditions") // Already caught by a try-catch.
+    public void refreshSaves() {
         try {
             savesBox.getChildren().clear();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
         File saveDirectory = new File("Saves");
         saveDirectory.mkdir(); // Create a directory if none exists.
-        File[] filesList = saveDirectory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".tbsettings");
-            }
-        });
+        File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(".tbsettings"));
         try {
             if (filesList.length == 0) {
                 showNoSavesMessage();
@@ -273,6 +270,7 @@ public class SceneFXMLController implements Initializable {
     private void showNoSavesMessage() {
         Label emptyMessage = new Label();
         emptyMessage.setText("No saves found.");
+        emptyMessage.setPadding(new Insets(15, 15, 5, 15));
         savesBox.getChildren().add(0, emptyMessage);
     }
 

@@ -68,6 +68,7 @@ class TextFieldWrapper {
      * @param prompt       The prompt shown in the TextField's tooltip.
      * @param subjectLabel The Label that corresponds to the TextField.
      */
+    @SuppressWarnings("SameParameterValue") // In case other uses come up, this method remains parameterized.
     TextFieldWrapper(TextField subject, Tooltip tooltip, String prompt, Label subjectLabel) {
         this(subject, tooltip, prompt);
         this.subjectLabel = subjectLabel;
@@ -152,11 +153,7 @@ class TextFieldWrapper {
      */
     void changeState(boolean state) {
         if (state) {
-            if (!isValidInput()) {
-                readiness = false;
-            } else {
-                readiness = true;
-            }
+            readiness = isValidInput();
             subject.setDisable(false);
             subjectLabel.setTextFill(Color.BLACK);
             return;
@@ -180,6 +177,7 @@ class TextFieldWrapper {
             highlightIncorrect();
             readiness = false;
         } else {
+            subject.setStyle("-fx-border-color: #cccccc; -fx-background-color: white;");
             readiness = true;
         }
     }
@@ -189,6 +187,7 @@ class TextFieldWrapper {
      *
      * @return True if ready, False if not ready.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Inverted for clarity's sake.
     boolean isReady() {
         if (!readiness) {
             highlightIncorrect();

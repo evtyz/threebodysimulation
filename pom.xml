@@ -35,6 +35,11 @@
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-9.1.2</version>
+        </dependency>
     </dependencies>
 
     <pluginRepositories>
@@ -117,6 +122,7 @@
                         <list>javafx.scene.layout.AnchorPane</list>
                         <list>javafx.scene.canvas.Canvas</list>
                         <list>javafx.scene.canvas.GraphicsContext</list>
+                        <list>javafx.scene.control.TitledPane</list>
                         <list>javafx.scene.control.Tab</list>
                         <list>javafx.scene.control.TabPane</list>
                         <list>javafx.scene.control.Button</list>
@@ -133,6 +139,7 @@
                         <list>javafx.scene.shape.Circle</list>
                         <list>javafx.application.Application</list>
                         <list>javafx.util.Duration</list>
+                        <list>de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView</list>
                         <list>org.apache.commons.math3.exception.NumberIsTooLargeException</list>
                         <list>org.apache.commons.math3.exception.NumberIsTooSmallException</list>
                         <list>org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator</list>

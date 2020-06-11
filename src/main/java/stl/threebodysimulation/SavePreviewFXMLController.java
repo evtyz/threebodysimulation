@@ -1,9 +1,10 @@
 package stl.threebodysimulation;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TitledPane;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -21,13 +22,16 @@ public class SavePreviewFXMLController {
      */
     private Listener selectListener;
 
+    /**
+     * The listener that is called when the user deletes this preview.
+     */
     private Listener deleteListener;
 
     /**
      * The label that shows the filename of the settings.
      */
     @FXML
-    private Label saveIDLabel;
+    private TitledPane fileTitle;
 
     /**
      * The label that shows whether infinite simulation is enabled in the settings.
@@ -65,16 +69,39 @@ public class SavePreviewFXMLController {
     @FXML
     private Label massLabel3;
 
+    /**
+     * The delete button.
+     */
     @FXML
-    private ImageView deleteButton;
+    private FontAwesomeIconView deleteButton;
 
+    /**
+     * The select button.
+     */
     @FXML
-    private ImageView selectButton;
+    private FontAwesomeIconView selectButton;
 
     /**
      * The constructor for the FXMLLoader.
      */
-    public SavePreviewFXMLController() {}
+    public SavePreviewFXMLController() {
+    }
+
+    /**
+     * Handles changing the opacity of a button depending on if it is hovered or not.
+     *
+     * @param button The button whose opacity is being changed.
+     * @param state  True if it is being hovered, false if not.
+     */
+    static void hover(FontAwesomeIconView button, boolean state) {
+        Color color;
+        if (state) {
+            color = Color.BLACK;
+        } else {
+            color = Color.SILVER;
+        }
+        button.setFill(color);
+    }
 
     /**
      * Sets the title of the preview.
@@ -82,29 +109,7 @@ public class SavePreviewFXMLController {
      * @param title The title.
      */
     void setTitle(String title) {
-        saveIDLabel.setText(title);
-    }
-
-    /**
-     * Sets the settings previewed.
-     *
-     * @param settings The settings.
-     */
-    void setSettings(SimulationSettings settings) {
-        this.settings = settings;
-        if (settings.getInfinite()) {
-            infiniteLabel.setText("Yes");
-        } else {
-            infiniteLabel.setText("No");
-        }
-
-        // Everything has 2 decimal places. TODO: Make sure things fit!
-        timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
-        speedLabel.setText(String.format("%.2f", settings.getSpeed()));
-        Particle[] particles = settings.getParticles();
-        massLabel1.setText(String.format("%.2f", particles[0].getMass()));
-        massLabel2.setText(String.format("%.2f", particles[1].getMass()));
-        massLabel3.setText(String.format("%.2f", particles[2].getMass()));
+        fileTitle.setText(title);
     }
 
     /**
@@ -133,6 +138,28 @@ public class SavePreviewFXMLController {
      */
     SimulationSettings getSettings() {
         return settings;
+    }
+
+    /**
+     * Sets the settings previewed.
+     *
+     * @param settings The settings.
+     */
+    void setSettings(SimulationSettings settings) {
+        this.settings = settings;
+        if (settings.getInfinite()) {
+            infiniteLabel.setText("Yes");
+        } else {
+            infiniteLabel.setText("No");
+        }
+
+        // Everything has 2 decimal places. TODO: Make sure things fit!
+        timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
+        speedLabel.setText(String.format("%.2f", settings.getSpeed()));
+        Particle[] particles = settings.getParticles();
+        massLabel1.setText(String.format("%.2f", particles[0].getMass()));
+        massLabel2.setText(String.format("%.2f", particles[1].getMass()));
+        massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
 
     /**
@@ -175,22 +202,6 @@ public class SavePreviewFXMLController {
      */
     public void delete() {
         deleteListener.onEvent();
-    }
-
-    /**
-     * Handles changing the opacity of a button depending on if it is hovered or not.
-     *
-     * @param button The button whose opacity is being changed.
-     * @param state True if it is being hovered, false if not.
-     */
-    static void hover(ImageView button, boolean state) {
-        String opacity;
-        if (state) {
-            opacity = "1";
-        } else {
-            opacity = "0.3";
-        }
-        button.setStyle(String.format("-fx-opacity: %s", opacity));
     }
 
 }

@@ -294,6 +294,7 @@ public class SettingsPanelFXMLController {
      * @param forSimulation True if the validation check is for simulation purposes, false otherwise.
      * @return True if ready, False if not ready.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Inverted for clarity's sake.
     private boolean executeValidityCheck(boolean forSimulation) {
         boolean readiness = true;
 
@@ -326,11 +327,7 @@ public class SettingsPanelFXMLController {
             return true;
         }
 
-        if (!readiness) {
-            return false;
-        }
-
-        return true;
+        return readiness;
     }
 
     /**

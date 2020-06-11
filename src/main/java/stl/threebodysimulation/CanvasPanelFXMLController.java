@@ -40,22 +40,18 @@ public class CanvasPanelFXMLController {
      * Object used for synchronization between threads
      */
     private static final Object synchronizationObject = new Object();
-
-    /**
-     * A Listener that is called when the simulation stops.
-     */
-    private Listener onStopListener;
-
-    /**
-     * Particle array that the controller manages.
-     */
-    private Particle[] particles;
-
     /**
      * Flattened version of the Particle array for input into a ParticleDifferentialEquations object.
      */
     private final double[] flattenedParticles = new double[12];
-
+    /**
+     * A Listener that is called when the simulation stops.
+     */
+    private Listener onStopListener;
+    /**
+     * Particle array that the controller manages.
+     */
+    private Particle[] particles;
     /**
      * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
      */
@@ -234,6 +230,7 @@ public class CanvasPanelFXMLController {
         File CSVDirectory = new File(directory);
         File CSVFile = new File(filepath);
         try {
+            // TODO: Fix bugs here if directory is unable to be created.
             CSVDirectory.mkdir(); // Make the CSV folder if it doesn't exist
 
             if (!CSVFile.createNewFile()) { // Create a new file
@@ -346,14 +343,14 @@ public class CanvasPanelFXMLController {
     private void startSimulation() {
 
         // Builds a new JavaFX task that simulates the particle
-        Task simulation = new Task() {
+        Task<Void> simulation = new Task<>() {
             /**
              * This method is called by the thread and calculates values for the simulation.
              * @return null: inherited from task interface.
              * @throws Exception If the task is interrupted.
              */
             @Override
-            protected Object call() throws Exception {
+            protected Void call() throws Exception {
                 while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
                     long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
                     try {
@@ -390,6 +387,7 @@ public class CanvasPanelFXMLController {
                     if (leftoverTime > 0) {
                         // Wait until next frame.
                         // TODO: This lags behind by around 1/30th of a second every loop, fix!
+                        //noinspection BusyWait
                         Thread.sleep(leftoverTime);
                     }
                 }

@@ -8,50 +8,44 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #F2F2F2;" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.CanvasPanelFXMLController">
-    <children>
-        <Canvas fx:id="canvas" height="720.0" width="800.0" />
-      <HBox layoutX="30.0" layoutY="30.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-         <children>
-            <Button mnemonicParsing="false" style="-fx-background-color: #F2F2F2; -fx-border-color: #F2F2F2; -fx-text-fill: #F2F2F2;" styleClass="warning" text="Stop">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" style="-fx-background-color: #F2F2F2; -fx-border-color: #F2F2F2; -fx-text-fill: #F2F2F2;" text="Pause">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-         </children>
-         <StackPane.margin>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #F2F2F2; -fx-border-color: #C0C0C0 transparent transparent transparent;" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.CanvasPanelFXMLController">
+    <Canvas fx:id="canvas" height="720.0" width="800.0" />
+    <HBox layoutX="30.0" layoutY="30.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+        <StackPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </StackPane.margin>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-         <children>
-            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopPressed" styleClass="danger" text="Stop">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-              <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#pausePressed" text="Pause">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-              </Button>
-         </children>
-         <StackPane.margin>
+        </StackPane.margin>
+        <Button mnemonicParsing="false" style="-fx-background-color: #F2F2F2; -fx-border-color: #F2F2F2; -fx-text-fill: #F2F2F2;" styleClass="warning" text="Stop">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Button>
+        <Button alignment="TOP_LEFT" mnemonicParsing="false" style="-fx-background-color: #F2F2F2; -fx-border-color: #F2F2F2; -fx-text-fill: #F2F2F2;" text="Pause">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Button>
+    </HBox>
+    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+        <StackPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </StackPane.margin>
-      </HBox>
-      <Label fx:id="timeLabel" alignment="CENTER" text="Time: N/A" StackPane.alignment="TOP_RIGHT">
-         <StackPane.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </StackPane.margin>
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
-    </children>
+        </StackPane.margin>
+        <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopPressed" styleClass="danger" text="Stop">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Button>
+        <Button fx:id="pauseButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#pausePressed" text="Pause">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </Button>
+    </HBox>
+    <Label fx:id="timeLabel" alignment="CENTER" text="Time: N/A" StackPane.alignment="TOP_RIGHT">
+        <StackPane.margin>
+          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </StackPane.margin>
+        <font>
+          <Font name="System Bold" size="16.0" />
+        </font>
+    </Label>
 </StackPane>
