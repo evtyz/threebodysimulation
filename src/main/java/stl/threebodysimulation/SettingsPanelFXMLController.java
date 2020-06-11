@@ -522,4 +522,43 @@ public class SettingsPanelFXMLController {
     void setOnSaveTemplateListener(Listener onSaveTemplateListener) {
         this.onSaveTemplateListener = onSaveTemplateListener;
     }
+
+    /**
+     * Loads the information in a SimulationSettings object into the UI.
+     *
+     * @param settings The SimulationSettings to be loaded.
+     */
+    void loadSettings(SimulationSettings settings) {
+        infiniteCheckBox.setSelected(settings.getInfinite());
+        trailCheckBox.setSelected(settings.getTrails());
+        centerCheckBox.setSelected(settings.getCenterOfGravity());
+        timeskipWrapper.setText(String.valueOf(settings.getSkip()));
+        simSpeedWrapper.setText(String.valueOf(settings.getSpeed()));
+        numberFormatBox.getSelectionModel().select(settings.getNumberFormat());
+        infiniteToggle();
+
+        for (int id = 0; id < 3; id++) {
+            parameterControllers[id].loadParticle(settings.getParticles()[id]);
+        }
+
+        String CSVID = settings.getCSVFileName();
+
+        if (!CSVID.equals("")) {
+            CSVIDWrapper.changeState(true);
+            CSVIDWrapper.setText(CSVID);
+            saveCSVCheckBox.setSelected(true);
+        } else {
+            saveCSVCheckBox.setSelected(false);
+            saveCSVToggle();
+        }
+    }
+
+    /**
+     * Sets the template name to be displayed on the UI.
+     *
+     * @param templateName The template name.
+     */
+    void loadTemplateName(String templateName) {
+        templateIDFieldWrapper.setText(templateName);
+    }
 }

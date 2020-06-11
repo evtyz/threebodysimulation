@@ -21,7 +21,7 @@ class ConfirmationMessage {
             }
         },
         /**
-         * For confirmations related to tbsettings files.
+         * For confirmations related to overwriting tbsettings files.
          */
         TEMPLATE_CONFIRMATION {
             String getTitle() {
@@ -29,6 +29,28 @@ class ConfirmationMessage {
             }
             String getMessageTemplate() {
                 return "You are about to overwrite the following save:\n'%s'\nAre you sure you want to proceed?";
+            }
+        },
+        /**
+         * For confirmations related to deleting tbsettings files.
+         */
+        DELETE_CONFIRMATION {
+            String getTitle() {
+                return "Delete Template Confirmation";
+            }
+            String getMessageTemplate() {
+                return "You are about to delete the following template:\n'%s'\nAre you sure you want to proceed?";
+            }
+        },
+        /**
+         * For confirmations related to loading settings files.
+         */
+        LOAD_CONFIRMATION {
+            String getTitle() {
+                return "Load Template Confirmation";
+            }
+            String getMessageTemplate() {
+                return "You are about to overwrite existing settings with a saved template. Are you sure you want to proceed?";
             }
         };
 
@@ -58,7 +80,7 @@ class ConfirmationMessage {
     private final String message;
 
     /**
-     * Constructs a new confirmation message
+     * Constructs a new confirmation message with a filename. Should only be used for overwriting files.
      *
      * @param type The type of message it is.
      * @param filepath The filepath that it points to.
@@ -66,6 +88,16 @@ class ConfirmationMessage {
     ConfirmationMessage(Type type, String filepath) {
         title = type.getTitle();
         message = String.format(type.getMessageTemplate(), filepath);
+    }
+
+    /**
+     * Constructs a new confirmation message without a filename. Should be used for loading files.
+     *
+     * @param type The type of message it is.
+     */
+    ConfirmationMessage(Type type) {
+        title = type.getTitle();
+        message = type.getMessageTemplate();
     }
 
     /**

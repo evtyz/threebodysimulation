@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+
 /**
  * A class that represents the FXML controller of each individual particle's input fields.
  */
@@ -171,5 +173,20 @@ public class ParameterFXMLController {
                 Double.parseDouble(massField.getText()),
                 id,
                 colorPickerField.getValue());
+    }
+
+    /**
+     * Loads the information in a Particle object into the UI.
+     *
+     * @param particle The particle to be loaded.
+     */
+    void loadParticle(Particle particle) {
+        HashMap<String, double[]> packagedInformation = particle.getPackage();
+        allTextFields[0].setText(String.valueOf(particle.getMass()));
+        allTextFields[1].setText(String.valueOf(packagedInformation.get("position")[0]));
+        allTextFields[2].setText(String.valueOf(packagedInformation.get("position")[1]));
+        allTextFields[3].setText(String.valueOf(packagedInformation.get("velocity")[0]));
+        allTextFields[4].setText(String.valueOf(packagedInformation.get("velocity")[1]));
+        colorPickerField.setValue(particle.getColor());
     }
 }

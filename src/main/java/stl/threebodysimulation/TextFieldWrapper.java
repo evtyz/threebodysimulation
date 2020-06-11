@@ -152,7 +152,11 @@ class TextFieldWrapper {
      */
     void changeState(boolean state) {
         if (state) {
-            readiness = false;
+            if (!isValidInput()) {
+                readiness = false;
+            } else {
+                readiness = true;
+            }
             subject.setDisable(false);
             subjectLabel.setTextFill(Color.BLACK);
             return;
@@ -163,6 +167,21 @@ class TextFieldWrapper {
         subject.setStyle("-fx-background-color: white;");
         subject.setDisable(true);
         subjectLabel.setTextFill(Color.LIGHTGRAY);
+    }
+
+    /**
+     * Set the text of the TextField.
+     *
+     * @param text The text that the TextField will be set to.
+     */
+    void setText(String text) {
+        subject.setText(text);
+        if (!isValidInput()) {
+            highlightIncorrect();
+            readiness = false;
+        } else {
+            readiness = true;
+        }
     }
 
     /**

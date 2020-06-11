@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -48,6 +49,11 @@ public class SceneFXMLController implements Initializable {
      */
     private SettingsPanelFXMLController settingsPanelController;
     /**
+     * The TabPane UI element that holds the tab view on the left.
+     */
+    @FXML
+    private TabPane tabPane;
+    /**
      * The Tab UI element for the settings panel.
      */
     @FXML
@@ -71,6 +77,11 @@ public class SceneFXMLController implements Initializable {
      */
     @FXML
     private BorderPane sceneLayout;
+
+    /**
+     * The filename of the template to be loaded.
+     */
+    private String templateName;
 
     /**
      * Constructor used by the FXML loader.
@@ -175,7 +186,10 @@ public class SceneFXMLController implements Initializable {
             settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
             settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
             settingsPanelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
-            settingsPanelController.setOnSaveTemplateListener(this::refreshSaves);
+            settingsPanelController.setOnSaveTemplateListener(() -> {
+                refreshSaves();
+                tabPane.getSelectionModel().select(1);
+            });
 
             // Load in info panel.
             FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/infoPanelLayout.fxml"));
@@ -239,11 +253,11 @@ public class SceneFXMLController implements Initializable {
                     SavePreviewFXMLController saveController = saveLoader.getController();
                     saveController.setSettings(settings);
                     saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
-                    saveController.setSelectListener(() -> showPreview(saveController.getSettings()));
-                    saveController.setDeleteListener(() -> {
-                        saveFile.delete();
-                        refreshSaves();
+                    saveController.setSelectListener(() -> {
+                        templateName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+                        showLoadConfirmation(saveController.getSettings());
                     });
+                    saveController.setDeleteListener(() -> showDeleteConfirmation(saveFile));
 
                 }
             }
@@ -263,11 +277,35 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
+     * Shows a delete confirmation for a template file/
+     *
+     * @param saveFile The template file to be deleted.
+     */
+    private void showDeleteConfirmation(File saveFile) {
+        openWarningWindow(
+                new ConfirmationMessage(ConfirmationMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
+                sceneLayout.getScene().getWindow(),
+                () -> {
+                    boolean good = saveFile.delete();
+                    refreshSaves();
+                }
+        );
+    }
+
+    /**
      * Shows a preview of loaded settings.
+     *
      * @param settings Settings that are about to be loaded.
      */
-    private void showPreview(SimulationSettings settings) {
-        // TODO
+    private void showLoadConfirmation(SimulationSettings settings) {
+        openWarningWindow(
+                new ConfirmationMessage(ConfirmationMessage.Type.LOAD_CONFIRMATION),
+                sceneLayout.getScene().getWindow(),
+                () -> {
+                    settingsPanelController.loadTemplateName(templateName);
+                    settingsPanelController.loadSettings(settings);
+                    tabPane.getSelectionModel().select(0);
+                });
     }
 
 
