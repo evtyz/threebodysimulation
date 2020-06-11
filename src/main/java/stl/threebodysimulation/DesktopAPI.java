@@ -14,13 +14,11 @@ import java.util.List;
  */
 public class DesktopAPI {
 
-    public static boolean open(File file) {
+    public static void open(File file) {
 
-        if (openSystemSpecific(file.getPath())) return true;
+        if (openSystemSpecific(file.getPath())) return;
 
-        if (openDESKTOP(file)) return true;
-
-        return false;
+        openDESKTOP(file);
     }
 
 
@@ -29,52 +27,50 @@ public class DesktopAPI {
         EnumOS os = getOs();
 
         if (os.isLinux()) {
-            if (runCommand("kde-open", "%s", what)) return true;
-            if (runCommand("gnome-open", "%s", what)) return true;
-            if (runCommand("xdg-open", "%s", what)) return true;
+            if (runCommand("kde-open", what)) return true;
+            if (runCommand("gnome-open", what)) return true;
+            if (runCommand("xdg-open", what)) return true;
         }
 
         if (os.isMac()) {
-            if (runCommand("open", "%s", what)) return true;
+            if (runCommand("open", what)) return true;
         }
 
         if (os.isWindows()) {
-            if (runCommand("explorer", "%s", what)) return true;
+            return runCommand("explorer", what);
         }
 
         return false;
     }
 
 
-    private static boolean openDESKTOP(File file) {
+    private static void openDESKTOP(File file) {
 
         logOut("Trying to use Desktop.getDesktop().open() with " + file.toString());
         try {
             if (!Desktop.isDesktopSupported()) {
                 logErr("Platform is not supported.");
-                return false;
+                return;
             }
 
             if (!Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
                 logErr("OPEN is not supported.");
-                return false;
+                return;
             }
 
             Desktop.getDesktop().open(file);
 
-            return true;
         } catch (Throwable t) {
             logErr("Error using desktop open.", t);
-            return false;
         }
     }
 
 
-    private static boolean runCommand(String command, String args, String file) {
+    private static boolean runCommand(String command, String file) {
 
-        logOut("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
+        logOut("Trying to exec:\n   cmd = " + command + "\n   args = " + "%s" + "\n   %s = " + file);
 
-        String[] parts = prepareCommand(command, args, file);
+        String[] parts = prepareCommand(command, "%s", file);
 
         try {
             Process p = Runtime.getRuntime().exec(parts);
@@ -84,11 +80,10 @@ public class DesktopAPI {
                 int retval = p.exitValue();
                 if (retval == 0) {
                     logErr("Process ended immediately.");
-                    return false;
                 } else {
                     logErr("Process crashed.");
-                    return false;
                 }
+                return false;
             } catch (IllegalThreadStateException itse) {
                 logErr("Process is running.");
                 return true;
@@ -100,9 +95,10 @@ public class DesktopAPI {
     }
 
 
+    @SuppressWarnings("SameParameterValue")
     private static String[] prepareCommand(String command, String args, String file) {
 
-        List<String> parts = new ArrayList<String>();
+        List<String> parts = new ArrayList<>();
         parts.add(command);
 
         if (args != null) {
@@ -113,6 +109,7 @@ public class DesktopAPI {
             }
         }
 
+        //noinspection ToArrayCallWithZeroLengthArrayArgument
         return parts.toArray(new String[parts.size()]);
     }
 
@@ -128,28 +125,6 @@ public class DesktopAPI {
     private static void logOut(String msg) {
         System.out.println(msg);
     }
-
-    public enum EnumOS {
-        linux, macos, solaris, unknown, windows;
-
-        public boolean isLinux() {
-
-            return this == linux || this == solaris;
-        }
-
-
-        public boolean isMac() {
-
-            return this == macos;
-        }
-
-
-        public boolean isWindows() {
-
-            return this == windows;
-        }
-    }
-
 
     public static EnumOS getOs() {
 
@@ -179,6 +154,28 @@ public class DesktopAPI {
             return EnumOS.linux;
         } else {
             return EnumOS.unknown;
+        }
+    }
+
+
+    public enum EnumOS {
+        linux, macos, solaris, unknown, windows;
+
+        public boolean isLinux() {
+
+            return this == linux || this == solaris;
+        }
+
+
+        public boolean isMac() {
+
+            return this == macos;
+        }
+
+
+        public boolean isWindows() {
+
+            return this == windows;
         }
     }
 }

@@ -95,7 +95,7 @@ class SimulationSettings implements Serializable {
                 serializedParticle.add(serializedSettings.get(index + properties));
             }
             index += 8;
-            this.particles[id-1] = new Particle(serializedParticle, id);
+            this.particles[id - 1] = new Particle(serializedParticle, id);
         }
     }
 

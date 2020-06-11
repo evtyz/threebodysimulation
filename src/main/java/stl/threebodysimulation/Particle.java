@@ -12,27 +12,27 @@ class Particle {
     /**
      * Mass, in earths.
      */
-    private double mass;
+    private final double mass;
 
     /**
      * ID of particle, one of {1, 2, 3}
      */
-    private int id;
+    private final int id;
 
     /**
      * Color of particle.
      */
-    private Color color;
+    private final Color color;
 
     /**
      * x and y components of particle's position.
      */
-    private double[] position;
+    private final double[] position;
 
     /**
      * x and y components of particle's velocity.
      */
-    private double[] velocity;
+    private final double[] velocity;
 
     /**
      * x and y components of particle's acceleration.
@@ -75,7 +75,7 @@ class Particle {
      * Constructor for a particle from a serialized String ArrayList.
      *
      * @param serializedParticle The particle in serialized form.
-     * @param id The id of the particle.
+     * @param id                 The id of the particle.
      */
     Particle(ArrayList<String> serializedParticle, int id) {
         this.id = id;
@@ -86,10 +86,11 @@ class Particle {
                 Double.parseDouble(serializedParticle.get(index++)),
                 Double.parseDouble(serializedParticle.get(index++)),
                 Double.parseDouble(serializedParticle.get(index++)));
-        this.position = new double[] {
+        this.position = new double[]{
                 Double.parseDouble(serializedParticle.get(index++)),
                 Double.parseDouble(serializedParticle.get(index++))};
-        this.velocity = new double[] {
+        //noinspection UnusedAssignment
+        this.velocity = new double[]{
                 Double.parseDouble(serializedParticle.get(index++)),
                 Double.parseDouble(serializedParticle.get(index++))};
 
@@ -184,7 +185,7 @@ class Particle {
     ArrayList<String> serialize() {
         ArrayList<String> serializedForm = new ArrayList<>();
         serializedForm.add(String.valueOf(mass));
-        for (double colorValue : new double[] {color.getRed(), color.getGreen(), color.getBlue()}) {
+        for (double colorValue : new double[]{color.getRed(), color.getGreen(), color.getBlue()}) {
             serializedForm.add(String.valueOf(colorValue));
         }
         for (double positionValue : position) {

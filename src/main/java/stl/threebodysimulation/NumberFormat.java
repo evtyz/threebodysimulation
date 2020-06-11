@@ -35,6 +35,6 @@ public enum NumberFormat {
         public String toString() {
             return "Standard: 2 decimal places";
         }
-    };
+    }
 
 }

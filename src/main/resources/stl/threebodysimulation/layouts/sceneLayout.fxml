@@ -6,27 +6,23 @@
 
 <BorderPane fx:id="sceneLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SceneFXMLController">
     <left>
-        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <tabs>
-                <Tab fx:id="settingsTab" text="Settings">
-                </Tab>
-                <Tab fx:id="savesTab" text="Saves">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: white;">
-                     <children>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px;">
-                           <content>
-                              <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </content></Tab>
-            </tabs>
+        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE"
+                 BorderPane.alignment="CENTER">
+            <Tab fx:id="settingsTab" text="Settings">
+            </Tab>
+            <Tab text="Saves">
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: white;">
+                    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true"
+                                prefHeight="863.0" prefWidth="400.0"
+                                style="-fx-border-color: white; -fx-border-width: 0px;">
+                        <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
+                            <padding>
+                                <Insets top="10.0"/>
+                            </padding>
+                        </VBox>
+                    </ScrollPane>
+                </AnchorPane>
+            </Tab>
         </TabPane>
     </left>
     <center>

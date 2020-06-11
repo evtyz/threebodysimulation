@@ -4,12 +4,12 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="panelBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" style="-fx-background-color: #FCFCFC;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoPanelFXMLController">
-   <children>
-      <Separator orientation="VERTICAL" prefHeight="150.0" />
-      <Separator orientation="VERTICAL" prefHeight="150.0" />
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-   </padding>
+<HBox fx:id="panelBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      spacing="15.0" style="-fx-background-color: #FCFCFC;" xmlns="http://javafx.com/javafx/8.0.172-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.InfoPanelFXMLController">
+    <padding>
+        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0"/>
+    </padding>
+    <Separator orientation="VERTICAL" prefHeight="150.0"/>
+    <Separator orientation="VERTICAL" prefHeight="150.0"/>
 </HBox>

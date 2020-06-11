@@ -1,7 +1,6 @@
 package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
@@ -74,7 +73,24 @@ public class SavePreviewFXMLController {
     /**
      * The constructor for the FXMLLoader.
      */
-    public SavePreviewFXMLController() {}
+    public SavePreviewFXMLController() {
+    }
+
+    /**
+     * Handles changing the opacity of a button depending on if it is hovered or not.
+     *
+     * @param button The button whose opacity is being changed.
+     * @param state  True if it is being hovered, false if not.
+     */
+    static void hover(ImageView button, boolean state) {
+        String opacity;
+        if (state) {
+            opacity = "1";
+        } else {
+            opacity = "0.3";
+        }
+        button.setStyle(String.format("-fx-opacity: %s", opacity));
+    }
 
     /**
      * Sets the title of the preview.
@@ -83,28 +99,6 @@ public class SavePreviewFXMLController {
      */
     void setTitle(String title) {
         saveIDLabel.setText(title);
-    }
-
-    /**
-     * Sets the settings previewed.
-     *
-     * @param settings The settings.
-     */
-    void setSettings(SimulationSettings settings) {
-        this.settings = settings;
-        if (settings.getInfinite()) {
-            infiniteLabel.setText("Yes");
-        } else {
-            infiniteLabel.setText("No");
-        }
-
-        // Everything has 2 decimal places. TODO: Make sure things fit!
-        timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
-        speedLabel.setText(String.format("%.2f", settings.getSpeed()));
-        Particle[] particles = settings.getParticles();
-        massLabel1.setText(String.format("%.2f", particles[0].getMass()));
-        massLabel2.setText(String.format("%.2f", particles[1].getMass()));
-        massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
 
     /**
@@ -133,6 +127,28 @@ public class SavePreviewFXMLController {
      */
     SimulationSettings getSettings() {
         return settings;
+    }
+
+    /**
+     * Sets the settings previewed.
+     *
+     * @param settings The settings.
+     */
+    void setSettings(SimulationSettings settings) {
+        this.settings = settings;
+        if (settings.getInfinite()) {
+            infiniteLabel.setText("Yes");
+        } else {
+            infiniteLabel.setText("No");
+        }
+
+        // Everything has 2 decimal places. TODO: Make sure things fit!
+        timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
+        speedLabel.setText(String.format("%.2f", settings.getSpeed()));
+        Particle[] particles = settings.getParticles();
+        massLabel1.setText(String.format("%.2f", particles[0].getMass()));
+        massLabel2.setText(String.format("%.2f", particles[1].getMass()));
+        massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
 
     /**
@@ -175,22 +191,6 @@ public class SavePreviewFXMLController {
      */
     public void delete() {
         deleteListener.onEvent();
-    }
-
-    /**
-     * Handles changing the opacity of a button depending on if it is hovered or not.
-     *
-     * @param button The button whose opacity is being changed.
-     * @param state True if it is being hovered, false if not.
-     */
-    static void hover(ImageView button, boolean state) {
-        String opacity;
-        if (state) {
-            opacity = "1";
-        } else {
-            opacity = "0.3";
-        }
-        button.setStyle(String.format("-fx-opacity: %s", opacity));
     }
 
 }
