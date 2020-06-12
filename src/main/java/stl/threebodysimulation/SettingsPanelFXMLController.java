@@ -10,8 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material.Material;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -194,6 +197,18 @@ public class SettingsPanelFXMLController {
     private VBox settingsBox;
 
     /**
+     * The button UI element for saving templates.
+     */
+    @FXML
+    private Button saveButton;
+
+    /**
+     * The button UI element for browsing CSVs.
+     */
+    @FXML
+    private Button browseButton;
+
+    /**
      * An array that holds all controllers for object settings UIs.
      */
     private ParameterFXMLController[] parameterControllers;
@@ -245,6 +260,16 @@ public class SettingsPanelFXMLController {
         templateIDFieldWrapper = new TextFieldWrapper(templateIDField, templateIDTooltip, "Template Filename");
 
         saveCSVToggle();
+
+        FontIcon saveIcon = new FontIcon(Material.SAVE);
+        saveIcon.setIconColor(Color.WHITE);
+        saveIcon.setIconSize(20);
+        saveButton.setGraphic(saveIcon);
+
+        FontIcon browseIcon = new FontIcon(Material.FOLDER);
+        browseIcon.setIconColor(Color.WHITE);
+        browseIcon.setIconSize(20);
+        browseButton.setGraphic(browseIcon);
     }
 
     /**

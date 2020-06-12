@@ -70,19 +70,19 @@
          </GridPane.margin>
         </CheckBox>
        <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
-           <Button mnemonicParsing="false" onAction="#openCSVDirectory" style="-fx-font-size: 13;" text="Browse">
-            <padding>
-               <Insets bottom="-1.0" left="7.0" right="6.0" top="-1.0" />
-            </padding>
+           <Button fx:id="browseButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#openCSVDirectory" style="-fx-font-size: 13;">
             <HBox.margin>
-               <Insets right="-1.0" />
+               <Insets />
             </HBox.margin>
             <styleClass>
                <String fx:value="first" />
                <String fx:value="primary" />
             </styleClass>
+            <padding>
+               <Insets bottom="-1.0" top="-1.0" />
+            </padding>
          </Button>
-           <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="140.0" promptText="Filename" styleClass="last">
+           <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="165.0" promptText="Filename" styleClass="last">
                <HBox.margin>
                    <Insets />
                </HBox.margin>
@@ -95,14 +95,13 @@
                </tooltip>
            </TextField>
        </HBox>
-        <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0"
-              spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <Separator orientation="VERTICAL" prefHeight="200.0">
                 <HBox.margin>
-                    <Insets left="8.0" right="5.0"/>
+                    <Insets left="8.0" right="5.0" />
                 </HBox.margin>
             </Separator>
-            <Label fx:id="CSVIDLabel" text="CSV ID:"/>
+            <Label fx:id="CSVIDLabel" text="CSV ID:" />
         </HBox>
     </GridPane>
     <Separator prefWidth="200.0" />
@@ -115,19 +114,19 @@
         </font>
     </Button>
     <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT">
-        <Button mnemonicParsing="false" onAction="#saveTemplate" style="-fx-font-size: 13;" text="Save">
+        <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveTemplate" style="-fx-font-size: 13;">
             <HBox.margin>
                 <Insets right="-1.0" />
             </HBox.margin>
          <padding>
-            <Insets left="6.0" right="7.0" />
+            <Insets bottom="-1.0" left="6.0" right="7.0" top="-1.0" />
          </padding>
          <styleClass>
             <String fx:value="first" />
             <String fx:value="primary" />
          </styleClass>
         </Button>
-        <TextField fx:id="templateIDField" alignment="CENTER_RIGHT" prefWidth="180.0" promptText="Filename" styleClass="last">
+        <TextField fx:id="templateIDField" alignment="CENTER_RIGHT" prefWidth="200.0" promptText="Filename" styleClass="last">
             <HBox.margin>
                 <Insets />
             </HBox.margin>

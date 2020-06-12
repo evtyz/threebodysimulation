@@ -28,18 +28,17 @@
                          </VBox>
                          <HBox alignment="TOP_CENTER">
                              <VBox.margin>
-                                 <Insets top="10.0"/>
+                                 <Insets top="10.0" />
                              </VBox.margin>
-                             <Button mnemonicParsing="false" onAction="#refreshSaves" styleClass="first" text="Refresh">
+                             <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshSaves" styleClass="first">
                                  <HBox.margin>
-                                     <Insets right="-1.0"/>
+                                     <Insets right="-1.0" />
                                  </HBox.margin>
                              </Button>
-                             <Button layoutX="176.0" layoutY="10.0" mnemonicParsing="false"
-                                     onAction="#openSavesDirectory" text="Browse">
+                             <Button fx:id="browseButton" layoutX="176.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSavesDirectory">
                                  <styleClass>
-                                     <String fx:value="last"/>
-                                     <String fx:value="primary"/>
+                                     <String fx:value="last" />
+                                     <String fx:value="primary" />
                                  </styleClass>
                              </Button>
                          </HBox>

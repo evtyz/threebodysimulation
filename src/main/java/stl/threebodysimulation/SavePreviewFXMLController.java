@@ -1,10 +1,12 @@
 package stl.threebodysimulation;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material.Material;
 
 
 /**
@@ -73,34 +75,18 @@ public class SavePreviewFXMLController {
      * The delete button.
      */
     @FXML
-    private FontAwesomeIconView deleteButton;
+    private Button deleteButton;
 
     /**
      * The select button.
      */
     @FXML
-    private FontAwesomeIconView selectButton;
+    private Button selectButton;
 
     /**
      * The constructor for the FXMLLoader.
      */
     public SavePreviewFXMLController() {
-    }
-
-    /**
-     * Handles changing the opacity of a button depending on if it is hovered or not.
-     *
-     * @param button The button whose opacity is being changed.
-     * @param state  True if it is being hovered, false if not.
-     */
-    static void hover(FontAwesomeIconView button, boolean state) {
-        Color color;
-        if (state) {
-            color = Color.BLACK;
-        } else {
-            color = Color.SILVER;
-        }
-        button.setFill(color);
     }
 
     /**
@@ -153,6 +139,17 @@ public class SavePreviewFXMLController {
             infiniteLabel.setText("No");
         }
 
+        FontIcon selectIcon = new FontIcon(Material.CHECK);
+        selectIcon.setFill(Color.BLACK);
+        selectIcon.setIconSize(20);
+
+        FontIcon deleteIcon = new FontIcon(Material.CLEAR);
+        deleteIcon.setFill(Color.WHITE);
+        deleteIcon.setIconSize(20);
+
+        selectButton.setGraphic(selectIcon);
+        deleteButton.setGraphic(deleteIcon);
+
         // Everything has 2 decimal places. TODO: Make sure things fit!
         timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
         speedLabel.setText(String.format("%.2f", settings.getSpeed()));
@@ -162,39 +159,12 @@ public class SavePreviewFXMLController {
         massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
 
-    /**
-     * Handles when the user starts hovering the select button.
-     */
-    public void startHoverSelect() {
-        hover(selectButton, true);
-    }
-
-    /**
-     * Handles when the user stops hovering the select button.
-     */
-    public void stopHoverSelect() {
-        hover(selectButton, false);
-    }
 
     /**
      * Called when the user clicks the select button.
      */
     public void select() {
         selectListener.onEvent();
-    }
-
-    /**
-     * Handles when the user starts hovering the delete button.
-     */
-    public void startHoverDelete() {
-        hover(deleteButton, true);
-    }
-
-    /**
-     * Handles when the user stops hovering the delete button.
-     */
-    public void stopHoverDelete() {
-        hover(deleteButton, false);
     }
 
     /**

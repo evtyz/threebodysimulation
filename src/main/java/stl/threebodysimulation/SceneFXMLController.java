@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -18,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material.Material;
 
 import java.io.File;
 import java.io.FileReader;
@@ -63,6 +66,18 @@ public class SceneFXMLController implements Initializable {
      */
     @FXML
     private VBox savesBox;
+
+    /**
+     * The Button UI element that handles refreshing for new saves.
+     */
+    @FXML
+    private Button refreshButton;
+
+    /**
+     * The Button UI element that handles opening the saves directory in a file explorer.
+     */
+    @FXML
+    private Button browseButton;
     /**
      * The UI element that contains everything outside of the tabs to the left.
      */
@@ -205,6 +220,16 @@ public class SceneFXMLController implements Initializable {
             canvasPanelController.setOnStopListener(() -> settingsPanelController.setActiveRunButton(true)); // Enables rerunning the simulation if it is stopped.
 
             refreshSaves();
+
+            FontIcon refreshIcon = new FontIcon(Material.REFRESH);
+            refreshIcon.setIconColor(Color.BLACK);
+            refreshIcon.setIconSize(20);
+            refreshButton.setGraphic(refreshIcon);
+
+            FontIcon browseIcon = new FontIcon(Material.FOLDER);
+            browseIcon.setIconColor(Color.WHITE);
+            browseIcon.setIconSize(20);
+            browseButton.setGraphic(browseIcon);
 
         } catch (IOException ignored) {
             // This only happens when FXML files aren't found, which should never happen.
