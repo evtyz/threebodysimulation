@@ -75,6 +75,7 @@ public class SavesPanelFXMLController {
         } catch (NullPointerException ignored) {
         }
         File saveDirectory = new File("Saves");
+        //noinspection ResultOfMethodCallIgnored : As long as a directory exists, we don't care if mkdir created it.
         saveDirectory.mkdir(); // Create a directory if none exists.
         File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(".tbsettings"));
         try {
@@ -174,7 +175,7 @@ public class SavesPanelFXMLController {
      *
      * @param onLoadListener The listener.
      */
-    public void setOnLoadListener(Listener onLoadListener) {
+    void setOnLoadListener(Listener onLoadListener) {
         this.onLoadListener = onLoadListener;
     }
 

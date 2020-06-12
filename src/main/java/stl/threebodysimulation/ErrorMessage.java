@@ -76,6 +76,19 @@ enum ErrorMessage implements PopupMessage {
         }
     },
     /**
+     * An error that occurs when the user attempts to overwrite a CSV file that refuses to be edited.
+     */
+    OVERWRITE_ERROR {
+        @Override
+        public String getTitle() {
+            return "Overwrite CSV Error";
+        }
+        @Override
+        public String getMessage() {
+            return "The CSV file you specified cannot be edited. It might be open in another window. Please close all other instances of this app and try again.";
+        }
+    },
+    /**
      * An unknown error that occurs.
      */
     UNKNOWN_ERROR {
@@ -88,6 +101,6 @@ enum ErrorMessage implements PopupMessage {
         public String getMessage() {
             return "An unknown error occurred during the simulation. Please let the developers know, and try your simulation again.";
         }
-    };
+    }
 
 }

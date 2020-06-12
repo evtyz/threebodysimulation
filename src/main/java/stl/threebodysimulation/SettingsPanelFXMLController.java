@@ -495,6 +495,7 @@ public class SettingsPanelFXMLController {
 
         String saveDirectoryPath = "Saves";
         File saveDirectory = new File(saveDirectoryPath);
+        //noinspection ResultOfMethodCallIgnored : as long as the saves directory is created, we don't care if mkdir created it.
         saveDirectory.mkdir();
 
         String filepath = saveDirectoryPath + SceneFXMLController.fileSeparator + templateIDField.getText() + ".tbsettings";

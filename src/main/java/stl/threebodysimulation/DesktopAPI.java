@@ -21,6 +21,7 @@ class DesktopAPI {
      */
     static void openDirectory(String directoryName) {
         File directory = new File(directoryName);
+        //noinspection ResultOfMethodCallIgnored : as long as there is a directory, what mkdir returns is irrelevant.
         directory.mkdir();
         DesktopAPI.open(directory);
     }

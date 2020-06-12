@@ -158,6 +158,17 @@ public class CanvasPanelFXMLController {
         // Clear out the canvas and provide the wrapper with settings.
         canvasWrapper.setupWithSettings(settings);
 
+        String CSVFileName = settings.getCSVFileName();
+        if (CSVFileName.equals("")) {
+            CSVFilePath = "";
+        } else {
+            CSVFilePath = setupCSV(settings.getCSVFileName());
+            if (CSVFilePath.equals("")) {
+                SceneFXMLController.openErrorWindow(ErrorMessage.OVERWRITE_ERROR, canvas.getScene().getWindow());
+                return;
+            }
+        }
+
         // Setup CSV
         CSVFilePath = setupCSV(settings.getCSVFileName());
 
@@ -222,20 +233,21 @@ public class CanvasPanelFXMLController {
      * @return The path of the new CSV file.
      */
     private static String setupCSV(String filename) {
-        if (filename.equals("")) {
-            return ""; // Sentinal value, means that the user doesn't want to save anything.
-        }
         String directory = "CSV";
         String filepath = directory + SceneFXMLController.fileSeparator + filename + ".csv";
         File CSVDirectory = new File(directory);
         File CSVFile = new File(filepath);
         try {
-            // TODO: Fix bugs here if directory is unable to be created.
+            //noinspection ResultOfMethodCallIgnored : as long as a directory exists, we don't care if mkdir was successful or not.
             CSVDirectory.mkdir(); // Make the CSV folder if it doesn't exist
 
             if (!CSVFile.createNewFile()) { // Create a new file
-                CSVFile.delete(); // If there already is one, delete the old file
-                CSVFile.createNewFile(); // And try creating the new file again.
+                if (CSVFile.delete()) { // If there already is one, delete the old file
+                    //noinspection ResultOfMethodCallIgnored : this should always return true, since it only runs if the file was successfully deleted.
+                    CSVFile.createNewFile(); // And try creating the new file again.
+                } else {
+                    return "";
+                }
             }
 
             BufferedWriter headerWriter = Files.newBufferedWriter(Paths.get(filepath)); // A FileWriter object to modify the file
@@ -262,7 +274,8 @@ public class CanvasPanelFXMLController {
                     "3 X Acc",
                     "3 Y Acc",
             };
-            headerPrinter.printRecord(headers); // Write the headers into the file.
+            //noinspection RedundantCast
+            headerPrinter.printRecord((Object[]) headers); // Write the headers into the file. Cast for clarity's sake.
             headerWriter.close(); // Close the file.
 
         } catch (IOException e) {
@@ -305,7 +318,8 @@ public class CanvasPanelFXMLController {
             try {
                 BufferedWriter dataWriter = Files.newBufferedWriter(Paths.get(CSVFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
                 CSVPrinter dataPrinter = new CSVPrinter(dataWriter, CSVFormat.DEFAULT);
-                dataPrinter.printRecord(getRecord());
+                //noinspection RedundantCast
+                dataPrinter.printRecord((Object[]) getRecord()); // Cast for clarity's sake.
                 dataWriter.close();
             } catch (IOException e) {
                 e.printStackTrace(); // Should never occur, unless the user deletes the file midway through a simulation.
