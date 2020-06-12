@@ -218,7 +218,6 @@ public class SceneFXMLController implements Initializable {
                 node -> settingsTab.setContent(node));
 
         panelController.setup(); // Set up settings panel.
-        panelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
         panelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
         panelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
         panelController.setOnSaveTemplateListener(() -> {
@@ -401,27 +400,6 @@ public class SceneFXMLController implements Initializable {
                     settingsPanelController.loadSettings(settings);
                     tabPane.getSelectionModel().select(0);
                 });
-    }
-
-    /**
-     * Opens the user manual.
-     */
-    private void openManual() {
-        // Opens user manual popups
-        try {
-            // Load up a new window with user manual layout.
-            final Stage stage = new Stage();
-            loadLayout(
-                    "/stl/threebodysimulation/layouts/userManualLayout.fxml",
-                    node -> {
-                        Scene scene = new Scene((Parent) node);
-                        MainApp.setCSS(scene);
-                        stage.setScene(scene);
-                    });
-
-            MainApp.openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "User Manual");
-        } catch (Exception ignored) { // In case the layout is not found. Should never happen.
-        }
     }
 
     /**

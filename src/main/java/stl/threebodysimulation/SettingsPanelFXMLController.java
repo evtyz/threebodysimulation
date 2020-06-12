@@ -3,14 +3,18 @@ package stl.threebodysimulation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -43,11 +47,6 @@ public class SettingsPanelFXMLController {
      * The fastest simulation speed allowed.
      */
     private static final double MAX_SIMULATION_SPEED = 10000;
-
-    /**
-     * The listener that is called when the manual button is pressed.
-     */
-    private Listener onOpenManualListener;
 
     /**
      * The listener that is called when the run simulation button is pressed.
@@ -287,15 +286,6 @@ public class SettingsPanelFXMLController {
     }
 
     /**
-     * Sets the listener for the manual button.
-     *
-     * @param listener The listener that will be called when the manual button is pressed.
-     */
-    void setOnOpenManualListener(Listener listener) {
-        onOpenManualListener = listener;
-    }
-
-    /**
      * Sets the listener for the simulation button.
      *
      * @param listener The listener that will be called when the simulation button is pressed.
@@ -407,7 +397,21 @@ public class SettingsPanelFXMLController {
      * Opens the manual. Links to FXML.
      */
     public void openManual() {
-        onOpenManualListener.onEvent();
+        // Opens user manual popups
+        try {
+            // Load up a new window with user manual layout.
+            final Stage stage = new Stage();
+            SceneFXMLController.loadLayout(
+                    "/stl/threebodysimulation/layouts/userManualLayout.fxml",
+                    node -> {
+                        Scene scene = new Scene((Parent) node);
+                        MainApp.setCSS(scene);
+                        stage.setScene(scene);
+                    });
+
+            MainApp.openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "User Manual");
+        } catch (Exception ignored) { // In case the layout is not found. Should never happen.
+        }
     }
 
     /**
