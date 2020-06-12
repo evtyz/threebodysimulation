@@ -28,6 +28,22 @@ import java.util.ResourceBundle;
 public class SceneFXMLController implements Initializable {
 
     /**
+     * The name of the directory that stores CSVs.
+     */
+    static final String CSV_DIRECTORY_NAME = "CSV";
+    /**
+     * The extension of CSV files.
+     */
+    static final String CSV_EXTENSION_NAME = ".csv";
+    /**
+     * The name of the directory that stores templates.
+     */
+    static final String SAVES_DIRECTORY_NAME = "Saves";
+    /**
+     * The extension of template files.
+     */
+    static final String SAVES_EXTENSION_NAME = ".3btemplate";
+    /**
      * Default colors that each particle is initialized to.
      */
     private static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
@@ -35,13 +51,14 @@ public class SceneFXMLController implements Initializable {
      * The separator between directory names. Depends on operating system. e.g. "/" vs "\\" vs others.
      */
     static String fileSeparator;
-    static final String CSV_DIRECTORY_NAME = "CSV";
-    static final String CSV_EXTENSION_NAME = ".csv";
-    static final String SAVES_DIRECTORY_NAME = "Saves";
-    static final String SAVES_EXTENSION_NAME = ".3btemplate";
+    /**
+     * A String.format template for CSV files.
+     */
     static String CSVFilePathTemplate;
+    /**
+     * A String.format template for save files.
+     */
     static String SavesFilePathTemplate;
-
     /**
      * The info display panel in the UI.
      */
