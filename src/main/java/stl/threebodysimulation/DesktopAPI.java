@@ -57,8 +57,6 @@ class DesktopAPI {
 
 
     private static void openDESKTOP(File file) {
-
-        logOut("Trying to use Desktop.getDesktop().open() with " + file.toString());
         try {
             if (!Desktop.isDesktopSupported()) {
                 logErr("Platform is not supported.");
@@ -79,8 +77,6 @@ class DesktopAPI {
 
 
     private static boolean runCommand(String command, String file) {
-
-        logOut("Trying to exec:\n   cmd = " + command + "\n   args = " + "%s" + "\n   %s = " + file);
 
         String[] parts = prepareCommand(command, "%s", file);
 
@@ -132,10 +128,6 @@ class DesktopAPI {
 
     private static void logErr(String msg) {
         System.err.println(msg);
-    }
-
-    private static void logOut(String msg) {
-        System.out.println(msg);
     }
 
     private static EnumOS getOs() {

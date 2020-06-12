@@ -50,7 +50,7 @@ class ParticleDifferentialEquations implements FirstOrderDifferentialEquations {
      */
     @Override
     public int getDimension() {
-        return 3 * 2 * 2; // 3 particles * 2 dimensions * 2 derivatives (both displacement -> velocity and velocity -> acceleration)
+        return 12; // 3 particles * 2 dimensions * 2 derivatives (both displacement -> velocity and velocity -> acceleration)
     }
 
     /**
