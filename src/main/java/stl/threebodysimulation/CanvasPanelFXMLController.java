@@ -124,9 +124,8 @@ public class CanvasPanelFXMLController {
      * @return The path of the new CSV file.
      */
     private static String setupCSV(String filename) {
-        String directory = "CSV";
-        String filepath = directory + SceneFXMLController.fileSeparator + filename + ".csv";
-        File CSVDirectory = new File(directory);
+        String filepath = String.format(SceneFXMLController.CSVFilePathTemplate, filename);
+        File CSVDirectory = new File(SceneFXMLController.CSV_DIRECTORY_NAME);
         File CSVFile = new File(filepath);
         try {
             //noinspection ResultOfMethodCallIgnored : as long as a directory exists, we don't care if mkdir was successful or not.

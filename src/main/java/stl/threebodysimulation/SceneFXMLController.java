@@ -35,6 +35,13 @@ public class SceneFXMLController implements Initializable {
      * The separator between directory names. Depends on operating system. e.g. "/" vs "\\" vs others.
      */
     static String fileSeparator;
+    static final String CSV_DIRECTORY_NAME = "CSV";
+    static final String CSV_EXTENSION_NAME = ".csv";
+    static final String SAVES_DIRECTORY_NAME = "Saves";
+    static final String SAVES_EXTENSION_NAME = ".3btemplate";
+    static String CSVFilePathTemplate;
+    static String SavesFilePathTemplate;
+
     /**
      * The info display panel in the UI.
      */
@@ -83,6 +90,8 @@ public class SceneFXMLController implements Initializable {
      */
     public SceneFXMLController() {
         fileSeparator = System.getProperty("file.separator");
+        CSVFilePathTemplate = CSV_DIRECTORY_NAME + fileSeparator + "%s" + CSV_EXTENSION_NAME;
+        SavesFilePathTemplate = SAVES_DIRECTORY_NAME + fileSeparator + "%s" + SAVES_EXTENSION_NAME;
     }
 
     /**

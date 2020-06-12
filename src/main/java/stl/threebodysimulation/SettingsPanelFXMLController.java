@@ -470,7 +470,7 @@ public class SettingsPanelFXMLController {
      * Opens the CSV directory in a file explorer window.
      */
     public void openCSVDirectory() {
-        DesktopAPI.openDirectory("CSV");
+        DesktopAPI.openDirectory(SceneFXMLController.CSV_DIRECTORY_NAME);
     }
 
     /**
@@ -493,12 +493,12 @@ public class SettingsPanelFXMLController {
 
         SimulationSettings settings = getSimulationSettings();
 
-        String saveDirectoryPath = "Saves";
+        String saveDirectoryPath = SceneFXMLController.SAVES_DIRECTORY_NAME;
         File saveDirectory = new File(saveDirectoryPath);
         //noinspection ResultOfMethodCallIgnored : as long as the saves directory is created, we don't care if mkdir created it.
         saveDirectory.mkdir();
 
-        String filepath = saveDirectoryPath + SceneFXMLController.fileSeparator + templateIDField.getText() + ".tbsettings";
+        String filepath = String.format(SceneFXMLController.SavesFilePathTemplate, templateIDField.getText());
 
         File saveFile = new File(filepath);
 

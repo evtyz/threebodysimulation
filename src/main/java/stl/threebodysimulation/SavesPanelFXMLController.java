@@ -74,10 +74,10 @@ public class SavesPanelFXMLController {
             savesBox.getChildren().clear();
         } catch (NullPointerException ignored) {
         }
-        File saveDirectory = new File("Saves");
+        File saveDirectory = new File(SceneFXMLController.SAVES_DIRECTORY_NAME);
         //noinspection ResultOfMethodCallIgnored : As long as a directory exists, we don't care if mkdir created it.
         saveDirectory.mkdir(); // Create a directory if none exists.
-        File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(".tbsettings"));
+        File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(SceneFXMLController.SAVES_EXTENSION_NAME));
         try {
             if (filesList.length == 0) {
                 showNoSavesMessage();
@@ -167,7 +167,7 @@ public class SavesPanelFXMLController {
      * Opens the saves directory in a file explorer.
      */
     public void openSavesDirectory() {
-        DesktopAPI.openDirectory("Saves");
+        DesktopAPI.openDirectory(SceneFXMLController.SAVES_DIRECTORY_NAME);
     }
 
     /**
