@@ -182,7 +182,7 @@ public class SceneFXMLController implements Initializable {
     /**
      * Passed in as a functional argument to explain how a node is displayed.
      */
-    private interface NodeManager {
+    interface NodeManager {
         /**
          * Called when a node needs to be displayed.
          *
@@ -200,10 +200,63 @@ public class SceneFXMLController implements Initializable {
      * @return The layout controller.
      * @throws IOException If the layout isn't found (should never happpen.)
      */
-    private static <Controller> Controller loadLayout(String resourceName, NodeManager manager) throws IOException {
+    static <Controller> Controller loadLayout(String resourceName, NodeManager manager) throws IOException {
         FXMLLoader loader = new FXMLLoader(SceneFXMLController.class.getResource(resourceName));
         manager.manageNewNode(loader.load());
         return loader.getController();
+    }
+
+    /**
+     * Sets up a brand-new controller for the settings panel.
+     *
+     * @return The original form of a SettingsPanelFXMLController.
+     * @throws IOException If the layout file isn't found. Should never happen.
+     */
+    private SettingsPanelFXMLController setupSettingsPanel() throws IOException {
+        SettingsPanelFXMLController panelController = loadLayout(
+                "/stl/threebodysimulation/layouts/settingsPanelLayout.fxml",
+                node -> settingsTab.setContent(node));
+
+        panelController.setup(); // Set up settings panel.
+        panelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
+        panelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
+        panelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
+        panelController.setOnSaveTemplateListener(() -> {
+            refreshSaves();
+            tabPane.getSelectionModel().select(1);
+        });
+        return panelController;
+    }
+
+    /**
+     * Sets up a brand-new controller for the info panel.
+     *
+     * @return The original form of an InfoPanelFXMLController.
+     * @throws IOException If the layout file isn't found. Should never happen.
+     */
+    private InfoPanelFXMLController setupInfoPanel() throws IOException {
+        InfoPanelFXMLController panelController = loadLayout(
+                "/stl/threebodysimulation/layouts/infoPanelLayout.fxml",
+                node -> actionPane.setTop(node)
+        );
+        panelController.setup();
+        return panelController;
+    }
+
+    /**
+     * Sets up a brand-new controller for the canvas panel.
+     *
+     * @return The original form of a CanvasPanelFXMLController.
+     * @throws IOException If the layout file isn't found. Should never happen.
+     */
+    private CanvasPanelFXMLController setupCanvasPanel() throws IOException {
+        CanvasPanelFXMLController panelController = loadLayout(
+                "/stl/threebodysimulation/layouts/canvasPanelLayout.fxml",
+                node -> actionPane.setCenter(node)
+        );
+        panelController.setup(); // Sets up canvas.
+        panelController.setOnStopListener(() -> settingsPanelController.setActiveRunButton(true)); // Enables rerunning the simulation if it is stopped.
+        return panelController;
     }
 
     /**
@@ -216,33 +269,9 @@ public class SceneFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // Load in settings panel
-            settingsPanelController = loadLayout(
-                    "/stl/threebodysimulation/layouts/settingsPanelLayout.fxml",
-                    node -> settingsTab.setContent(node));
-
-            settingsPanelController.setup(); // Set up settings panel.
-            settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
-            settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
-            settingsPanelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
-            settingsPanelController.setOnSaveTemplateListener(() -> {
-                refreshSaves();
-                tabPane.getSelectionModel().select(1);
-            });
-
-            // Load in info panel.
-            infoPanelController = loadLayout(
-                    "/stl/threebodysimulation/layouts/infoPanelLayout.fxml",
-                    node -> actionPane.setTop(node)
-            );
-            infoPanelController.setup();
-
-            // Load in canvas panel.
-            canvasPanelController = loadLayout(
-                    "/stl/threebodysimulation/layouts/canvasPanelLayout.fxml",
-                    node -> actionPane.setCenter(node)
-            );
-            canvasPanelController.setup(); // Sets up canvas.
-            canvasPanelController.setOnStopListener(() -> settingsPanelController.setActiveRunButton(true)); // Enables rerunning the simulation if it is stopped.
+            settingsPanelController = setupSettingsPanel();
+            infoPanelController = setupInfoPanel();
+            canvasPanelController = setupCanvasPanel();
 
             refreshSaves();
 

@@ -228,9 +228,11 @@ public class SettingsPanelFXMLController {
         try {
             // Setup each controller in each array with the correct id.
             for (int id = 0; id < 3; id++) {
-                FXMLLoader parameterSettingsLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/particleParametersLayout.fxml"));
-                settingsBox.getChildren().add(4 + 2 * id, parameterSettingsLoader.load());  // Slot in settings at right place in the panel. Can throw IOException if FXML file doesn't exist.
-                parameterControllers[id] = parameterSettingsLoader.getController();
+                int finalId = id;
+                parameterControllers[id] = SceneFXMLController.loadLayout(
+                        "/stl/threebodysimulation/layouts/particleParametersLayout.fxml",
+                        node -> settingsBox.getChildren().add(4 + 2 * finalId, node)
+                );
                 parameterControllers[id].setup(id + 1, SceneFXMLController.getDefaultColors()[id]);
             }
         } catch (IOException ignored) {
