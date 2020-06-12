@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
     <padding>
         <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -72,17 +62,16 @@
        <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
            <Button fx:id="browseButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#openCSVDirectory" style="-fx-font-size: 13;">
             <HBox.margin>
-               <Insets />
+               <Insets right="-1.0" />
             </HBox.margin>
             <styleClass>
                <String fx:value="first" />
-               <String fx:value="primary" />
             </styleClass>
             <padding>
                <Insets bottom="-1.0" top="-1.0" />
             </padding>
          </Button>
-           <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="165.0" promptText="Filename" styleClass="last">
+           <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="166.0" promptText="Filename" styleClass="last">
                <HBox.margin>
                    <Insets />
                </HBox.margin>
@@ -123,7 +112,6 @@
          </padding>
          <styleClass>
             <String fx:value="first" />
-            <String fx:value="primary" />
          </styleClass>
         </Button>
         <TextField fx:id="templateIDField" alignment="CENTER_RIGHT" prefWidth="200.0" promptText="Filename" styleClass="last">

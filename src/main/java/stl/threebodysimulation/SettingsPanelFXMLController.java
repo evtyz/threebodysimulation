@@ -262,13 +262,13 @@ public class SettingsPanelFXMLController {
         saveCSVToggle();
 
         FontIcon saveIcon = new FontIcon(Material.SAVE);
-        saveIcon.setIconColor(Color.WHITE);
+        saveIcon.setIconColor(Color.valueOf("#555555"));
         saveIcon.setIconSize(20);
         saveButton.setGraphic(saveIcon);
 
         FontIcon browseIcon = new FontIcon(Material.FOLDER);
-        browseIcon.setIconColor(Color.WHITE);
-        browseIcon.setIconSize(20);
+        browseIcon.setIconColor(Color.valueOf("#555555"));
+        browseIcon.setIconSize(17);
         browseButton.setGraphic(browseIcon);
     }
 

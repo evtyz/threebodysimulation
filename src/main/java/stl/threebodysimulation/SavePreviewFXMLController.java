@@ -140,7 +140,7 @@ public class SavePreviewFXMLController {
         }
 
         FontIcon selectIcon = new FontIcon(Material.CHECK);
-        selectIcon.setFill(Color.BLACK);
+        selectIcon.setFill(Color.valueOf("#555555"));
         selectIcon.setIconSize(20);
 
         FontIcon deleteIcon = new FontIcon(Material.CLEAR);

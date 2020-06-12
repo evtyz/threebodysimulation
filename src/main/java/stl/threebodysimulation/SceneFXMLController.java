@@ -222,7 +222,7 @@ public class SceneFXMLController implements Initializable {
             refreshSaves();
 
             FontIcon refreshIcon = new FontIcon(Material.REFRESH);
-            refreshIcon.setIconColor(Color.BLACK);
+            refreshIcon.setIconColor(Color.valueOf("#555555"));
             refreshIcon.setIconSize(20);
             refreshButton.setGraphic(refreshIcon);
 
