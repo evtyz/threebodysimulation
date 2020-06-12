@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="sceneLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" style="-fx-border-color: #C0C0C0 transparent transparent transparent;" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SceneFXMLController">
     <left>
@@ -16,34 +11,7 @@
             <Tab fx:id="settingsTab" text="Settings">
             </Tab>
             <Tab text="Saves">
-                 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px;">
-                     <VBox alignment="TOP_CENTER" style="-fx-background-color: white;">
-                         <padding>
-                             <Insets top="5.0" />
-                         </padding>
-                         <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
-                             <padding>
-                                 <Insets top="5.0" />
-                             </padding>
-                         </VBox>
-                         <HBox alignment="TOP_CENTER">
-                             <VBox.margin>
-                                 <Insets top="10.0" />
-                             </VBox.margin>
-                             <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshSaves" styleClass="first">
-                                 <HBox.margin>
-                                     <Insets right="-1.0" />
-                                 </HBox.margin>
-                             </Button>
-                             <Button fx:id="browseButton" layoutX="176.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSavesDirectory">
-                                 <styleClass>
-                                     <String fx:value="last" />
-                                     <String fx:value="primary" />
-                                 </styleClass>
-                             </Button>
-                         </HBox>
-                     </VBox>
-                 </ScrollPane>
+                 <ScrollPane fx:id="savesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" />
             </Tab>
         </TabPane>
     </left>

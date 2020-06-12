@@ -6,6 +6,9 @@ import javafx.scene.image.Image;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The common abstract class for a popup window FXML controller.
+ */
 abstract class PopupWindowFXMLController implements Initializable {
     /**
      * Initializes the window, according to the Application parent class. Empty.

@@ -3,31 +3,22 @@ package stl.threebodysimulation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material.Material;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -63,22 +54,15 @@ public class SceneFXMLController implements Initializable {
     @FXML
     private Tab settingsTab;
     /**
-     * The VBox UI element for the saves panel.
+     * The ScrollPane UI element for the saves panel.
      */
     @FXML
-    private VBox savesBox;
-
+    private ScrollPane savesScrollPane;
     /**
-     * The Button UI element that handles refreshing for new saves.
+     * The controller for the saves panel UI.
      */
     @FXML
-    private Button refreshButton;
-
-    /**
-     * The Button UI element that handles opening the saves directory in a file explorer.
-     */
-    @FXML
-    private Button browseButton;
+    private SavesPanelFXMLController savesPanelController;
     /**
      * The UI element that contains everything outside of the tabs to the left.
      */
@@ -93,11 +77,6 @@ public class SceneFXMLController implements Initializable {
      */
     @FXML
     private BorderPane sceneLayout;
-
-    /**
-     * The filename of the template to be loaded.
-     */
-    private String templateName;
 
     /**
      * Constructor used by the FXML loader.
@@ -221,7 +200,7 @@ public class SceneFXMLController implements Initializable {
         panelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
         panelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
         panelController.setOnSaveTemplateListener(() -> {
-            refreshSaves();
+            savesPanelController.refreshSaves();
             tabPane.getSelectionModel().select(1);
         });
         return panelController;
@@ -259,6 +238,27 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
+     * Sets up a brand-new controller for the saves panel.
+     *
+     * @return The original form of a SavesPanelFXMLController.
+     * @throws IOException If the layout file isn't found. Should never happen.
+     */
+    private SavesPanelFXMLController setupSavesPanel() throws IOException {
+        SavesPanelFXMLController panelController = loadLayout(
+                "/stl/threebodysimulation/layouts/savesPanelLayout.fxml",
+                node -> savesScrollPane.setContent(node)
+        );
+
+        panelController.setup();
+        panelController.setOnLoadListener(() -> {
+            settingsPanelController.loadTemplateName(panelController.getTemplateName());
+            settingsPanelController.loadSettings(panelController.getSettings());
+            tabPane.getSelectionModel().select(0);
+        });
+        return panelController;
+    }
+
+    /**
      * Sets up initial states of UI elements after the FXML loader is done linking. Called by the FXML loader.
      *
      * @param url            Unused. From parent class.
@@ -271,16 +271,7 @@ public class SceneFXMLController implements Initializable {
             settingsPanelController = setupSettingsPanel();
             infoPanelController = setupInfoPanel();
             canvasPanelController = setupCanvasPanel();
-
-            refreshSaves();
-
-            refreshButton.setGraphic(
-                    buildIcon(Material.REFRESH, Color.valueOf("#555555"), 20)
-            );
-
-            browseButton.setGraphic(
-                    buildIcon(Material.FOLDER, Color.WHITE, 20)
-            );
+            savesPanelController = setupSavesPanel();
 
         } catch (IOException ignored) {
             // This only happens when FXML files aren't found, which should never happen.
@@ -303,106 +294,6 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
-     * Refreshes the saves display for new saves.
-     */
-    @SuppressWarnings("ConstantConditions") // Already caught by a try-catch.
-    public void refreshSaves() {
-        try {
-            savesBox.getChildren().clear();
-        } catch (NullPointerException ignored) {
-        }
-        File saveDirectory = new File("Saves");
-        saveDirectory.mkdir(); // Create a directory if none exists.
-        File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(".tbsettings"));
-        try {
-            if (filesList.length == 0) {
-                showNoSavesMessage();
-            } else {
-                for (File saveFile : filesList) {
-                    // TODO Documentation
-                    // Reads a file and saves it as a node.
-                    ArrayList<String> serializedForm = new ArrayList<>();
-
-                    try {
-                        for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
-                            for (int index = 0; index < record.size(); index++) {
-                                serializedForm.add(record.get(index));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        // Should never happen.
-                    }
-
-
-                    SimulationSettings settings = new SimulationSettings(serializedForm);
-
-                    SavePreviewFXMLController saveController = loadLayout(
-                            "/stl/threebodysimulation/layouts/savePreviewLayout.fxml",
-                            node -> savesBox.getChildren().add(node)
-                    );
-
-                    saveController.setSettings(settings);
-                    saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
-                    saveController.setSelectListener(() -> {
-                        templateName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
-                        showLoadConfirmation(saveController.getSettings());
-                    });
-                    saveController.setDeleteListener(() -> showDeleteConfirmation(saveFile));
-
-                }
-            }
-        } catch (NullPointerException | IOException e) {
-            e.printStackTrace();
-            showNoSavesMessage();
-        }
-    }
-
-    /**
-     * Shows a messsage when no saves are found.
-     */
-    private void showNoSavesMessage() {
-        Label emptyMessage = new Label();
-        emptyMessage.setText("No saves found.");
-        emptyMessage.setPadding(new Insets(15, 15, 5, 15));
-        savesBox.getChildren().add(0, emptyMessage);
-    }
-
-    /**
-     * Shows a delete confirmation for a template file/
-     *
-     * @param saveFile The template file to be deleted.
-     */
-    private void showDeleteConfirmation(File saveFile) {
-        openWarningWindow(
-                new WarningMessage(WarningMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
-                sceneLayout.getScene().getWindow(),
-                () -> {
-                    if (!saveFile.delete()) {
-                        openErrorWindow(ErrorMessage.DELETE_ERROR, sceneLayout.getScene().getWindow());
-                    }
-                    refreshSaves();
-                }
-        );
-    }
-
-    /**
-     * Shows a preview of loaded settings.
-     *
-     * @param settings Settings that are about to be loaded.
-     */
-    private void showLoadConfirmation(SimulationSettings settings) {
-        openWarningWindow(
-                new WarningMessage(WarningMessage.Type.LOAD_CONFIRMATION),
-                sceneLayout.getScene().getWindow(),
-                () -> {
-                    settingsPanelController.loadTemplateName(templateName);
-                    settingsPanelController.loadSettings(settings);
-                    tabPane.getSelectionModel().select(0);
-                });
-    }
-
-    /**
      * Runs the simulation.
      *
      * @param settings Settings to run the simulation with.
@@ -417,12 +308,5 @@ public class SceneFXMLController implements Initializable {
         // Sets up visualization.
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
-    }
-
-    /**
-     * Opens the saves directory in a file explorer.
-     */
-    public void openSavesDirectory() {
-        DesktopAPI.openDirectory("Saves");
     }
 }

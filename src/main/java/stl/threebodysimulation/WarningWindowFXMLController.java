@@ -1,13 +1,9 @@
 package stl.threebodysimulation;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * The FXML controller for the confirmation dialog that appears when overwriting a file.

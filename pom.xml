@@ -189,6 +189,7 @@
                         <list>stl.threebodysimulation.ErrorWindowFXMLController</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
                         <list>stl.threebodysimulation.SavePreviewFXMLController</list>
+                        <list>stl.threebodysimulation.SavesPanelFXMLController</list>
                         <list>stl.threebodysimulation.SceneFXMLController</list>
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
                         <list>stl.threebodysimulation.SimulationSettings</list>

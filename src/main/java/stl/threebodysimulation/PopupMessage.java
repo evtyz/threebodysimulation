@@ -1,5 +1,8 @@
 package stl.threebodysimulation;
 
+/**
+ * The common interface for popup messages, with a title and a message.
+ */
 interface PopupMessage {
 
     /**
