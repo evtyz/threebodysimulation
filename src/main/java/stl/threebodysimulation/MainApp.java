@@ -23,20 +23,32 @@ public class MainApp extends Application {
         FXMLLoader appLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/sceneLayout.fxml"));
         Scene scene = new Scene(appLoader.load(), 1200, 900);
 
-        // Load in CSS
-        scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
-
-        // We don't want the window to be resizable, to save us the UI headache.
-        stage.setResizable(false);
-
-        // Icon of app
-        stage.getIcons().add(new Image("/stl/threebodysimulation/icons/appIcon.png"));
-
-        // Title of app
-        stage.setTitle("Three-Body Simulation");
-
-        // Stage the UI.
+        setCSS(scene);
         stage.setScene(scene);
+
+        openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "Three-Body Simulation");
+    }
+
+    /**
+     * Sets the CSS of a scene to the app's theme.
+     *
+     * @param scene The scene to be styled.
+     */
+    static void setCSS(Scene scene) {
+        scene.getStylesheets().add(MainApp.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
+    }
+
+    /**
+     * Opens a new window.
+     *
+     * @param stage The layout of the window.
+     * @param icon The icon of the window.
+     * @param title The title of the window.
+     */
+    static void openWindow(Stage stage, Image icon, String title) {
+        stage.setResizable(false);
+        stage.getIcons().add(icon);
+        stage.setTitle(title);
         stage.show();
     }
 

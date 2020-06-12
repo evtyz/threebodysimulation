@@ -114,7 +114,7 @@ public class SceneFXMLController implements Initializable {
      */
     static void openErrorWindow(ErrorMessage message, Window parent) {
         openPopupWindow(
-                new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/errorWindowLayout.fxml")),
+                "/stl/threebodysimulation/layouts/errorWindowLayout.fxml",
                 message,
                 parent,
                 () -> { }
@@ -130,7 +130,7 @@ public class SceneFXMLController implements Initializable {
      */
     static void openWarningWindow(WarningMessage message, Window parent, Listener confirmListener) {
         openPopupWindow(
-                new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/warningWindowLayout.fxml")),
+                "/stl/threebodysimulation/layouts/warningWindowLayout.fxml",
                 message,
                 parent,
                 confirmListener
@@ -140,34 +140,30 @@ public class SceneFXMLController implements Initializable {
     /**
      * Opens up a new popup window.
      *
-     * @param windowLoader The loader that manages what type of popup the window will contain.
+     * @param layoutName The name of the layout file to be loaded.
      * @param message The message of the popup.
      * @param parent The parent window of the popup
      * @param confirmListener The listener that runs when the popup is confirmed (can be a new Listener)
      */
-    static void openPopupWindow(FXMLLoader windowLoader, PopupMessage message, Window parent, Listener confirmListener) {
+    static void openPopupWindow(String layoutName, PopupMessage message, Window parent, Listener confirmListener) {
         try {
-            // Makes an FXML Loader and loads the fxml files
-            Scene popupScene = new Scene(windowLoader.load());
 
-            // Style the scenes
-            popupScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
-
+            final Stage popupWindow = new Stage();
             // Load the correct message into the layout
-            PopupWindowFXMLController popupController = windowLoader.getController();
+            PopupWindowFXMLController popupController = loadLayout(layoutName, node -> {
+                Scene popupScene = new Scene((Parent) node);
+                MainApp.setCSS(popupScene);
+                popupWindow.setScene(popupScene);
+            });
+
+
             popupController.setLabel(message.getMessage());
             popupController.setConfirmListener(confirmListener);
 
-
-            // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
-            final Stage popupWindow = new Stage();
             popupWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
             popupWindow.initOwner(parent);
-            popupWindow.setResizable(false); // Not resizable
-            popupWindow.getIcons().add(popupController.getIcon()); // Error icon.
-            popupWindow.setTitle(message.getTitle());
-            popupWindow.setScene(popupScene);
-            popupWindow.show();
+
+            MainApp.openWindow(popupWindow, popupController.getIcon(), message.getTitle());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,6 +179,32 @@ public class SceneFXMLController implements Initializable {
         return defaultColors;
     }
 
+    /**
+     * Passed in as a functional argument to explain how a node is displayed.
+     */
+    private interface NodeManager {
+        /**
+         * Called when a node needs to be displayed.
+         *
+         * @param node The node that needs to be displayed.
+         */
+        void manageNewNode(Node node);
+    }
+
+    /**
+     * Loads a layout.
+     *
+     * @param resourceName The name of the layout file to be loaded.
+     * @param manager A manager that displays the layout file in the desired way.
+     * @param <Controller> The type of controller that manages the layout file.
+     * @return The layout controller.
+     * @throws IOException If the layout isn't found (should never happpen.)
+     */
+    private static <Controller> Controller loadLayout(String resourceName, NodeManager manager) throws IOException {
+        FXMLLoader loader = new FXMLLoader(SceneFXMLController.class.getResource(resourceName));
+        manager.manageNewNode(loader.load());
+        return loader.getController();
+    }
 
     /**
      * Sets up initial states of UI elements after the FXML loader is done linking. Called by the FXML loader.
@@ -194,9 +216,10 @@ public class SceneFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             // Load in settings panel
-            FXMLLoader settingsPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/settingsPanelLayout.fxml"));
-            settingsTab.setContent(settingsPanelLoader.load());
-            settingsPanelController = settingsPanelLoader.getController();
+            settingsPanelController = loadLayout(
+                    "/stl/threebodysimulation/layouts/settingsPanelLayout.fxml",
+                    node -> settingsTab.setContent(node));
+
             settingsPanelController.setup(); // Set up settings panel.
             settingsPanelController.setOnOpenManualListener(this::openManual); // Sets up user manual button.
             settingsPanelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
@@ -207,15 +230,17 @@ public class SceneFXMLController implements Initializable {
             });
 
             // Load in info panel.
-            FXMLLoader infoPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/infoPanelLayout.fxml"));
-            actionPane.setTop(infoPanelLoader.load());
-            infoPanelController = infoPanelLoader.getController();
+            infoPanelController = loadLayout(
+                    "/stl/threebodysimulation/layouts/infoPanelLayout.fxml",
+                    node -> actionPane.setTop(node)
+            );
             infoPanelController.setup();
 
             // Load in canvas panel.
-            FXMLLoader canvasPanelLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/canvasPanelLayout.fxml"));
-            actionPane.setCenter(canvasPanelLoader.load());
-            canvasPanelController = canvasPanelLoader.getController();
+            canvasPanelController = loadLayout(
+                    "/stl/threebodysimulation/layouts/canvasPanelLayout.fxml",
+                    node -> actionPane.setCenter(node)
+            );
             canvasPanelController.setup(); // Sets up canvas.
             canvasPanelController.setOnStopListener(() -> settingsPanelController.setActiveRunButton(true)); // Enables rerunning the simulation if it is stopped.
 
@@ -283,9 +308,12 @@ public class SceneFXMLController implements Initializable {
 
 
                     SimulationSettings settings = new SimulationSettings(serializedForm);
-                    FXMLLoader saveLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/savePreviewLayout.fxml"));
-                    savesBox.getChildren().add(saveLoader.load());
-                    SavePreviewFXMLController saveController = saveLoader.getController();
+
+                    SavePreviewFXMLController saveController = loadLayout(
+                            "/stl/threebodysimulation/layouts/savePreviewLayout.fxml",
+                            node -> savesBox.getChildren().add(node)
+                    );
+
                     saveController.setSettings(settings);
                     saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
                     saveController.setSelectListener(() -> {
@@ -346,7 +374,6 @@ public class SceneFXMLController implements Initializable {
                 });
     }
 
-
     /**
      * Opens the user manual.
      */
@@ -355,22 +382,15 @@ public class SceneFXMLController implements Initializable {
         try {
             // Load up a new window with user manual layout.
             final Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/stl/threebodysimulation/layouts/userManualLayout.fxml"));
-            Scene scene = new Scene(root);
-            // Enable css
-            scene.getStylesheets().add(getClass().getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
-            // We don't want the sceneLayout to be resizable, to save us the UI headache.
-            stage.setResizable(false);
+            loadLayout(
+                    "/stl/threebodysimulation/layouts/userManualLayout.fxml",
+                    node -> {
+                        Scene scene = new Scene((Parent) node);
+                        MainApp.setCSS(scene);
+                        stage.setScene(scene);
+                    });
 
-            // Icon of app
-            stage.getIcons().add(new Image("/stl/threebodysimulation/icons/appIcon.png"));
-
-            // Title of app
-            stage.setTitle("User Manual");
-
-            // Stage the UI.
-            stage.setScene(scene);
-            stage.show();
+            MainApp.openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "User Manual");
         } catch (Exception ignored) { // In case the layout is not found. Should never happen.
         }
     }
