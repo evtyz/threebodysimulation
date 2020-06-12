@@ -118,6 +118,65 @@ public class CanvasPanelFXMLController {
     }
 
     /**
+     * Sets up a CSV file with the specified filename
+     *
+     * @param filename The name of the CSV file to be setup
+     * @return The path of the new CSV file.
+     */
+    private static String setupCSV(String filename) {
+        String directory = "CSV";
+        String filepath = directory + SceneFXMLController.fileSeparator + filename + ".csv";
+        File CSVDirectory = new File(directory);
+        File CSVFile = new File(filepath);
+        try {
+            //noinspection ResultOfMethodCallIgnored : as long as a directory exists, we don't care if mkdir was successful or not.
+            CSVDirectory.mkdir(); // Make the CSV folder if it doesn't exist
+
+            if (!CSVFile.createNewFile()) { // Create a new file
+                if (CSVFile.delete()) { // If there already is one, delete the old file
+                    //noinspection ResultOfMethodCallIgnored : this should always return true, since it only runs if the file was successfully deleted.
+                    CSVFile.createNewFile(); // And try creating the new file again.
+                } else {
+                    return "";
+                }
+            }
+
+            BufferedWriter headerWriter = Files.newBufferedWriter(Paths.get(filepath)); // A FileWriter object to modify the file
+
+            CSVPrinter headerPrinter = new CSVPrinter(headerWriter, CSVFormat.DEFAULT); // CSVPrinter to parse data and write in CSV format using a FileWriter
+            String[] headers = new String[]{ // Column headers for a CSV file.
+                    "Time",
+                    "1 X Pos",
+                    "1 Y Pos",
+                    "1 X Vel",
+                    "1 Y Vel",
+                    "1 X Acc",
+                    "1 Y Acc",
+                    "2 X Pos",
+                    "2 Y Pos",
+                    "2 X Vel",
+                    "2 Y Vel",
+                    "2 X Acc",
+                    "2 Y Acc",
+                    "3 X Pos",
+                    "3 Y Pos",
+                    "3 X Vel",
+                    "3 Y Vel",
+                    "3 X Acc",
+                    "3 Y Acc",
+            };
+            //noinspection RedundantCast
+            headerPrinter.printRecord((Object[]) headers); // Write the headers into the file. Cast for clarity's sake.
+            headerWriter.close(); // Close the file.
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Should never happen.
+        }
+
+        return filepath;
+    }
+
+    /**
      * Sets up the initial state of the controller. Only called once.
      */
     void setup() {
@@ -225,66 +284,6 @@ public class CanvasPanelFXMLController {
             state = SimulationState.INACTIVE;
         }
     }
-
-    /**
-     * Sets up a CSV file with the specified filename
-     *
-     * @param filename The name of the CSV file to be setup
-     * @return The path of the new CSV file.
-     */
-    private static String setupCSV(String filename) {
-        String directory = "CSV";
-        String filepath = directory + SceneFXMLController.fileSeparator + filename + ".csv";
-        File CSVDirectory = new File(directory);
-        File CSVFile = new File(filepath);
-        try {
-            //noinspection ResultOfMethodCallIgnored : as long as a directory exists, we don't care if mkdir was successful or not.
-            CSVDirectory.mkdir(); // Make the CSV folder if it doesn't exist
-
-            if (!CSVFile.createNewFile()) { // Create a new file
-                if (CSVFile.delete()) { // If there already is one, delete the old file
-                    //noinspection ResultOfMethodCallIgnored : this should always return true, since it only runs if the file was successfully deleted.
-                    CSVFile.createNewFile(); // And try creating the new file again.
-                } else {
-                    return "";
-                }
-            }
-
-            BufferedWriter headerWriter = Files.newBufferedWriter(Paths.get(filepath)); // A FileWriter object to modify the file
-
-            CSVPrinter headerPrinter = new CSVPrinter(headerWriter, CSVFormat.DEFAULT); // CSVPrinter to parse data and write in CSV format using a FileWriter
-            String[] headers = new String[]{ // Column headers for a CSV file.
-                    "Time",
-                    "1 X Pos",
-                    "1 Y Pos",
-                    "1 X Vel",
-                    "1 Y Vel",
-                    "1 X Acc",
-                    "1 Y Acc",
-                    "2 X Pos",
-                    "2 Y Pos",
-                    "2 X Vel",
-                    "2 Y Vel",
-                    "2 X Acc",
-                    "2 Y Acc",
-                    "3 X Pos",
-                    "3 Y Pos",
-                    "3 X Vel",
-                    "3 Y Vel",
-                    "3 X Acc",
-                    "3 Y Acc",
-            };
-            //noinspection RedundantCast
-            headerPrinter.printRecord((Object[]) headers); // Write the headers into the file. Cast for clarity's sake.
-            headerWriter.close(); // Close the file.
-
-        } catch (IOException e) {
-            e.printStackTrace(); // Should never happen.
-        }
-
-        return filepath;
-    }
-
 
     /**
      * Updates the flattenedParticles array according to the particles array.

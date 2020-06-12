@@ -8,6 +8,8 @@ import javafx.scene.canvas.GraphicsContext;
  */
 class CanvasWrapper {
 
+    final double[] canvasPos = {0, 0};
+    final double[] circleRad = {0, 0, 0};
     /**
      * The canvas to be drawn on.
      */
@@ -16,9 +18,7 @@ class CanvasWrapper {
      * The graphics supplied to the canvas.
      */
     private final GraphicsContext gc;
-    final double[] canvasPos = {0, 0};
     double avgMass;
-    final double[] circleRad = {0, 0, 0};
     /**
      * The particles to draw on the canvas.
      */
@@ -31,6 +31,7 @@ class CanvasWrapper {
      * Whether the canvas should show the center of mass of the particles.
      */
     private boolean centerOfMass;
+
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
      *

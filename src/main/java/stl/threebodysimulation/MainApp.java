@@ -12,6 +12,29 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
     /**
+     * Sets the CSS of a scene to the app's theme.
+     *
+     * @param scene The scene to be styled.
+     */
+    static void setCSS(Scene scene) {
+        scene.getStylesheets().add(MainApp.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
+    }
+
+    /**
+     * Opens a new window.
+     *
+     * @param stage The layout of the window.
+     * @param icon  The icon of the window.
+     * @param title The title of the window.
+     */
+    static void openWindow(Stage stage, Image icon, String title) {
+        stage.setResizable(false);
+        stage.getIcons().add(icon);
+        stage.setTitle(title);
+        stage.show();
+    }
+
+    /**
      * Starts the application.
      *
      * @param stage The window that the app will be run in. Supplied by the Application parent class.
@@ -27,29 +50,6 @@ public class MainApp extends Application {
         stage.setScene(scene);
 
         openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "Three-Body Simulation");
-    }
-
-    /**
-     * Sets the CSS of a scene to the app's theme.
-     *
-     * @param scene The scene to be styled.
-     */
-    static void setCSS(Scene scene) {
-        scene.getStylesheets().add(MainApp.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
-    }
-
-    /**
-     * Opens a new window.
-     *
-     * @param stage The layout of the window.
-     * @param icon The icon of the window.
-     * @param title The title of the window.
-     */
-    static void openWindow(Stage stage, Image icon, String title) {
-        stage.setResizable(false);
-        stage.getIcons().add(icon);
-        stage.setTitle(title);
-        stage.show();
     }
 
 }

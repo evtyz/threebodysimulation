@@ -83,6 +83,7 @@ enum ErrorMessage implements PopupMessage {
         public String getTitle() {
             return "Overwrite CSV Error";
         }
+
         @Override
         public String getMessage() {
             return "The CSV file you specified cannot be edited. It might be open in another window. Please close all other instances of this app and try again.";

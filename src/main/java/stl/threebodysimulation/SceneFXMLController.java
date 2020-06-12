@@ -96,7 +96,8 @@ public class SceneFXMLController implements Initializable {
                 "/stl/threebodysimulation/layouts/errorWindowLayout.fxml",
                 message,
                 parent,
-                () -> { }
+                () -> {
+                }
         );
     }
 
@@ -119,9 +120,9 @@ public class SceneFXMLController implements Initializable {
     /**
      * Opens up a new popup window.
      *
-     * @param layoutName The name of the layout file to be loaded.
-     * @param message The message of the popup.
-     * @param parent The parent window of the popup
+     * @param layoutName      The name of the layout file to be loaded.
+     * @param message         The message of the popup.
+     * @param parent          The parent window of the popup
      * @param confirmListener The listener that runs when the popup is confirmed (can be a new Listener)
      */
     static void openPopupWindow(String layoutName, PopupMessage message, Window parent, Listener confirmListener) {
@@ -159,22 +160,10 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
-     * Passed in as a functional argument to explain how a node is displayed.
-     */
-    interface NodeManager {
-        /**
-         * Called when a node needs to be displayed.
-         *
-         * @param node The node that needs to be displayed.
-         */
-        void manageNewNode(Node node);
-    }
-
-    /**
      * Loads a layout.
      *
      * @param resourceName The name of the layout file to be loaded.
-     * @param manager A manager that displays the layout file in the desired way.
+     * @param manager      A manager that displays the layout file in the desired way.
      * @param <Controller> The type of controller that manages the layout file.
      * @return The layout controller.
      * @throws IOException If the layout isn't found (should never happpen.)
@@ -183,6 +172,21 @@ public class SceneFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(SceneFXMLController.class.getResource(resourceName));
         manager.manageNewNode(loader.load());
         return loader.getController();
+    }
+
+    /**
+     * Builds a custom FontIcon.
+     *
+     * @param iconTemplate The icon to be built.
+     * @param color        The desired color of the icon.
+     * @param size         The desired size of the icon.
+     * @return The icon.
+     */
+    static FontIcon buildIcon(Material iconTemplate, Color color, int size) {
+        FontIcon icon = new FontIcon(iconTemplate);
+        icon.setIconColor(color);
+        icon.setIconSize(size);
+        return icon;
     }
 
     /**
@@ -279,21 +283,6 @@ public class SceneFXMLController implements Initializable {
     }
 
     /**
-     * Builds a custom FontIcon.
-     *
-     * @param iconTemplate The icon to be built.
-     * @param color The desired color of the icon.
-     * @param size The desired size of the icon.
-     * @return The icon.
-     */
-    static FontIcon buildIcon(Material iconTemplate, Color color, int size) {
-        FontIcon icon = new FontIcon(iconTemplate);
-        icon.setIconColor(color);
-        icon.setIconSize(size);
-        return icon;
-    }
-
-    /**
      * Runs the simulation.
      *
      * @param settings Settings to run the simulation with.
@@ -308,5 +297,17 @@ public class SceneFXMLController implements Initializable {
         // Sets up visualization.
         canvasPanelController.setParticles(particles);
         canvasPanelController.runSimulation(settings);
+    }
+
+    /**
+     * Passed in as a functional argument to explain how a node is displayed.
+     */
+    interface NodeManager {
+        /**
+         * Called when a node needs to be displayed.
+         *
+         * @param node The node that needs to be displayed.
+         */
+        void manageNewNode(Node node);
     }
 }

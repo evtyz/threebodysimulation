@@ -30,7 +30,8 @@ class WarningMessage implements PopupMessage {
      *
      * @param type The type of message it is.
      */
-    @SuppressWarnings("SameParameterValue") // In case other errors come up, this constructor will stay parameterized.
+    @SuppressWarnings("SameParameterValue")
+    // In case other errors come up, this constructor will stay parameterized.
     WarningMessage(Type type) {
         title = type.getTitle();
         message = type.getMessageTemplate();
