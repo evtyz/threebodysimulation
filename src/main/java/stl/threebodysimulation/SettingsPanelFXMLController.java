@@ -261,15 +261,13 @@ public class SettingsPanelFXMLController {
 
         saveCSVToggle();
 
-        FontIcon saveIcon = new FontIcon(Material.SAVE);
-        saveIcon.setIconColor(Color.valueOf("#555555"));
-        saveIcon.setIconSize(20);
-        saveButton.setGraphic(saveIcon);
+        saveButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.SAVE, Color.valueOf("#555555"), 20)
+        );
 
-        FontIcon browseIcon = new FontIcon(Material.FOLDER);
-        browseIcon.setIconColor(Color.valueOf("#555555"));
-        browseIcon.setIconSize(17);
-        browseButton.setGraphic(browseIcon);
+        browseButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.FOLDER, Color.valueOf("#555555"), 17)
+        );
     }
 
     /**
@@ -380,7 +378,7 @@ public class SettingsPanelFXMLController {
 
         // If the user presses yes, we will restart the runSimulation method from the start (with forceCSV true this time).
         SceneFXMLController.openWarningWindow(
-                new ConfirmationMessage(ConfirmationMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
+                new WarningMessage(WarningMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
                 settingsBox.getScene().getWindow(),
                 () -> {
                     forceCSV = true;
@@ -503,7 +501,7 @@ public class SettingsPanelFXMLController {
             storeTemplate(settings, filepath);
         } else {
             SceneFXMLController.openWarningWindow(
-                    new ConfirmationMessage(ConfirmationMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
+                    new WarningMessage(WarningMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
                     settingsBox.getScene().getWindow(),
                     () -> {
                         forceTemplateSave = true;

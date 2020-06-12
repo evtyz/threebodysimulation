@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -112,30 +113,12 @@ public class SceneFXMLController implements Initializable {
      * @param parent  The window that the error popup must block.
      */
     static void openErrorWindow(ErrorMessage message, Window parent) {
-        try {
-            // Makes an FXML Loader and loads the fxml files
-            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/errorWindowLayout.fxml"));
-            Scene errorScene = new Scene(windowLoader.load());
-
-            // Style the scenes
-            errorScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
-
-            // Load the correct message into the layout
-            ErrorWindowFXMLController errorController = windowLoader.getController();
-            errorController.setLabel(message.getMessage());
-
-            // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
-            final Stage errorWindow = new Stage();
-            errorWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
-            errorWindow.initOwner(parent);
-            errorWindow.setResizable(false); // Not resizable
-            errorWindow.getIcons().add(new Image("/stl/threebodysimulation/icons/errorIcon.png")); // Error icon.
-            errorWindow.setTitle(message.getTitle());
-            errorWindow.setScene(errorScene);
-            errorWindow.show();
-
-        } catch (Exception ignored) {
-        }
+        openPopupWindow(
+                new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/errorWindowLayout.fxml")),
+                message,
+                parent,
+                () -> { }
+        );
     }
 
     /**
@@ -145,30 +128,46 @@ public class SceneFXMLController implements Initializable {
      * @param parent          The window that the warning popup must block.
      * @param confirmListener The listener that will be called if the user confirms.
      */
-    static void openWarningWindow(ConfirmationMessage message, Window parent, Listener confirmListener) {
+    static void openWarningWindow(WarningMessage message, Window parent, Listener confirmListener) {
+        openPopupWindow(
+                new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/warningWindowLayout.fxml")),
+                message,
+                parent,
+                confirmListener
+        );
+    }
+
+    /**
+     * Opens up a new popup window.
+     *
+     * @param windowLoader The loader that manages what type of popup the window will contain.
+     * @param message The message of the popup.
+     * @param parent The parent window of the popup
+     * @param confirmListener The listener that runs when the popup is confirmed (can be a new Listener)
+     */
+    static void openPopupWindow(FXMLLoader windowLoader, PopupMessage message, Window parent, Listener confirmListener) {
         try {
             // Makes an FXML Loader and loads the fxml files
-            FXMLLoader windowLoader = new FXMLLoader(SceneFXMLController.class.getResource("/stl/threebodysimulation/layouts/warningWindowLayout.fxml"));
-            Scene warningScene = new Scene(windowLoader.load());
+            Scene popupScene = new Scene(windowLoader.load());
 
             // Style the scenes
-            warningScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
+            popupScene.getStylesheets().add(SceneFXMLController.class.getResource("/stl/threebodysimulation/styles/bootstrap3.css").toExternalForm());
 
             // Load the correct message into the layout
-            WarningWindowFXMLController warningController = windowLoader.getController();
-            warningController.setLabel(message.getMessage());
-            warningController.setConfirmListener(confirmListener);
+            PopupWindowFXMLController popupController = windowLoader.getController();
+            popupController.setLabel(message.getMessage());
+            popupController.setConfirmListener(confirmListener);
 
 
             // Make a popup sceneLayout that blocks the main screen, and set icons and titles.
-            final Stage warningWindow = new Stage();
-            warningWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
-            warningWindow.initOwner(parent);
-            warningWindow.setResizable(false); // Not resizable
-            warningWindow.getIcons().add(new Image("/stl/threebodysimulation/icons/warningIcon.png")); // Error icon.
-            warningWindow.setTitle(message.getTitle());
-            warningWindow.setScene(warningScene);
-            warningWindow.show();
+            final Stage popupWindow = new Stage();
+            popupWindow.initModality(Modality.APPLICATION_MODAL); // Blocks the parent window.
+            popupWindow.initOwner(parent);
+            popupWindow.setResizable(false); // Not resizable
+            popupWindow.getIcons().add(popupController.getIcon()); // Error icon.
+            popupWindow.setTitle(message.getTitle());
+            popupWindow.setScene(popupScene);
+            popupWindow.show();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,6 +182,7 @@ public class SceneFXMLController implements Initializable {
     static Color[] getDefaultColors() {
         return defaultColors;
     }
+
 
     /**
      * Sets up initial states of UI elements after the FXML loader is done linking. Called by the FXML loader.
@@ -221,19 +221,32 @@ public class SceneFXMLController implements Initializable {
 
             refreshSaves();
 
-            FontIcon refreshIcon = new FontIcon(Material.REFRESH);
-            refreshIcon.setIconColor(Color.valueOf("#555555"));
-            refreshIcon.setIconSize(20);
-            refreshButton.setGraphic(refreshIcon);
+            refreshButton.setGraphic(
+                    buildIcon(Material.REFRESH, Color.valueOf("#555555"), 20)
+            );
 
-            FontIcon browseIcon = new FontIcon(Material.FOLDER);
-            browseIcon.setIconColor(Color.WHITE);
-            browseIcon.setIconSize(20);
-            browseButton.setGraphic(browseIcon);
+            browseButton.setGraphic(
+                    buildIcon(Material.FOLDER, Color.WHITE, 20)
+            );
 
         } catch (IOException ignored) {
             // This only happens when FXML files aren't found, which should never happen.
         }
+    }
+
+    /**
+     * Builds a custom FontIcon.
+     *
+     * @param iconTemplate The icon to be built.
+     * @param color The desired color of the icon.
+     * @param size The desired size of the icon.
+     * @return The icon.
+     */
+    static FontIcon buildIcon(Material iconTemplate, Color color, int size) {
+        FontIcon icon = new FontIcon(iconTemplate);
+        icon.setIconColor(color);
+        icon.setIconSize(size);
+        return icon;
     }
 
     /**
@@ -306,7 +319,7 @@ public class SceneFXMLController implements Initializable {
      */
     private void showDeleteConfirmation(File saveFile) {
         openWarningWindow(
-                new ConfirmationMessage(ConfirmationMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
+                new WarningMessage(WarningMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
                 sceneLayout.getScene().getWindow(),
                 () -> {
                     if (!saveFile.delete()) {
@@ -324,7 +337,7 @@ public class SceneFXMLController implements Initializable {
      */
     private void showLoadConfirmation(SimulationSettings settings) {
         openWarningWindow(
-                new ConfirmationMessage(ConfirmationMessage.Type.LOAD_CONFIRMATION),
+                new WarningMessage(WarningMessage.Type.LOAD_CONFIRMATION),
                 sceneLayout.getScene().getWindow(),
                 () -> {
                     settingsPanelController.loadTemplateName(templateName);

@@ -156,9 +156,9 @@ public class CanvasPanelFXMLController {
      */
     void runSimulation(SimulationSettings settings) {
         // Clear out the canvas and provide the wrapper with settings.
-        canvasWrapper.clearCanvas();
-        canvasWrapper.setSettings(settings);
+        canvasWrapper.setupWithSettings(settings);
 
+        // Setup CSV
         CSVFilePath = setupCSV(settings.getCSVFileName());
 
         // Set up the particle differential equation according to the masses of each particle.
@@ -221,7 +221,7 @@ public class CanvasPanelFXMLController {
      * @param filename The name of the CSV file to be setup
      * @return The path of the new CSV file.
      */
-    private String setupCSV(String filename) {
+    private static String setupCSV(String filename) {
         if (filename.equals("")) {
             return ""; // Sentinal value, means that the user doesn't want to save anything.
         }

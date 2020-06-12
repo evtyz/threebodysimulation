@@ -139,16 +139,12 @@ public class SavePreviewFXMLController {
             infiniteLabel.setText("No");
         }
 
-        FontIcon selectIcon = new FontIcon(Material.CHECK);
-        selectIcon.setFill(Color.valueOf("#555555"));
-        selectIcon.setIconSize(20);
-
-        FontIcon deleteIcon = new FontIcon(Material.CLEAR);
-        deleteIcon.setFill(Color.WHITE);
-        deleteIcon.setIconSize(20);
-
-        selectButton.setGraphic(selectIcon);
-        deleteButton.setGraphic(deleteIcon);
+        selectButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.CHECK, Color.valueOf("#555555"), 20)
+        );
+        deleteButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.CLEAR, Color.WHITE, 20)
+        );
 
         // Everything has 2 decimal places. TODO: Make sure things fit!
         timeskipLabel.setText(String.format("%.2f", settings.getSkip()));

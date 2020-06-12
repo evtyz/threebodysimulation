@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -12,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * The FXML controller class for an error popup window.
  */
-public class ErrorWindowFXMLController implements Initializable {
+public class ErrorWindowFXMLController extends PopupWindowFXMLController {
     /**
      * The button UI element to close the window.
      */
@@ -32,20 +33,11 @@ public class ErrorWindowFXMLController implements Initializable {
     }
 
     /**
-     * Initializes the window, according to the Application parent class. Empty.
-     *
-     * @param location  Not used.
-     * @param resources Not used.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
-
-    /**
      * Sets the error message to be displayed.
      *
      * @param label The error message.
      */
+    @Override
     public void setLabel(String label) {
         messageLabel.setText(label);
     }
@@ -55,5 +47,15 @@ public class ErrorWindowFXMLController implements Initializable {
      */
     public void closeWindow() {
         ((Stage) (closeWindowButton.getScene().getWindow())).close();
+    }
+
+    /**
+     * Gets the icon for the popup window.
+     *
+     * @return The icon.
+     */
+    @Override
+    Image getIcon() {
+        return new Image("/stl/threebodysimulation/icons/errorIcon.png");
     }
 }

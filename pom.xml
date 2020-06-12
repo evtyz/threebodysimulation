@@ -172,7 +172,7 @@
                         <list>java.net.URL</list>
                         <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
                         <list>stl.threebodysimulation.CanvasWrapper</list>
-                        <list>stl.threebodysimulation.ConfirmationMessage</list>
+                        <list>stl.threebodysimulation.WarningMessage</list>
                         <list>stl.threebodysimulation.DesktopAPI</list>
                         <list>stl.threebodysimulation.ErrorMessage</list>
                         <list>stl.threebodysimulation.InfoFXMLController</list>
@@ -184,6 +184,8 @@
                         <list>stl.threebodysimulation.ParameterFXMLController</list>
                         <list>stl.threebodysimulation.Particle</list>
                         <list>stl.threebodysimulation.ParticleDifferentialEquations</list>
+                        <list>stl.threebodysimulation.PopupWindowFXMLController</list>
+                        <list>stl.threebodysimulation.PopupMessage</list>
                         <list>stl.threebodysimulation.ErrorWindowFXMLController</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
                         <list>stl.threebodysimulation.SavePreviewFXMLController</list>

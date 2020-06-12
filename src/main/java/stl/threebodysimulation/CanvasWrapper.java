@@ -46,7 +46,8 @@ class CanvasWrapper {
      *
      * @param settings The SimulationSettings object that options and particles will be read from.
      */
-    void setSettings(SimulationSettings settings) {
+    void setupWithSettings(SimulationSettings settings) {
+        clearCanvas();
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
