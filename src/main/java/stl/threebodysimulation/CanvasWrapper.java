@@ -8,6 +8,8 @@ import javafx.scene.canvas.GraphicsContext;
  */
 class CanvasWrapper {
 
+    // TODO: Document the purpose of these variables.
+
     final double[] canvasPos = {0, 0};
     final double[] circleRad = {0, 0, 0};
     /**
@@ -53,9 +55,13 @@ class CanvasWrapper {
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
 
-        avgMass = particles[0].getMass() * particles[1].getMass() * particles[2].getMass();
+        // Geometric mean of masses.
+        avgMass = Math.cbrt(particles[0].getMass() * particles[1].getMass() * particles[2].getMass());
+
+
+        // Attempting to normalize the masses.
         for (int i = 0; i < 3; i++) {
-            circleRad[i] = Math.sqrt(particles[i].getMass() / avgMass) * 7;
+            circleRad[i] = Math.cbrt(particles[i].getMass() / avgMass) * 4 + 8;
         }
     }
 
@@ -67,8 +73,8 @@ class CanvasWrapper {
         // TODO
         clearCanvas();
         for (int i = 0; i < 3; i++) {
-            canvasPos[0] = particles[i].getPosition()[0] + 400;
-            canvasPos[1] = particles[i].getPosition()[1] + 360;
+            canvasPos[0] = particles[i].getPosition()[0] + 400 - circleRad[i];
+            canvasPos[1] = particles[i].getPosition()[1] + 360 - circleRad[i];
             gc.setFill(particles[i].getColor());
             gc.fillOval(canvasPos[0], canvasPos[1], circleRad[i], circleRad[i]);
         }
