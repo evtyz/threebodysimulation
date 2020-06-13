@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.apache.commons.csv.CSVFormat;
@@ -25,6 +26,12 @@ public class SavesPanelFXMLController {
      * A hashmap that stores the expanded/contracted state of the UI element for each template.
      */
     HashMap<String, Boolean> expandRecord;
+
+    /**
+     * Searchbar UI element.
+     */
+    @FXML
+    private TextField searchField;
 
     /**
      * The VBox UI element for the saves panel.
@@ -71,13 +78,24 @@ public class SavesPanelFXMLController {
         browseButton.setGraphic(
                 SceneFXMLController.buildIcon(Material.FOLDER, Color.WHITE, 20)
         );
+
+        searchField.textProperty().addListener((observable, oldText, newText) -> refreshSaves(newText));
     }
 
     /**
-     * Refreshes the saves display for new saves.
+     * Refreshes the save display for all saves.
+     */
+    public void refreshSaves() {
+        refreshSaves("");
+    }
+
+    /**
+     * Refreshes the saves display for saves that match the searchPrompt
+     *
+     * @param searchPrompt The search term entered by the user. If empty, this will display all files, irrespective of name.
      */
     @SuppressWarnings("ConstantConditions") // Already caught by a try-catch.
-    public void refreshSaves() {
+    public void refreshSaves(String searchPrompt) {
         try {
             savesBox.getChildren().clear();
         } catch (NullPointerException ignored) {
@@ -91,6 +109,11 @@ public class SavesPanelFXMLController {
                 showNoSavesMessage();
             } else {
                 for (File saveFile : filesList) {
+                    String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+
+                    if (! (searchPrompt.equals("") || filename.contains(searchPrompt))) {
+                        continue;
+                    }
                     // TODO Documentation
                     // Reads a file and saves it as a node.
                     ArrayList<String> serializedForm = new ArrayList<>();
@@ -114,7 +137,7 @@ public class SavesPanelFXMLController {
                             node -> savesBox.getChildren().add(node)
                     );
 
-                    String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+
 
                     if (expandRecord.containsKey(filename)) {
                         saveController.setExpand(expandRecord.get(filename));
