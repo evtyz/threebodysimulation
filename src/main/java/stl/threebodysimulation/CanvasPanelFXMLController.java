@@ -89,6 +89,18 @@ public class CanvasPanelFXMLController {
     private Canvas canvas;
 
     /**
+     * The grid Canvas UI object.
+     */
+    @FXML
+    private Canvas gridCanvas;
+
+    /**
+     * The trail Canvas UI object.
+     */
+    @FXML
+    private Canvas trailCanvas;
+
+    /**
      * A CanvasWrapper object that manages the canvas UI object.
      */
     private CanvasWrapper canvasWrapper;
@@ -186,7 +198,7 @@ public class CanvasPanelFXMLController {
         // Initial time.
         currentTime = 0;
         // Wrap the canvas.
-        canvasWrapper = new CanvasWrapper(canvas);
+        canvasWrapper = new CanvasWrapper(canvas, gridCanvas, trailCanvas);
     }
 
     /**
