@@ -62,10 +62,7 @@ class CanvasWrapper {
      * Array of the old canvas position values
      */
     double[][] oldCanvasPos = new double[3][2];
-    /**
-     * A SimulationState object that represents the state of the simulation. One of {INACTIVE, ACTIVE, PAUSED}.
-     */
-    private SimulationState state;
+
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -119,9 +116,11 @@ class CanvasWrapper {
         double[] point4 = {particleXValues[0], particleYValues[0]};
         double[][] rectPoints = {point1, point2, point3, point4};
 
-        // Clears the canvas of any trails before running
-        if (state == SimulationState.INACTIVE){
-            trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
+        trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
+
+        for (int i = 0; i < 3; i++){
+            oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400 - circleRad[i];
+            oldCanvasPos[i][1] = particles[i].getPosition()[1] + 360 - circleRad[i];
         }
     }
 
@@ -139,8 +138,7 @@ class CanvasWrapper {
             canvasPos[1] = particles[i].getPosition()[1] + 360 - circleRad[i];
             gc.setFill(particles[i].getColor());
             gc.fillOval(canvasPos[0], canvasPos[1], circleRad[i], circleRad[i]);
-            oldCanvasPos[i][0] = canvasPos[0];
-            oldCanvasPos[i][1] = canvasPos[1];
+
 
             // Conditionally draws trails
             if (trails) {
@@ -148,8 +146,13 @@ class CanvasWrapper {
                 trailGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], canvasPos[0], canvasPos[1]);
             }
 
+            oldCanvasPos[i][0] = canvasPos[0];
+            oldCanvasPos[i][1] = canvasPos[1];
+
+        }
+
         // Conditionally draws the center of mass
-        }  if (centerOfMass) {
+        if (centerOfMass) {
             drawCenterOfMass();
         }
     }
