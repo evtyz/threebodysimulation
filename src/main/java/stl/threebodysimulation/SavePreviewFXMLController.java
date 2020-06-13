@@ -29,6 +29,16 @@ public class SavePreviewFXMLController {
     private Listener deleteListener;
 
     /**
+     * The listener that is called when the title pane is expanded.
+     */
+    private Listener onExpandListener;
+
+    /**
+     * The listener that is called when the title pane is contracted.
+     */
+    private Listener onContractListener;
+
+    /**
      * The label that shows the filename of the settings.
      */
     @FXML
@@ -145,6 +155,14 @@ public class SavePreviewFXMLController {
                 SceneFXMLController.buildIcon(Material.CLEAR, Color.WHITE, 20)
         );
 
+        fileTitle.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+            if (isNowExpanded) {
+                onExpandListener.onEvent();
+            } else {
+                onContractListener.onEvent();
+            }
+        });
+
         // Everything has 2 decimal places. TODO: Make sure things fit!
         timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
         speedLabel.setText(String.format("%.2f", settings.getSpeed()));
@@ -154,6 +172,14 @@ public class SavePreviewFXMLController {
         massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
 
+    /**
+     * Sets the expanded/contracted state of the titled pane.
+     *
+     * @param expand True if expanded, false if contracted.
+     */
+    void setExpand(boolean expand) {
+        fileTitle.setExpanded(expand);
+    }
 
     /**
      * Called when the user clicks the select button.
@@ -169,4 +195,21 @@ public class SavePreviewFXMLController {
         deleteListener.onEvent();
     }
 
+    /**
+     * Sets the listener that is called when the titledpane expands.
+     *
+     * @param onExpandListener The listener.
+     */
+    void setOnExpandListener(Listener onExpandListener) {
+        this.onExpandListener = onExpandListener;
+    }
+
+    /**
+     * Sets the listener that is called when the titledpane contracts.
+     *
+     * @param onContractListener The listener.
+     */
+    void setOnContractListener(Listener onContractListener) {
+        this.onContractListener = onContractListener;
+    }
 }

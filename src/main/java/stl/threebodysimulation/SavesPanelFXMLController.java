@@ -14,11 +14,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The FXML Controller for the UI panel that displays saves.
  */
 public class SavesPanelFXMLController {
+
+    /**
+     * A hashmap that stores the expanded/contracted state of the UI element for each template.
+     */
+    HashMap<String, Boolean> expandRecord;
+
     /**
      * The VBox UI element for the saves panel.
      */
@@ -55,6 +62,7 @@ public class SavesPanelFXMLController {
      * Sets up the controller for first use.
      */
     void setup() {
+        expandRecord = new HashMap<>();
         refreshSaves();
         refreshButton.setGraphic(
                 SceneFXMLController.buildIcon(Material.REFRESH, Color.valueOf("#555555"), 20)
@@ -106,14 +114,24 @@ public class SavesPanelFXMLController {
                             node -> savesBox.getChildren().add(node)
                     );
 
+                    String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+
+                    if (expandRecord.containsKey(filename)) {
+                        saveController.setExpand(expandRecord.get(filename));
+                    } else {
+                        saveController.setExpand(false);
+                        expandRecord.put(filename, false);
+                    }
+
                     saveController.setSettings(settings);
-                    saveController.setTitle(saveFile.getName().substring(0, saveFile.getName().lastIndexOf(".")));
+                    saveController.setTitle(filename);
                     saveController.setSelectListener(() -> {
                         templateName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
                         showLoadConfirmation(saveController.getSettings());
                     });
                     saveController.setDeleteListener(() -> showDeleteConfirmation(saveFile));
-
+                    saveController.setOnExpandListener(() -> expandRecord.put(filename, true));
+                    saveController.setOnContractListener(() -> expandRecord.put(filename, false));
                 }
             }
         } catch (NullPointerException | IOException e) {
