@@ -2,7 +2,6 @@ package stl.threebodysimulation;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
@@ -17,7 +16,7 @@ class CanvasWrapper {
     /**
      * An array of the radii of each particle respectively.
      */
-    final double[] circleRad = {0, 0, 0};
+    final double[] circleDiameter = {0, 0, 0};
     /**
      * The canvas to draw particles on.
      */
@@ -106,7 +105,7 @@ class CanvasWrapper {
 
         // Attempting to normalize the masses.
         for (int i = 0; i < 3; i++) {
-            circleRad[i] = Math.cbrt(particles[i].getMass() / avgMass) * 4 + 8;
+            circleDiameter[i] = Math.cbrt(particles[i].getMass() / avgMass) * 4 + 8;
         }
 
         // Establishing the coordinate corners of the original rectangle
@@ -116,11 +115,13 @@ class CanvasWrapper {
         double[] point4 = {particleXValues[0], particleYValues[0]};
         double[][] rectPoints = {point1, point2, point3, point4};
 
+        // Clears the trails canvas of any existing trails
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
 
+        // Initializes the oldCanvasPos variable with the original position values
         for (int i = 0; i < 3; i++){
-            oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400 - circleRad[i];
-            oldCanvasPos[i][1] = particles[i].getPosition()[1] + 360 - circleRad[i];
+            oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400;
+            oldCanvasPos[i][1] = particles[i].getPosition()[1] + 360;
         }
     }
 
@@ -134,10 +135,10 @@ class CanvasWrapper {
 
         // Displays the positions of the particles on the canvas
         for (int i = 0; i < 3; i++) {
-            canvasPos[0] = particles[i].getPosition()[0] + 400 - circleRad[i];
-            canvasPos[1] = particles[i].getPosition()[1] + 360 - circleRad[i];
+            canvasPos[0] = particles[i].getPosition()[0] + 400;
+            canvasPos[1] = particles[i].getPosition()[1] + 360;
             gc.setFill(particles[i].getColor());
-            gc.fillOval(canvasPos[0], canvasPos[1], circleRad[i], circleRad[i]);
+            gc.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
 
             // Conditionally draws trails
