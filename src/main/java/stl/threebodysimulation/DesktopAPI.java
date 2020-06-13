@@ -12,9 +12,21 @@ import java.util.List;
  * All credit is theirs.
  * No documentation on our part is provided. The code is as-is.
  */
-public class DesktopAPI {
+class DesktopAPI {
 
-    public static void open(File file) {
+    /**
+     * Opens a directory in the file explorer.
+     *
+     * @param directoryName The name of the directory.
+     */
+    static void openDirectory(String directoryName) {
+        File directory = new File(directoryName);
+        //noinspection ResultOfMethodCallIgnored : as long as there is a directory, what mkdir returns is irrelevant.
+        directory.mkdir();
+        DesktopAPI.open(directory);
+    }
+
+    private static void open(File file) {
 
         if (openSystemSpecific(file.getPath())) return;
 
@@ -45,8 +57,6 @@ public class DesktopAPI {
 
 
     private static void openDESKTOP(File file) {
-
-        logOut("Trying to use Desktop.getDesktop().open() with " + file.toString());
         try {
             if (!Desktop.isDesktopSupported()) {
                 logErr("Platform is not supported.");
@@ -67,8 +77,6 @@ public class DesktopAPI {
 
 
     private static boolean runCommand(String command, String file) {
-
-        logOut("Trying to exec:\n   cmd = " + command + "\n   args = " + "%s" + "\n   %s = " + file);
 
         String[] parts = prepareCommand(command, "%s", file);
 
@@ -122,11 +130,7 @@ public class DesktopAPI {
         System.err.println(msg);
     }
 
-    private static void logOut(String msg) {
-        System.out.println(msg);
-    }
-
-    public static EnumOS getOs() {
+    private static EnumOS getOs() {
 
         String s = System.getProperty("os.name").toLowerCase();
 
@@ -158,22 +162,22 @@ public class DesktopAPI {
     }
 
 
-    public enum EnumOS {
+    private enum EnumOS {
         linux, macos, solaris, unknown, windows;
 
-        public boolean isLinux() {
+        private boolean isLinux() {
 
             return this == linux || this == solaris;
         }
 
 
-        public boolean isMac() {
+        private boolean isMac() {
 
             return this == macos;
         }
 
 
-        public boolean isWindows() {
+        private boolean isWindows() {
 
             return this == windows;
         }

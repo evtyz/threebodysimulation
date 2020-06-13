@@ -68,7 +68,8 @@ class TextFieldWrapper {
      * @param prompt       The prompt shown in the TextField's tooltip.
      * @param subjectLabel The Label that corresponds to the TextField.
      */
-    @SuppressWarnings("SameParameterValue") // In case other uses come up, this method remains parameterized.
+    @SuppressWarnings("SameParameterValue")
+    // In case other uses come up, this method remains parameterized.
     TextFieldWrapper(TextField subject, Tooltip tooltip, String prompt, Label subjectLabel) {
         this(subject, tooltip, prompt);
         this.subjectLabel = subjectLabel;
@@ -187,7 +188,8 @@ class TextFieldWrapper {
      *
      * @return True if ready, False if not ready.
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Inverted for clarity's sake.
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    // Inverted for clarity's sake.
     boolean isReady() {
         if (!readiness) {
             highlightIncorrect();

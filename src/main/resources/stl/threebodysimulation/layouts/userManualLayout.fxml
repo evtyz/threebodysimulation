@@ -3,14 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab text="Untitled Tab 1" />
-          <Tab text="Untitled Tab 2" />
-        </tabs>
-      </TabPane>
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
+      prefWidth="1200.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css"
+      xmlns="http://javafx.com/javafx/10.0.2-internal">
+    <TabPane tabClosingPolicy="UNAVAILABLE">
+        <Tab text="Manual" />
+        <Tab text="Credits" />
+    </TabPane>
 </VBox>

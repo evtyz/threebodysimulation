@@ -36,10 +36,18 @@
             <version>1.8</version>
         </dependency>
         <dependency>
-            <groupId>de.jensd</groupId>
-            <artifactId>fontawesomefx-fontawesome</artifactId>
-            <version>4.7.0-9.1.2</version>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-material-pack</artifactId>
+            <version>11.5.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.kordamp.ikonli/ikonli-javafx -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-javafx</artifactId>
+            <version>11.5.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <pluginRepositories>
@@ -139,7 +147,8 @@
                         <list>javafx.scene.shape.Circle</list>
                         <list>javafx.application.Application</list>
                         <list>javafx.util.Duration</list>
-                        <list>de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView</list>
+                        <list>org.kordamp.ikonli.javafx.FontIcon</list>
+                        <list>org.kordamp.ikonli.material.Material</list>
                         <list>org.apache.commons.math3.exception.NumberIsTooLargeException</list>
                         <list>org.apache.commons.math3.exception.NumberIsTooSmallException</list>
                         <list>org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator</list>
@@ -163,7 +172,7 @@
                         <list>java.net.URL</list>
                         <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
                         <list>stl.threebodysimulation.CanvasWrapper</list>
-                        <list>stl.threebodysimulation.ConfirmationMessage</list>
+                        <list>stl.threebodysimulation.WarningMessage</list>
                         <list>stl.threebodysimulation.DesktopAPI</list>
                         <list>stl.threebodysimulation.ErrorMessage</list>
                         <list>stl.threebodysimulation.InfoFXMLController</list>
@@ -175,9 +184,12 @@
                         <list>stl.threebodysimulation.ParameterFXMLController</list>
                         <list>stl.threebodysimulation.Particle</list>
                         <list>stl.threebodysimulation.ParticleDifferentialEquations</list>
+                        <list>stl.threebodysimulation.PopupWindowFXMLController</list>
+                        <list>stl.threebodysimulation.PopupMessage</list>
                         <list>stl.threebodysimulation.ErrorWindowFXMLController</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
                         <list>stl.threebodysimulation.SavePreviewFXMLController</list>
+                        <list>stl.threebodysimulation.SavesPanelFXMLController</list>
                         <list>stl.threebodysimulation.SceneFXMLController</list>
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
                         <list>stl.threebodysimulation.SimulationSettings</list>

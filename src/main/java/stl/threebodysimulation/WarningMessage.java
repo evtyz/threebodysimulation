@@ -3,7 +3,7 @@ package stl.threebodysimulation;
 /**
  * A class that provides a template for user confirmation messages.
  */
-class ConfirmationMessage {
+class WarningMessage implements PopupMessage {
 
     /**
      * The title of the message.
@@ -20,7 +20,7 @@ class ConfirmationMessage {
      * @param type     The type of message it is.
      * @param filepath The filepath that it points to.
      */
-    ConfirmationMessage(Type type, String filepath) {
+    WarningMessage(Type type, String filepath) {
         title = type.getTitle();
         message = String.format(type.getMessageTemplate(), filepath);
     }
@@ -30,8 +30,9 @@ class ConfirmationMessage {
      *
      * @param type The type of message it is.
      */
-    @SuppressWarnings("SameParameterValue") // In case other errors come up, this constructor will stay parameterized.
-    ConfirmationMessage(Type type) {
+    @SuppressWarnings("SameParameterValue")
+    // In case other errors come up, this constructor will stay parameterized.
+    WarningMessage(Type type) {
         title = type.getTitle();
         message = type.getMessageTemplate();
     }
@@ -41,7 +42,8 @@ class ConfirmationMessage {
      *
      * @return The title of the message.
      */
-    String getTitle() {
+    @Override
+    public String getTitle() {
         return title;
     }
 
@@ -50,7 +52,8 @@ class ConfirmationMessage {
      *
      * @return The confirmation message.
      */
-    String getMessage() {
+    @Override
+    public String getMessage() {
         return message;
     }
 

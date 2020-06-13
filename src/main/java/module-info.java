@@ -7,7 +7,8 @@ module threebodysimulation {
     requires commons.math3;
     requires commons.csv;
     requires java.desktop;
-    requires de.jensd.fx.glyphs.fontawesome;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.material;
 
     opens stl.threebodysimulation to javafx.fxml;
 

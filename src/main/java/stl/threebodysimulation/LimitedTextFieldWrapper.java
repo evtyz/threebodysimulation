@@ -86,7 +86,8 @@ class LimitedTextFieldWrapper extends TextFieldWrapper {
      * @param allowBottomInclusive Whether the minimum value of the TextField is valid or not.
      * @param subjectLabel         The Label UI object that corresponds with the TextField.
      */
-    @SuppressWarnings("SameParameterValue") // In case other use-cases come up, this constructor remains parameterized.
+    @SuppressWarnings("SameParameterValue")
+    // In case other use-cases come up, this constructor remains parameterized.
     LimitedTextFieldWrapper(TextField subject, Tooltip tooltip, double min, double max, boolean allowBottomInclusive, Label subjectLabel) {
         this(subject, tooltip, min, max, allowBottomInclusive);
         this.subjectLabel = subjectLabel;

@@ -2,16 +2,21 @@ package stl.threebodysimulation;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.kordamp.ikonli.material.Material;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,11 +45,6 @@ public class SettingsPanelFXMLController {
      * The fastest simulation speed allowed.
      */
     private static final double MAX_SIMULATION_SPEED = 10000;
-
-    /**
-     * The listener that is called when the manual button is pressed.
-     */
-    private Listener onOpenManualListener;
 
     /**
      * The listener that is called when the run simulation button is pressed.
@@ -194,6 +194,18 @@ public class SettingsPanelFXMLController {
     private VBox settingsBox;
 
     /**
+     * The button UI element for saving templates.
+     */
+    @FXML
+    private Button saveButton;
+
+    /**
+     * The button UI element for browsing CSVs.
+     */
+    @FXML
+    private Button browseButton;
+
+    /**
      * An array that holds all controllers for object settings UIs.
      */
     private ParameterFXMLController[] parameterControllers;
@@ -213,9 +225,11 @@ public class SettingsPanelFXMLController {
         try {
             // Setup each controller in each array with the correct id.
             for (int id = 0; id < 3; id++) {
-                FXMLLoader parameterSettingsLoader = new FXMLLoader(getClass().getResource("/stl/threebodysimulation/layouts/particleParametersLayout.fxml"));
-                settingsBox.getChildren().add(4 + 2 * id, parameterSettingsLoader.load());  // Slot in settings at right place in the panel. Can throw IOException if FXML file doesn't exist.
-                parameterControllers[id] = parameterSettingsLoader.getController();
+                int finalId = id;
+                parameterControllers[id] = SceneFXMLController.loadLayout(
+                        "/stl/threebodysimulation/layouts/particleParametersLayout.fxml",
+                        node -> settingsBox.getChildren().add(4 + 2 * finalId, node)
+                );
                 parameterControllers[id].setup(id + 1, SceneFXMLController.getDefaultColors()[id]);
             }
         } catch (IOException ignored) {
@@ -245,6 +259,14 @@ public class SettingsPanelFXMLController {
         templateIDFieldWrapper = new TextFieldWrapper(templateIDField, templateIDTooltip, "Template Filename");
 
         saveCSVToggle();
+
+        saveButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.SAVE, Color.valueOf("#555555"), 20)
+        );
+
+        browseButton.setGraphic(
+                SceneFXMLController.buildIcon(Material.FOLDER, Color.valueOf("#555555"), 17)
+        );
     }
 
     /**
@@ -259,15 +281,6 @@ public class SettingsPanelFXMLController {
             trailCheckBox.setSelected(false);
             trailCheckBox.setDisable(true);
         }
-    }
-
-    /**
-     * Sets the listener for the manual button.
-     *
-     * @param listener The listener that will be called when the manual button is pressed.
-     */
-    void setOnOpenManualListener(Listener listener) {
-        onOpenManualListener = listener;
     }
 
     /**
@@ -355,7 +368,7 @@ public class SettingsPanelFXMLController {
 
         // If the user presses yes, we will restart the runSimulation method from the start (with forceCSV true this time).
         SceneFXMLController.openWarningWindow(
-                new ConfirmationMessage(ConfirmationMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
+                new WarningMessage(WarningMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
                 settingsBox.getScene().getWindow(),
                 () -> {
                     forceCSV = true;
@@ -382,7 +395,21 @@ public class SettingsPanelFXMLController {
      * Opens the manual. Links to FXML.
      */
     public void openManual() {
-        onOpenManualListener.onEvent();
+        // Opens user manual popups
+        try {
+            // Load up a new window with user manual layout.
+            final Stage stage = new Stage();
+            SceneFXMLController.loadLayout(
+                    "/stl/threebodysimulation/layouts/userManualLayout.fxml",
+                    node -> {
+                        Scene scene = new Scene((Parent) node);
+                        MainApp.setCSS(scene);
+                        stage.setScene(scene);
+                    });
+
+            MainApp.openWindow(stage, new Image("/stl/threebodysimulation/icons/appIcon.png"), "User Manual");
+        } catch (Exception ignored) { // In case the layout is not found. Should never happen.
+        }
     }
 
     /**
@@ -442,10 +469,8 @@ public class SettingsPanelFXMLController {
     /**
      * Opens the CSV directory in a file explorer window.
      */
-    public void browseCSVDirectory() {
-        File CSVDirectory = new File("CSV");
-        CSVDirectory.mkdir();
-        DesktopAPI.open(CSVDirectory);
+    public void openCSVDirectory() {
+        DesktopAPI.openDirectory(SceneFXMLController.CSV_DIRECTORY_NAME);
     }
 
     /**
@@ -468,11 +493,12 @@ public class SettingsPanelFXMLController {
 
         SimulationSettings settings = getSimulationSettings();
 
-        String saveDirectoryPath = "Saves";
+        String saveDirectoryPath = SceneFXMLController.SAVES_DIRECTORY_NAME;
         File saveDirectory = new File(saveDirectoryPath);
+        //noinspection ResultOfMethodCallIgnored : as long as the saves directory is created, we don't care if mkdir created it.
         saveDirectory.mkdir();
 
-        String filepath = saveDirectoryPath + SceneFXMLController.fileSeparator + templateIDField.getText() + ".tbsettings";
+        String filepath = String.format(SceneFXMLController.SavesFilePathTemplate, templateIDField.getText());
 
         File saveFile = new File(filepath);
 
@@ -480,7 +506,7 @@ public class SettingsPanelFXMLController {
             storeTemplate(settings, filepath);
         } else {
             SceneFXMLController.openWarningWindow(
-                    new ConfirmationMessage(ConfirmationMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
+                    new WarningMessage(WarningMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
                     settingsBox.getScene().getWindow(),
                     () -> {
                         forceTemplateSave = true;

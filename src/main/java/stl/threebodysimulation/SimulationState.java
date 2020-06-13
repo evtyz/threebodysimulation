@@ -3,7 +3,7 @@ package stl.threebodysimulation;
 /**
  * Represents all states that a simulation can be in.
  */
-public enum SimulationState {
+enum SimulationState {
 
     /**
      * A simulation is not running. A new simulation may begin.

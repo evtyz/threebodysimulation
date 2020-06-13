@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="TOP_CENTER" prefWidth="400.0" style="-fx-background-color: white;"
+      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="stl.threebodysimulation.SavesPanelFXMLController">
+    <padding>
+        <Insets top="5.0"/>
+    </padding>
+    <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
+        <padding>
+          <Insets top="5.0"/>
+        </padding>
+    </VBox>
+    <HBox alignment="TOP_CENTER">
+        <VBox.margin>
+            <Insets top="10.0"/>
+        </VBox.margin>
+        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshSaves" styleClass="first">
+            <HBox.margin>
+                <Insets right="-1.0"/>
+            </HBox.margin>
+        </Button>
+        <Button fx:id="browseButton" layoutX="176.0" layoutY="10.0" mnemonicParsing="false"
+                onAction="#openSavesDirectory">
+            <styleClass>
+                <String fx:value="last"/>
+                <String fx:value="primary"/>
+            </styleClass>
+        </Button>
+    </HBox>
+</VBox>
