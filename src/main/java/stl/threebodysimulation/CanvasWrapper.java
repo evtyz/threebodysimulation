@@ -160,12 +160,12 @@ class CanvasWrapper {
 
             oldCanvasPos[i][0] = canvasPos[0];
             oldCanvasPos[i][1] = canvasPos[1];
-
         }
 
         // Conditionally draws the center of mass
         if (centerOfMass) {
 
+            // TODO: center of mass sometimes obscures visibility of actual particle
             // Calculates the center of mass
             for (int i = 0; i < 2; i++) {
                 centerOfMassPos[i] = ((particles[0].getMass() * particles[0].getPosition()[i])
@@ -174,8 +174,19 @@ class CanvasWrapper {
             }
 
             // Displays the center of mass
-            particlesGC.setFill(Color.BLACK);
-            particlesGC.fillOval(centerOfMassPos[0] + 400, centerOfMassPos[1] + 360, 10, 10);
+            particlesGC.setFill(Color.valueOf("#555555"));
+            particlesGC.fillOval(centerOfMassPos[0] + 400 - 5, centerOfMassPos[1] + 360 - 5, 10, 10);
+
+            particlesGC.setStroke(Color.valueOf("#555555"));
+            for (int i = 0; i < 2; i++) {
+                for (int j = i + 1; j < 3; j++) {
+                    particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], oldCanvasPos[j][0], oldCanvasPos[j][1]);
+                }
+            }
+            for (int i = 0; i < 3; i++) {
+                particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], centerOfMassPos[0] + 400, centerOfMassPos[1] + 360);
+            }
+
         }
     }
 
