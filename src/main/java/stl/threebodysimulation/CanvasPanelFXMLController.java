@@ -232,13 +232,10 @@ public class CanvasPanelFXMLController {
         } else {
             CSVFilePath = setupCSV(settings.getCSVFileName());
             if (CSVFilePath.equals("")) {
-                SceneFXMLController.openErrorWindow(ErrorMessage.OVERWRITE_ERROR, canvas.getScene().getWindow());
+                breakSimulation(ErrorMessage.OVERWRITE_ERROR);
                 return;
             }
         }
-
-        // Setup CSV
-        CSVFilePath = setupCSV(settings.getCSVFileName());
 
         // Set up the particle differential equation according to the masses of each particle.
         particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
@@ -283,7 +280,11 @@ public class CanvasPanelFXMLController {
         canvasWrapper.setupScalesAndSettings(scales, settings);
 
         // Update canvas
-        updateAll();
+        updateCanvas();
+
+        if (!CSVFilePath.equals("")) {
+            updateCSV();
+        }
 
         // Different situations if we are running infinitely or not
         if (settings.getInfinite()) {
@@ -386,25 +387,35 @@ public class CanvasPanelFXMLController {
     }
 
     /**
+     * Updates the canvas.
+     */
+    private void updateCanvas() {
+        timeLabel.setText(String.format("Time: %.5f secs", currentTime));
+        canvasWrapper.updateCanvas();
+    }
+
+    private void updateCSV() {
+        try {
+            BufferedWriter dataWriter = Files.newBufferedWriter(Paths.get(CSVFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+            CSVPrinter dataPrinter = new CSVPrinter(dataWriter, CSVFormat.DEFAULT);
+            //noinspection RedundantCast
+            dataPrinter.printRecord((Object[]) getRecord()); // Cast for clarity's sake.
+            dataWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace(); // Should never occur, unless the user deletes the file midway through a simulation.
+        }
+    }
+
+    /**
      * Updates particles and update canvas.
      */
     private void updateAll() {
         updateParticles();
 
-        // Then update the UI according to the new particles.
-        timeLabel.setText(String.format("Time: %.5f secs", currentTime));
-        canvasWrapper.updateCanvas();
+        updateCanvas();
 
         if (!CSVFilePath.equals("")) { // Check if the user wants to save CSVs. If not, CSVFileName should equal an empty string.
-            try {
-                BufferedWriter dataWriter = Files.newBufferedWriter(Paths.get(CSVFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-                CSVPrinter dataPrinter = new CSVPrinter(dataWriter, CSVFormat.DEFAULT);
-                //noinspection RedundantCast
-                dataPrinter.printRecord((Object[]) getRecord()); // Cast for clarity's sake.
-                dataWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace(); // Should never occur, unless the user deletes the file midway through a simulation.
-            }
+            updateCSV();
         }
 
         // Finally, let the thread that runs the simulation unpause.
@@ -468,6 +479,9 @@ public class CanvasPanelFXMLController {
                         break;
                     }
 
+                    // Update the time
+                    currentTime += (speed / MAX_FRAMERATE);
+
                     // Update the UI on the main thread
                     Platform.runLater(() -> updateAll());
 
@@ -475,8 +489,7 @@ public class CanvasPanelFXMLController {
                     synchronized (synchronizationObject) {
                         synchronizationObject.wait();
                     }
-                    // Update the time
-                    currentTime += (speed / MAX_FRAMERATE);
+
                     // Check how much time left to wait before next frame
                     long leftoverTime = FRAMETIME - (System.currentTimeMillis() - taskTime);
                     if (leftoverTime > 0) {
