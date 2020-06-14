@@ -117,7 +117,7 @@ public class SceneFXMLController implements Initializable {
      * @param message The error message to display.
      * @param parent  The window that the error popup must block.
      */
-    static void openErrorWindow(ErrorMessage message, Window parent) {
+    static void openErrorWindow(PopupMessage message, Window parent) {
         openPopupWindow(
                 "/stl/threebodysimulation/layouts/errorWindowLayout.fxml",
                 message,
@@ -134,7 +134,7 @@ public class SceneFXMLController implements Initializable {
      * @param parent          The window that the warning popup must block.
      * @param confirmListener The listener that will be called if the user confirms.
      */
-    static void openWarningWindow(WarningMessage message, Window parent, Listener confirmListener) {
+    static void openWarningWindow(PopupMessage message, Window parent, Listener confirmListener) {
         openPopupWindow(
                 "/stl/threebodysimulation/layouts/warningWindowLayout.fxml",
                 message,
@@ -228,7 +228,7 @@ public class SceneFXMLController implements Initializable {
 
         panelController.setup(); // Set up settings panel.
         panelController.setOnRunSimulationListener(() -> runSimulation(settingsPanelController.getSimulationSettings())); // Sets up what happens when simulation is run.
-        panelController.setOnRunErrorListener(() -> openErrorWindow(ErrorMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
+        panelController.setOnRunErrorListener(() -> openErrorWindow(FilenameUnspecificMessage.INPUT_ERROR, sceneLayout.getScene().getWindow())); // Sets up what happens when an error occurs.
         panelController.setOnSaveTemplateListener(() -> {
             savesPanelController.refreshSaves();
             tabPane.getSelectionModel().select(1);

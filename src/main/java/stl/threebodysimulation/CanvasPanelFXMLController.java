@@ -135,7 +135,7 @@ public class CanvasPanelFXMLController {
      * @param filename The name of the CSV file to be setup
      * @return The path of the new CSV file.
      */
-    private static String setupCSV(String filename) {
+    private String setupCSV(String filename) {
         String filepath = String.format(SceneFXMLController.CSVFilePathTemplate, filename);
         File CSVDirectory = new File(SceneFXMLController.CSV_DIRECTORY_NAME);
         File CSVFile = new File(filepath);
@@ -148,6 +148,10 @@ public class CanvasPanelFXMLController {
                     //noinspection ResultOfMethodCallIgnored : this should always return true, since it only runs if the file was successfully deleted.
                     CSVFile.createNewFile(); // And try creating the new file again.
                 } else {
+                    breakSimulation(new FilenameSpecificMessage(
+                            FilenameSpecificMessage.Type.OVERWRITE_ERROR,
+                            CSVFile.getAbsolutePath()
+                    ));
                     return "";
                 }
             }
@@ -232,7 +236,6 @@ public class CanvasPanelFXMLController {
         } else {
             CSVFilePath = setupCSV(settings.getCSVFileName());
             if (CSVFilePath.equals("")) {
-                breakSimulation(ErrorMessage.OVERWRITE_ERROR);
                 return;
             }
         }
@@ -257,22 +260,22 @@ public class CanvasPanelFXMLController {
             } catch (NumberIsTooSmallException e) {
                 // Asymptote error (the integrator can't converge and gives up)
                 System.out.println(e.getMessage());
-                breakSimulation(ErrorMessage.ASYMPTOTE_ERROR);
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR);
                 return;
             } catch (NumberIsTooLargeException e) {
                 // Double overflow error (inputs too large for double datatype to handle)
                 System.out.println(e.getMessage());
-                breakSimulation(ErrorMessage.OVERFLOW_ERROR);
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR);
                 return;
             } catch (Exception e) {
                 // Other errors
                 System.out.println(e.getMessage());
-                breakSimulation(ErrorMessage.UNKNOWN_ERROR);
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR);
                 return;
             }
         }
 
-        double[][] scales = generateScale(particleDifferentialEquations, integrator, flattenedParticles.clone(), settings);
+        double[][] scales = generateScale(integrator, flattenedParticles.clone(), settings);
 
         updateParticles();
 
@@ -305,13 +308,12 @@ public class CanvasPanelFXMLController {
     /**
      * Calculates the maximum and minimum x/y coordinates during the first ten seconds of simulation.
      *
-     * @param equations The differential equations.
      * @param integrator The integrator used.
      * @param particles The particles' initial states in flattened form.
      * @param settings The settings of the simulation.
      * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
      */
-    private double[][] generateScale(ParticleDifferentialEquations equations, DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
+    private double[][] generateScale(DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
         final int SIMULATION_LENGTH = 10;
         double simulationTime = currentTime;
 
@@ -465,17 +467,17 @@ public class CanvasPanelFXMLController {
                     } catch (NumberIsTooSmallException e) {
                         // Asymptote error catching
                         System.out.println(e.getMessage());
-                        Platform.runLater(() -> breakSimulation(ErrorMessage.ASYMPTOTE_ERROR));
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR));
                         break;
                     } catch (NumberIsTooLargeException e) {
                         // Double overflow error catching.
                         System.out.println(e.getMessage());
-                        Platform.runLater(() -> breakSimulation(ErrorMessage.OVERFLOW_ERROR));
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR));
                         break;
                     } catch (Exception e) {
                         // Other errors
                         System.out.println(e.getMessage());
-                        Platform.runLater(() -> breakSimulation(ErrorMessage.UNKNOWN_ERROR));
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR));
                         break;
                     }
 
@@ -547,8 +549,12 @@ public class CanvasPanelFXMLController {
      *
      * @param errorMessage What error message to send to the user.
      */
-    private void breakSimulation(ErrorMessage errorMessage) {
+    private void breakSimulationAfterUpdate(PopupMessage errorMessage) {
         updateAll();
+        breakSimulation(errorMessage);
+    }
+
+    private void breakSimulation(PopupMessage errorMessage) {
         stopPressed();
         SceneFXMLController.openErrorWindow(errorMessage, canvas.getScene().getWindow());
     }

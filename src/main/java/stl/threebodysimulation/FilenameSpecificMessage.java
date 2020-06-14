@@ -1,9 +1,9 @@
 package stl.threebodysimulation;
 
 /**
- * A class that provides a template for user confirmation messages.
+ * A class that provides a template for popup messages that involve custom file names.
  */
-class WarningMessage implements PopupMessage {
+class FilenameSpecificMessage implements PopupMessage {
 
     /**
      * The title of the message.
@@ -15,26 +15,14 @@ class WarningMessage implements PopupMessage {
     private final String message;
 
     /**
-     * Constructs a new confirmation message with a filename. Should only be used for overwriting files.
+     * Constructs a new popup message with a filename.
      *
      * @param type     The type of message it is.
      * @param filepath The filepath that it points to.
      */
-    WarningMessage(Type type, String filepath) {
+    FilenameSpecificMessage(Type type, String filepath) {
         title = type.getTitle();
         message = String.format(type.getMessageTemplate(), filepath);
-    }
-
-    /**
-     * Constructs a new confirmation message without a filename. Should only be used for non-filename confirmations.
-     *
-     * @param type The type of message it is.
-     */
-    @SuppressWarnings("SameParameterValue")
-    // In case other errors come up, this constructor will stay parameterized.
-    WarningMessage(Type type) {
-        title = type.getTitle();
-        message = type.getMessageTemplate();
     }
 
     /**
@@ -98,17 +86,33 @@ class WarningMessage implements PopupMessage {
             }
         },
         /**
-         * For confirmations related to loading settings files.
+         * An error that occurs if a file is unable to be deleted.
          */
-        LOAD_CONFIRMATION {
+        DELETE_ERROR {
+            @Override
             String getTitle() {
-                return "Load Template Confirmation";
+                return "Delete File Error";
             }
 
+            @Override
             String getMessageTemplate() {
-                return "You are about to overwrite existing settings with a saved template. Are you sure you want to proceed?";
+                return "The following file could not be deleted:\n'%s'\nIt might be open in another window.";
             }
-        };
+        },
+        /**
+         * An error that occurs when the user attempts to overwrite a CSV file that refuses to be edited.
+         */
+        OVERWRITE_ERROR {
+            @Override
+            String getTitle() {
+                return "Overwrite CSV Error";
+            }
+
+            @Override
+            String getMessageTemplate() {
+                return "The following file could not be edited:\n'%s'\nIt might be open in another window.";
+            }
+        },;
 
         /**
          * Returns the title of the message.

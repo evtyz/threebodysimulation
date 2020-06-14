@@ -228,11 +228,13 @@ public class SavesPanelFXMLController {
      */
     private void showDeleteConfirmation(File saveFile) {
         SceneFXMLController.openWarningWindow(
-                new WarningMessage(WarningMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
+                new FilenameSpecificMessage(FilenameSpecificMessage.Type.DELETE_CONFIRMATION, saveFile.getAbsolutePath()),
                 savesBox.getScene().getWindow(),
                 () -> {
                     if (!saveFile.delete()) {
-                        SceneFXMLController.openErrorWindow(ErrorMessage.DELETE_ERROR, savesBox.getScene().getWindow());
+                        SceneFXMLController.openErrorWindow(
+                                new FilenameSpecificMessage(FilenameSpecificMessage.Type.DELETE_ERROR, saveFile.getAbsolutePath()),
+                                savesBox.getScene().getWindow());
                     }
                     refreshSaves();
                 }
@@ -247,7 +249,7 @@ public class SavesPanelFXMLController {
     private void showLoadConfirmation(SimulationSettings settings) {
         this.settings = settings;
         SceneFXMLController.openWarningWindow(
-                new WarningMessage(WarningMessage.Type.LOAD_CONFIRMATION),
+                FilenameUnspecificMessage.LOAD_CONFIRMATION,
                 savesBox.getScene().getWindow(),
                 onLoadListener);
     }

@@ -368,7 +368,7 @@ public class SettingsPanelFXMLController {
 
         // If the user presses yes, we will restart the runSimulation method from the start (with forceCSV true this time).
         SceneFXMLController.openWarningWindow(
-                new WarningMessage(WarningMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
+                new FilenameSpecificMessage(FilenameSpecificMessage.Type.CSV_CONFIRMATION, CSVFile.getAbsolutePath()),
                 settingsBox.getScene().getWindow(),
                 () -> {
                     forceCSV = true;
@@ -487,7 +487,7 @@ public class SettingsPanelFXMLController {
         }
 
         if (!readiness) {
-            SceneFXMLController.openErrorWindow(ErrorMessage.SAVE_ERROR, settingsBox.getScene().getWindow());
+            SceneFXMLController.openErrorWindow(FilenameUnspecificMessage.SAVE_ERROR, settingsBox.getScene().getWindow());
             return;
         }
 
@@ -506,7 +506,7 @@ public class SettingsPanelFXMLController {
             storeTemplate(settings, filepath);
         } else {
             SceneFXMLController.openWarningWindow(
-                    new WarningMessage(WarningMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
+                    new FilenameSpecificMessage(FilenameSpecificMessage.Type.TEMPLATE_CONFIRMATION, saveFile.getAbsolutePath()),
                     settingsBox.getScene().getWindow(),
                     () -> {
                         forceTemplateSave = true;

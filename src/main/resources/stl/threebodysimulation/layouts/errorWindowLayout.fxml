@@ -30,6 +30,6 @@
             </font>
         </Label>
     </HBox>
-    <Button fx:id="closeWindowButton" alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow"
+    <Button alignment="CENTER" mnemonicParsing="false" onAction="#closeWindow"
             prefHeight="40.0" styleClass="primary" stylesheets="@../styles/bootstrap3.css" text="OK"/>
 </VBox>

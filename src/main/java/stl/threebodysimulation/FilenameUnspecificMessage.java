@@ -4,7 +4,7 @@ package stl.threebodysimulation;
 /**
  * A class that represents error messages that can be shown in a popup.
  */
-enum ErrorMessage implements PopupMessage {
+enum FilenameUnspecificMessage implements PopupMessage {
     /**
      * An error that occurs when inputs for a simulation are incorrect.
      */
@@ -62,31 +62,15 @@ enum ErrorMessage implements PopupMessage {
         }
     },
     /**
-     * An error that occurs if a file is unable to be deleted.
+     * For confirmations related to loading settings files.
      */
-    DELETE_ERROR {
-        @Override
+    LOAD_CONFIRMATION {
         public String getTitle() {
-            return "Delete File Error";
+            return "Load Template Confirmation";
         }
 
-        @Override
         public String getMessage() {
-            return "The file cannot be deleted. It might be open in another window. Close all other instances of this app before trying again.";
-        }
-    },
-    /**
-     * An error that occurs when the user attempts to overwrite a CSV file that refuses to be edited.
-     */
-    OVERWRITE_ERROR {
-        @Override
-        public String getTitle() {
-            return "Overwrite CSV Error";
-        }
-
-        @Override
-        public String getMessage() {
-            return "The CSV file you specified cannot be edited. It might be open in another window. Please close all other instances of this app and try again.";
+            return "You are about to overwrite existing settings with a saved template. Are you sure you want to proceed?";
         }
     },
     /**
@@ -103,5 +87,4 @@ enum ErrorMessage implements PopupMessage {
             return "An unknown error occurred during the simulation. Please let the developers know, and try your simulation again.";
         }
     }
-
 }
