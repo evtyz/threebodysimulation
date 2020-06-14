@@ -71,7 +71,37 @@ enum DefaultTemplates {
         String getTitle() {
             return "Symmetrical Orbit (Example)";
         }
-    }; // TODO: more.
+    },
+    /**
+     * An example of a chaotic orbit.
+     */
+    CHAOTIC_ORBIT {
+        SimulationSettings getSettings() {
+            return new SimulationSettings(
+                    new Particle[]{
+                            new Particle(
+                                    150, 50, -15, -30, 1, 1, Color.RED
+                            ),
+                            new Particle(
+                                    50, -150, 5, 40, 1, 2, Color.GREEN
+                            ),
+                            new Particle(
+                                    -200, -50, 10, -10, 1, 3, Color.BLUE
+                            )
+                    },
+                    true,
+                    true,
+                    true,
+                    0,
+                    1,
+                    NumberFormat.ADAPTIVE,
+                    ""
+            );
+        }
+        String getTitle() {
+            return "Chaotic Orbit (Example)";
+        }
+    };
 
     /**
      * Gets the settings of the default template.
