@@ -156,7 +156,7 @@ public class SceneFXMLController implements Initializable {
 
             final Stage popupWindow = new Stage();
             // Load the correct message into the layout
-            PopupWindowFXMLController popupController = loadLayout(layoutName, node -> {
+            ErrorWindowFXMLController popupController = loadLayout(layoutName, node -> {
                 Scene popupScene = new Scene((Parent) node);
                 MainApp.setCSS(popupScene);
                 popupWindow.setScene(popupScene);

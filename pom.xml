@@ -186,7 +186,6 @@
                         <list>stl.threebodysimulation.ParameterFXMLController</list>
                         <list>stl.threebodysimulation.Particle</list>
                         <list>stl.threebodysimulation.ParticleDifferentialEquations</list>
-                        <list>stl.threebodysimulation.PopupWindowFXMLController</list>
                         <list>stl.threebodysimulation.PopupMessage</list>
                         <list>stl.threebodysimulation.ErrorWindowFXMLController</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
