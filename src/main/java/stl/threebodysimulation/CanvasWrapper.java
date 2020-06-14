@@ -124,7 +124,7 @@ class CanvasWrapper {
         // Initializes the oldCanvasPos variable with the original position values
         for (int i = 0; i < 3; i++) {
             oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400;
-            oldCanvasPos[i][1] = particles[i].getPosition()[1] + 360;
+            oldCanvasPos[i][1] = 360 - particles[i].getPosition()[1];
         }
 
         // Calculates the sum of the particle masses
@@ -161,7 +161,7 @@ class CanvasWrapper {
         // Displays the positions of the particles on the canvas
         for (int i = 0; i < 3; i++) {
             canvasPos[0] = particles[i].getPosition()[0] + 400;
-            canvasPos[1] = particles[i].getPosition()[1] + 360;
+            canvasPos[1] = 360 - particles[i].getPosition()[1];
             particlesGC.setFill(particles[i].getColor());
             particlesGC.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
@@ -189,7 +189,7 @@ class CanvasWrapper {
 
             // Displays the center of mass
             particlesGC.setFill(Color.valueOf("#555555"));
-            particlesGC.fillOval(centerOfMassPos[0] + 400 - 5, centerOfMassPos[1] + 360 - 5, 10, 10);
+            particlesGC.fillOval(centerOfMassPos[0] + 400 - 5, 360 - centerOfMassPos[1] - 5, 10, 10);
 
             particlesGC.setStroke(Color.valueOf("#555555"));
             for (int i = 0; i < 2; i++) {
@@ -198,7 +198,7 @@ class CanvasWrapper {
                 }
             }
             for (int i = 0; i < 3; i++) {
-                particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], centerOfMassPos[0] + 400, centerOfMassPos[1] + 360);
+                particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], centerOfMassPos[0] + 400, 360 - centerOfMassPos[1]);
             }
 
         }
