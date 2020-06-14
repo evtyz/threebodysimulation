@@ -277,6 +277,8 @@ public class CanvasPanelFXMLController {
 
         double[][] scales = generateScale(particleDifferentialEquations, integrator, flattenedParticles.clone(), settings);
 
+        updateParticles();
+
         // Clear out the canvas and provide the wrapper with settings.
         canvasWrapper.setupScalesAndSettings(scales, settings);
 
@@ -304,35 +306,59 @@ public class CanvasPanelFXMLController {
      *
      * @param equations The differential equations.
      * @param integrator The integrator used.
-     * @param particles The particles' initial states.
+     * @param particles The particles' initial states in flattened form.
      * @param settings The settings of the simulation.
      * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
      */
     private double[][] generateScale(ParticleDifferentialEquations equations, DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
-//        final int SIMULATION_LENGTH = 10;
-//        double simulationTime = currentTime;
-//
-//        double minx;
-//        double maxx;
-//        double miny;
-//        double maxy;
-//
-//        for (double time = 0; time <= SIMULATION_LENGTH * settings.getSpeed(); time += settings.getSpeed() / 5) {
-//            try {
-//                // Get the position and velocity of particles at currentTime
-//                integrator.integrate(particleDifferentialEquations, 0, flattenedParticles, currentTime, flattenedParticles);
-//            } catch (Exception e) {
-//                // All exceptions mean automatic break.
-//                break;
-//            }
-//        }
-//        return new double[][]{{minx, miny}, {maxx, miny}, {maxx, maxy}, {minx, maxy}};
-        return new double[4][2];
+        final int SIMULATION_LENGTH = 10;
+        double simulationTime = currentTime;
+
+        double[][] minsAndMaxs = minAndMaxPositions(particles);
+
+        for (double time = simulationTime; time < SIMULATION_LENGTH * settings.getSpeed() + simulationTime; time += settings.getSpeed() / 5) {
+            try {
+                // Get the position and velocity of particles at currentTime
+                integrator.integrate(particleDifferentialEquations, time, particles, time + settings.getSpeed() / 5, particles);
+                double[][] currentMinsAndMaxs = minAndMaxPositions(particles);
+                for (int i = 0; i < 2; i++) {
+                    if (currentMinsAndMaxs[0][i] < minsAndMaxs[0][i]) {
+                        minsAndMaxs[0][i] = currentMinsAndMaxs[0][i];
+                    }
+                    if (currentMinsAndMaxs[1][i] > minsAndMaxs[1][i]) {
+                        minsAndMaxs[1][i] = currentMinsAndMaxs[1][i];
+                    }
+                }
+            } catch (Exception e) {
+                // All exceptions mean automatic break.
+                break;
+            }
+        }
+
+        double[][] coordinatePositions = new double[4][2];
+        int index = 0;
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                coordinatePositions[index++] = new double[] {minsAndMaxs[i][0], minsAndMaxs[j][0]};
+            }
+        }
+        return coordinatePositions;
     }
 
-//    private double[][] getMinsAndMaxs(double[] particles) {
-//        min[x]
-//    }
+    /**
+     * Calculates the min and max x/y coordinates of a single set of particles
+     *
+     * @param particles Particles in flattened form.
+     * @return double 2D array {{minimum x, minimum y}, {maximum x, maximum y}}
+     */
+    private double[][] minAndMaxPositions(double[] particles) {
+        double[] xPositions = new double[] {particles[0], particles[4], particles[8]};
+        double[] yPositions = new double[] {particles[1], particles[5], particles[9]};
+        Arrays.sort(xPositions);
+        Arrays.sort(yPositions);
+        return new double[][] {{xPositions[0], yPositions[0]}, {xPositions[2], yPositions[2]}};
+    }
 
     /**
      * Updates the flattenedParticles array according to the particles array.
@@ -350,13 +376,20 @@ public class CanvasPanelFXMLController {
     }
 
     /**
-     * Updates particles and update canvas.
+     * Updates particles.
      */
-    private void updateAll() {
+    private void updateParticles() {
         for (int id = 0; id < 3; id++) {
             // Update each of the particles according to the state of the FlattenedParticles array.
             particles[id].update(Arrays.copyOfRange(flattenedParticles, 4 * id, 4 * id + 4));
         }
+    }
+
+    /**
+     * Updates particles and update canvas.
+     */
+    private void updateAll() {
+        updateParticles();
 
         // Then update the UI according to the new particles.
         timeLabel.setText(String.format("Time: %.5f secs", currentTime));
