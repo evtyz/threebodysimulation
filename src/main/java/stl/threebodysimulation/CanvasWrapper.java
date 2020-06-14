@@ -2,6 +2,7 @@ package stl.threebodysimulation;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
@@ -32,7 +33,7 @@ class CanvasWrapper {
     /**
      * The graphics supplied to the particle canvas.
      */
-    private final GraphicsContext gc;
+    private final GraphicsContext particlesGC;
     /**
      * The graphics supplied to the grid line canvas
      */
@@ -58,10 +59,17 @@ class CanvasWrapper {
      */
     private boolean centerOfMass;
     /**
-     * Array of the old canvas position values
+     * A 2D array of the old canvas position values
      */
     double[][] oldCanvasPos = new double[3][2];
-
+    /**
+     * An array containing the position of the center of mass of the system
+     */
+    double[] centerOfMassPos = new double[2];
+    /**
+     * The sum of the masses of the particles
+     */
+    double massSum;
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -72,7 +80,7 @@ class CanvasWrapper {
         this.canvas = canvas;
         this.gridCanvas = gridCanvas;
         this.trailCanvas = trailCanvas;
-        gc = canvas.getGraphicsContext2D();
+        particlesGC = canvas.getGraphicsContext2D();
         gridGC = gridCanvas.getGraphicsContext2D();
         trailGC = trailCanvas.getGraphicsContext2D();
     }
@@ -119,10 +127,13 @@ class CanvasWrapper {
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
 
         // Initializes the oldCanvasPos variable with the original position values
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400;
             oldCanvasPos[i][1] = particles[i].getPosition()[1] + 360;
         }
+
+        // Calculates the sum of the particle masses
+        massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
     }
 
     /**
@@ -137,8 +148,8 @@ class CanvasWrapper {
         for (int i = 0; i < 3; i++) {
             canvasPos[0] = particles[i].getPosition()[0] + 400;
             canvasPos[1] = particles[i].getPosition()[1] + 360;
-            gc.setFill(particles[i].getColor());
-            gc.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
+            particlesGC.setFill(particles[i].getColor());
+            particlesGC.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
 
             // Conditionally draws trails
@@ -154,7 +165,17 @@ class CanvasWrapper {
 
         // Conditionally draws the center of mass
         if (centerOfMass) {
-            drawCenterOfMass();
+
+            // Calculates the center of mass
+            for (int i = 0; i < 2; i++) {
+                centerOfMassPos[i] = ((particles[0].getMass() * particles[0].getPosition()[i])
+                        + (particles[1].getMass() * particles[1].getPosition()[i])
+                        + (particles[2].getMass() * particles[2].getPosition()[i])) / massSum;
+            }
+
+            // Displays the center of mass
+            particlesGC.setFill(Color.BLACK);
+            particlesGC.fillOval(centerOfMassPos[0] + 400, centerOfMassPos[1] + 360, 10, 10);
         }
     }
 
@@ -162,14 +183,6 @@ class CanvasWrapper {
      * Clears the canvas.
      */
     void clearCanvas() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    }
-
-    /**
-     * Draws the center of mass
-     */
-    void drawCenterOfMass(){
-
+        particlesGC.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }
-
