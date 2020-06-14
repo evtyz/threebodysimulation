@@ -18,11 +18,12 @@
          <Font size="14.0" />
       </font>
    </TextField>
-    <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;">
-        <padding>
-          <Insets top="5.0" />
-        </padding>
-    </VBox>
+   <VBox fx:id="defaultSavesBox" alignment="TOP_CENTER" layoutX="10.0" layoutY="62.0" style="-fx-background-color: white;">
+      <padding>
+         <Insets top="5.0" />
+      </padding>
+   </VBox>
+    <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;" />
     <HBox alignment="TOP_CENTER">
         <VBox.margin>
             <Insets top="10.0" />
