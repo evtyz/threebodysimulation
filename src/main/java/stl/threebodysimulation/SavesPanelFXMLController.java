@@ -111,7 +111,7 @@ public class SavesPanelFXMLController {
                 for (File saveFile : filesList) {
                     String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
 
-                    if (! (searchPrompt.equals("") || filename.contains(searchPrompt))) {
+                    if (! (searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
                         continue;
                     }
                     // TODO Documentation
