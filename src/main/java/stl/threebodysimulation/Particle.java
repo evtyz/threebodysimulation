@@ -160,6 +160,15 @@ class Particle {
     }
 
     /**
+     * Gets velocity.
+     *
+     * @return The velocity of the particle.
+     */
+    double[] getVelocity() {
+        return velocity;
+    }
+
+    /**
      * Gets color.
      *
      * @return The color of the particle.
