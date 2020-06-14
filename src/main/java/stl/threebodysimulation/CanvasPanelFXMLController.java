@@ -225,8 +225,6 @@ public class CanvasPanelFXMLController {
      * @param settings The SimulationSettings object that supplies properties for the simulation.
      */
     void runSimulation(SimulationSettings settings) {
-        // Clear out the canvas and provide the wrapper with settings.
-        canvasWrapper.setupWithSettings(settings);
 
         String CSVFileName = settings.getCSVFileName();
         if (CSVFileName.equals("")) {
@@ -277,6 +275,11 @@ public class CanvasPanelFXMLController {
             }
         }
 
+        double[][] scales = generateScale(particleDifferentialEquations, integrator, flattenedParticles.clone(), settings);
+
+        // Clear out the canvas and provide the wrapper with settings.
+        canvasWrapper.setupScalesAndSettings(scales, settings);
+
         // Update canvas
         updateAll();
 
@@ -295,6 +298,41 @@ public class CanvasPanelFXMLController {
             state = SimulationState.INACTIVE;
         }
     }
+
+    /**
+     * Calculates the maximum and minimum x/y coordinates during the first ten seconds of simulation.
+     *
+     * @param equations The differential equations.
+     * @param integrator The integrator used.
+     * @param particles The particles' initial states.
+     * @param settings The settings of the simulation.
+     * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
+     */
+    private double[][] generateScale(ParticleDifferentialEquations equations, DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
+//        final int SIMULATION_LENGTH = 10;
+//        double simulationTime = currentTime;
+//
+//        double minx;
+//        double maxx;
+//        double miny;
+//        double maxy;
+//
+//        for (double time = 0; time <= SIMULATION_LENGTH * settings.getSpeed(); time += settings.getSpeed() / 5) {
+//            try {
+//                // Get the position and velocity of particles at currentTime
+//                integrator.integrate(particleDifferentialEquations, 0, flattenedParticles, currentTime, flattenedParticles);
+//            } catch (Exception e) {
+//                // All exceptions mean automatic break.
+//                break;
+//            }
+//        }
+//        return new double[][]{{minx, miny}, {maxx, miny}, {maxx, maxy}, {minx, maxy}};
+        return new double[4][2];
+    }
+
+//    private double[][] getMinsAndMaxs(double[] particles) {
+//        min[x]
+//    }
 
     /**
      * Updates the flattenedParticles array according to the particles array.

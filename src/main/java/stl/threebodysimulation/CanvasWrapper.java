@@ -88,24 +88,25 @@ class CanvasWrapper {
     /**
      * Sets the graphics options and particles for the canvas.
      *
+     * @param scales An 2D array of doubles that represent the max/min x/y coordinates of the particles in the first 10 seconds of simulation.
      * @param settings The SimulationSettings object that options and particles will be read from.
      */
-    void setupWithSettings(SimulationSettings settings) {
+    void setupScalesAndSettings(double[][] scales, SimulationSettings settings) {
         clearCanvas();
 
         // Establishes the trail width
         trailGC.setLineWidth(1.0);
+
+        // Establishes the center of gravity guide width
+        particlesGC.setLineWidth(1.0);
 
         // Initializing the imported variables
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
 
-        // Arrays of the X and Y values of the particles
-        final double[] particleXValues = {particles[0].getPosition()[0], particles[1].getPosition()[0], particles[2].getPosition()[0]};
-        final double[] particleYValues = {particles[0].getPosition()[1], particles[1].getPosition()[1], particles[2].getPosition()[1]};
-        Arrays.sort(particleXValues);
-        Arrays.sort(particleYValues);
+        // Coordinates of the rectangle that the canvas represents. TODO
+        double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(scales, particles));
 
         // Geometric mean of masses.
         avgMass = Math.cbrt(particles[0].getMass() * particles[1].getMass() * particles[2].getMass());
@@ -116,12 +117,6 @@ class CanvasWrapper {
             circleDiameter[i] = Math.cbrt(particles[i].getMass() / avgMass) * 4 + 8;
         }
 
-        // Establishing the coordinate corners of the original rectangle
-        double[] point1 = {particleXValues[0], particleYValues[2]};
-        double[] point2 = {particleXValues[2], particleYValues[2]};
-        double[] point3 = {particleXValues[2], particleYValues[0]};
-        double[] point4 = {particleXValues[0], particleYValues[0]};
-        double[][] rectPoints = {point1, point2, point3, point4};
 
         // Clears the trails canvas of any existing trails
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
@@ -134,6 +129,25 @@ class CanvasWrapper {
 
         // Calculates the sum of the particle masses
         massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
+    }
+
+    private static double[][] calculateRectangle(double[][] originalRectangle, int buffer) {
+        // TODO: calculate rectangle.
+
+        double[][] newRectangle = new double[4][2];
+        return newRectangle;
+    }
+
+    /**
+     * Returns a buffer size based on particles and an original rectangle.
+     *
+     * @param originalRectangle The coordinates of the corners of the original rectangle.
+     * @param particles The particle objects that contain information about velocity and mass.
+     * @return An integer that represents the buffer size.
+     */
+    private static int calculateBuffer(double[][] originalRectangle, Particle[] particles) {
+        // TODO: Calculate a buffer size
+        return 0;
     }
 
     /**
