@@ -173,6 +173,8 @@
                         <list>stl.threebodysimulation.CanvasPanelFXMLController</list>
                         <list>stl.threebodysimulation.CanvasWrapper</list>
                         <list>stl.threebodysimulation.WarningMessage</list>
+                        <list>stl.threebodysimulation.DefaultSavePreviewFXMLController</list>
+                        <list>stl.threebodysimulation.DefaultTemplates</list>
                         <list>stl.threebodysimulation.DesktopAPI</list>
                         <list>stl.threebodysimulation.ErrorMessage</list>
                         <list>stl.threebodysimulation.InfoFXMLController</list>

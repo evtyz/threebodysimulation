@@ -34,10 +34,16 @@ public class SavesPanelFXMLController {
     private TextField searchField;
 
     /**
-     * The VBox UI element for the saves panel.
+     * The VBox UI element for the saves panel with custom templates.
      */
     @FXML
     private VBox savesBox;
+
+    /**
+     * The VBox UI element for the saves panel with default templates.
+     */
+    @FXML
+    private VBox defaultSavesBox;
     /**
      * The Button UI element that handles refreshing for new saves.
      */
@@ -100,65 +106,107 @@ public class SavesPanelFXMLController {
             savesBox.getChildren().clear();
         } catch (NullPointerException ignored) {
         }
+
+        try {
+            defaultSavesBox.getChildren().clear();
+        } catch (NullPointerException ignored) {
+        }
+
+        boolean templatesFound = false;
+
+        for (DefaultTemplates template : DefaultTemplates.values()) {
+            String title = template.getTitle();
+
+            try {
+                if (! (searchPrompt.equals("") || title.toLowerCase().contains(searchPrompt.toLowerCase()))) {
+                    continue;
+                }
+
+                templatesFound = true;
+
+                DefaultSavePreviewFXMLController saveController = SceneFXMLController.loadLayout(
+                        "/stl/threebodysimulation/layouts/DefaultSavePreviewLayout.fxml",
+                        node -> defaultSavesBox.getChildren().add(node)
+                );
+
+                if (expandRecord.containsKey(title)) {
+                    saveController.setExpand(expandRecord.get(title));
+                } else {
+                    saveController.setExpand(false);
+                    expandRecord.put(title, false);
+                }
+
+                SimulationSettings settings = template.getSettings();
+
+                saveController.setSettings(settings);
+                saveController.setTitle(title);
+                saveController.setSelectListener(() -> {
+                    templateName = title;
+                    showLoadConfirmation(saveController.getSettings());
+                });
+                saveController.setOnExpandListener(() -> expandRecord.put(title, true));
+                saveController.setOnContractListener(() -> expandRecord.put(title, false));
+
+            } catch (IOException ignored) {} // Should never happen.
+        }
+
         File saveDirectory = new File(SceneFXMLController.SAVES_DIRECTORY_NAME);
         //noinspection ResultOfMethodCallIgnored : As long as a directory exists, we don't care if mkdir created it.
         saveDirectory.mkdir(); // Create a directory if none exists.
         File[] filesList = saveDirectory.listFiles((dir, name) -> name.endsWith(SceneFXMLController.SAVES_EXTENSION_NAME));
         try {
-            if (filesList.length == 0) {
-                showNoSavesMessage();
-            } else {
-                for (File saveFile : filesList) {
-                    String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+            for (File saveFile : filesList) {
+                String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
 
-                    if (! (searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
-                        continue;
-                    }
-                    // TODO Documentation
-                    // Reads a file and saves it as a node.
-                    ArrayList<String> serializedForm = new ArrayList<>();
-
-                    try {
-                        for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
-                            for (int index = 0; index < record.size(); index++) {
-                                serializedForm.add(record.get(index));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        // Should never happen.
-                    }
-
-
-                    SimulationSettings settings = new SimulationSettings(serializedForm);
-
-                    SavePreviewFXMLController saveController = SceneFXMLController.loadLayout(
-                            "/stl/threebodysimulation/layouts/savePreviewLayout.fxml",
-                            node -> savesBox.getChildren().add(node)
-                    );
-
-
-
-                    if (expandRecord.containsKey(filename)) {
-                        saveController.setExpand(expandRecord.get(filename));
-                    } else {
-                        saveController.setExpand(false);
-                        expandRecord.put(filename, false);
-                    }
-
-                    saveController.setSettings(settings);
-                    saveController.setTitle(filename);
-                    saveController.setSelectListener(() -> {
-                        templateName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
-                        showLoadConfirmation(saveController.getSettings());
-                    });
-                    saveController.setDeleteListener(() -> showDeleteConfirmation(saveFile));
-                    saveController.setOnExpandListener(() -> expandRecord.put(filename, true));
-                    saveController.setOnContractListener(() -> expandRecord.put(filename, false));
+                if (! (searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
+                    continue;
                 }
+                // TODO Documentation
+                // Reads a file and saves it as a node.
+                ArrayList<String> serializedForm = new ArrayList<>();
+
+                try {
+                    for (CSVRecord record : CSVFormat.DEFAULT.parse(new FileReader(saveFile))) {
+                        for (int index = 0; index < record.size(); index++) {
+                            serializedForm.add(record.get(index));
+                        }
+                    }
+                    templatesFound = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Should never happen.
+                }
+
+
+                SimulationSettings settings = new SimulationSettings(serializedForm);
+
+                SavePreviewFXMLController saveController = SceneFXMLController.loadLayout(
+                        "/stl/threebodysimulation/layouts/savePreviewLayout.fxml",
+                        node -> savesBox.getChildren().add(node)
+                );
+
+                if (expandRecord.containsKey(filename)) {
+                    saveController.setExpand(expandRecord.get(filename));
+                } else {
+                    saveController.setExpand(false);
+                    expandRecord.put(filename, false);
+                }
+
+                saveController.setSettings(settings);
+                saveController.setTitle(filename);
+                saveController.setSelectListener(() -> {
+                    templateName = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
+                    showLoadConfirmation(saveController.getSettings());
+                });
+                saveController.setDeleteListener(() -> showDeleteConfirmation(saveFile));
+                saveController.setOnExpandListener(() -> expandRecord.put(filename, true));
+                saveController.setOnContractListener(() -> expandRecord.put(filename, false));
             }
         } catch (NullPointerException | IOException e) {
             e.printStackTrace();
+        }
+
+        if (!templatesFound) {
             showNoSavesMessage();
         }
     }

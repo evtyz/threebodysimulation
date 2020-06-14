@@ -46,7 +46,7 @@ public class SceneFXMLController implements Initializable {
     /**
      * Default colors that each particle is initialized to.
      */
-    private static final Color[] defaultColors = {Color.RED, Color.BLUE, Color.GREEN};
+    private static final Color[] defaultColors = {Color.RED, Color.GREEN, Color.BLUE};
     /**
      * The separator between directory names. Depends on operating system. e.g. "/" vs "\\" vs others.
      */
