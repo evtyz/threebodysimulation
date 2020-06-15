@@ -68,6 +68,14 @@ class CanvasWrapper {
      * The sum of the masses of the particles
      */
     double massSum;
+    /**
+     * The scale factor for the canvas size adjustment
+     */
+    double particleScale;
+    /**
+     * The scale factor for the canvas orientation adjustment
+     */
+    double translationScale;
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -99,15 +107,22 @@ class CanvasWrapper {
         particlesGC.setLineWidth(1.0);
 
         // Establishes the grid line canvas line width
-        gridGC.setLineWidth(1.0);
+        gridGC.setLineWidth(0.4);
 
         // Initializing the imported variables
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
 
-        // Coordinates of the rectangle that the canvas represents. TODO
+        // Coordinates of the rectangle that the canvas represents.
         double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(scales, particles));
+
+        // Rounds the values of the canvasRectangle
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 2; j++) {
+                canvasRectangle[i][j] = Math.round(canvasRectangle[i][j]);
+            }
+        }
 
         // Geometric mean of masses.
         avgMass = Math.cbrt(particles[0].getMass() * particles[1].getMass() * particles[2].getMass());
@@ -134,16 +149,52 @@ class CanvasWrapper {
         // Draws grid lines
         for (int i = -3; i < 4; i++) {
             gridGC.setFill(Color.valueOf("#e6e6e6"));
-            gridGC.strokeLine((i * 160) + 400, 720, (i * 160) + 400, 0);
-            gridGC.strokeLine(0, 360 - (i * 144), 800, 360 - (i * 144));
+            gridGC.strokeLine((i * 100) + 400, 720, (i * 100) + 400, 0);
+            gridGC.strokeLine(0, 360 - (i * 100), 800, 360 - (i * 100));
         }
 
         // Draws axis
         gridGC.setFill(Color.BLACK);
         gridGC.strokeLine(400, 720, 400, 0);
         gridGC.strokeLine(0, 360, 800, 360);
+
+        setScaleFactors(canvasRectangle);
     }
 
+    private void setScaleFactors(double[][] canvasRectangle){
+
+        // The height and width of the new rectangle
+        double canvasRectangleHeight = canvasRectangle[1][1] - canvasRectangle[0][1];
+        double canvasRectangleWidth = canvasRectangle[3][0] - canvasRectangle[1][0];
+
+        // Adjusting the new rectangle's height to fit aspect ratio
+        if (canvasRectangleHeight > 720) {
+            while (canvasRectangleHeight % 720 != 0) {
+                canvasRectangle[1][1]++;
+                canvasRectangleHeight++;
+            }
+        } else if (canvasRectangleHeight < 720) {
+            while (720 % canvasRectangleHeight != 0) {
+                canvasRectangle[1][1]++;
+                canvasRectangleHeight++;
+            }
+        }
+
+        // Adjusting the new rectangle's width to fit aspect ratio
+        if (canvasRectangleWidth > 800){
+            while (canvasRectangleWidth % 800 != 0) {
+                canvasRectangle[3][0]++;
+                canvasRectangleWidth++;
+            }
+        } else if (canvasRectangleWidth < 800) {
+            while (800 % canvasRectangleWidth != 0) {
+                canvasRectangle[3][0]++;
+                canvasRectangleWidth++;
+            }
+        }
+
+        
+    }
     private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
         // TODO: calculate rectangle.
         double[][] newRectangle = new double[4][2];
