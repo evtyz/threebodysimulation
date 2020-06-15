@@ -4,8 +4,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.Arrays;
-
 /**
  * A wrapper that manages the graphics of a canvas UI object.
  */
@@ -129,12 +127,40 @@ class CanvasWrapper {
 
         // Calculates the sum of the particle masses
         massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
+
+        // Draws grid lines
+        for (int i = -3; i < 4; i++) {
+            gridGC.setFill(Color.valueOf("#e6e6e6"));
+            gridGC.strokeLine((i * 160) + 400, 720, (i * 160) + 400, 0);
+            gridGC.strokeLine(0, 360 - (i * 144), 800, 360 - (i * 144));
+        }
+
+        // Draws axis
+        gridGC.setFill(Color.BLACK);
+        gridGC.strokeLine(400, 720, 400, 0);
+        gridGC.strokeLine(0, 360, 800, 360);
     }
 
-    private static double[][] calculateRectangle(double[][] originalRectangle, int buffer) {
+    private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
         // TODO: calculate rectangle.
-
         double[][] newRectangle = new double[4][2];
+
+        // Adjusting point 1 (lower left)
+        newRectangle[0][0] = originalRectangle[0][0] - buffer;
+        newRectangle[0][1] = originalRectangle[0][1] - buffer;
+
+        // Adjusting point 2 (upper left)
+        newRectangle[1][0] = originalRectangle[1][0] - buffer;
+        newRectangle[1][1] = originalRectangle[1][1] + buffer;
+
+        // Adjusting point 3 (lower right)
+        newRectangle[2][0] = originalRectangle[2][0] + buffer;
+        newRectangle[2][1] = originalRectangle[2][1] - buffer;
+
+        // Adjusting point 4 (upper right)
+        newRectangle[3][0] = originalRectangle[3][0] + buffer;
+        newRectangle[3][1] = originalRectangle[3][1] + buffer;
+
         return newRectangle;
     }
 
@@ -145,9 +171,27 @@ class CanvasWrapper {
      * @param particles The particle objects that contain information about velocity and mass.
      * @return An integer that represents the buffer size.
      */
-    private static int calculateBuffer(double[][] originalRectangle, Particle[] particles) {
+    private double calculateBuffer(double[][] originalRectangle, Particle[] particles) {
         // TODO: Calculate a buffer size
-        return 0;
+
+        // Declares buffer variable
+        double buffer;
+
+        // Constructs an array of the absolute values of the particle velocities
+        double[] particleSquares = new double[3];
+        for (int i = 0; i < 3; i++) {
+            particleSquares[i] = Math.sqrt((particles[i].getVelocity()[0] * particles[i].getVelocity()[0])
+                    + (particles[i].getVelocity()[1] * particles[i].getVelocity()[1]));
+        }
+
+        // Calculates the average squared velocity
+        double avgSquaredVelocity = Math.sqrt((particleSquares[0] * particles[0].getMass() + particleSquares[1] * particles[1].getMass()
+                + particleSquares[2] * particles[2].getMass()) / massSum);
+
+        // Determines the buffer as a product of ASV and a constant
+        buffer = avgSquaredVelocity * 5;
+
+        return buffer;
     }
 
     /**
