@@ -75,7 +75,7 @@ class CanvasWrapper {
     /**
      * The scale factor for the canvas orientation adjustment
      */
-    double translationScale;
+    double[] translationScale = new double[2];
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -161,6 +161,11 @@ class CanvasWrapper {
         setScaleFactors(canvasRectangle);
     }
 
+    /**
+     * Calculates the scale factors required for adjusting the canvas.
+     *
+     * @param canvasRectangle The coordinates of the corners of the new rectangle.
+     */
     private void setScaleFactors(double[][] canvasRectangle){
 
         // The height and width of the new rectangle
@@ -193,8 +198,22 @@ class CanvasWrapper {
             }
         }
 
-        
+        // Identifies the factor by which the canvas needs to be multiplied
+        double canvasRectangleArea = canvasRectangleHeight * canvasRectangleWidth;
+        particleScale = ((canvasRectangleArea - 576000) / 576000) + 1;
+
+        // Identifies the center point of the new rectangle as the factor of translation
+        translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
+        translationScale[1] = (canvasRectangle[1][1] - canvasRectangle[0][1]) / 2;
     }
+
+    /**
+     * Adjusts the original rectangle by the length of the buffer.
+     *
+     * @param originalRectangle The coordinates of the corners of the original rectangle.
+     * @param buffer The length by which the new rectangle is extended outwards.
+     * @return The new rectangle adjusted by the buffer length.
+     */
     private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
         // TODO: calculate rectangle.
         double[][] newRectangle = new double[4][2];
@@ -251,7 +270,6 @@ class CanvasWrapper {
     /**
      * Updates the canvas according to the current state of the particles.
      */
-
     void updateCanvas() {
         // TODO
         clearCanvas();
