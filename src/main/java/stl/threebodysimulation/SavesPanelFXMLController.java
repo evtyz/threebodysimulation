@@ -125,7 +125,7 @@ public class SavesPanelFXMLController {
                 templatesFound = true;
 
                 DefaultSavePreviewFXMLController saveController = SceneFXMLController.loadLayout(
-                        "/stl/threebodysimulation/layouts/DefaultSavePreviewLayout.fxml",
+                        "/stl/threebodysimulation/layouts/defaultSavePreviewLayout.fxml",
                         node -> defaultSavesBox.getChildren().add(node)
                 );
 
