@@ -98,6 +98,9 @@ class CanvasWrapper {
         // Establishes the center of gravity guide width
         particlesGC.setLineWidth(1.0);
 
+        // Establishes the grid line canvas line width
+        gridGC.setLineWidth(1.0);
+
         // Initializing the imported variables
         trails = settings.getTrails();
         centerOfMass = settings.getCenterOfGravity();

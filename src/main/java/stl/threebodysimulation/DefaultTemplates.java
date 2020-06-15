@@ -111,7 +111,7 @@ enum DefaultTemplates {
     abstract SimulationSettings getSettings();
 
     /**
-     * Gets the tilte of the default template.
+     * Gets the title of the default template.
      *
      * @return The title.
      */

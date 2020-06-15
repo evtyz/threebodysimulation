@@ -192,7 +192,7 @@ public class SceneFXMLController implements Initializable {
      * @param manager      A manager that displays the layout file in the desired way.
      * @param <Controller> The type of controller that manages the layout file.
      * @return The layout controller.
-     * @throws IOException If the layout isn't found (should never happpen.)
+     * @throws IOException If the layout isn't found (should never happen.)
      */
     static <Controller> Controller loadLayout(String resourceName, NodeManager manager) throws IOException {
         FXMLLoader loader = new FXMLLoader(SceneFXMLController.class.getResource(resourceName));

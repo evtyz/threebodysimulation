@@ -212,7 +212,7 @@ public class SavesPanelFXMLController {
     }
 
     /**
-     * Shows a messsage when no saves are found.
+     * Shows a message when no saves are found.
      */
     private void showNoSavesMessage() {
         Label emptyMessage = new Label();
