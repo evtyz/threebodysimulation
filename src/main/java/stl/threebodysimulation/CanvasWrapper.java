@@ -165,11 +165,11 @@ class CanvasWrapper {
 
     private void setScaleFactors2(double[][] canvasRectangle) {
         double aspectFactor;
-        double adjHeight;
-        double heightDiff;
+        double aspectAdjust;
+        double adjDiff;
 
-        double rectangleHeight = canvasRectangle[1][1] - canvasRectangle[0][1];
-        double rectangleWidth = canvasRectangle[3][0] - canvasRectangle[1][0];
+        double rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        double rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
         //int rectangleHeight = rectangleInt[1][1] - rectangleInt[0][1];
         //int rectangleWidth = rectangleInt[3][0] - rectangleInt[1][0];
 
@@ -178,8 +178,18 @@ class CanvasWrapper {
 
         if (rectangleAspect > canvasAspect){
             aspectFactor = rectangleAspect / canvasAspect;
-            adjHeight = rectangleHeight * aspectFactor;
-            heightDiff = adjHeight - rectangleHeight;
+            aspectAdjust = rectangleHeight * aspectFactor;
+            adjDiff = aspectAdjust - rectangleHeight;
+            canvasRectangle[1][1] = canvasRectangle[1][1] + adjDiff;
+            canvasRectangle[3][1] = canvasRectangle[3][1] + adjDiff;
+        }
+
+        else if (rectangleAspect < canvasAspect) {
+            aspectFactor = canvasAspect / rectangleAspect;
+            aspectAdjust = rectangleWidth * aspectFactor;
+            adjDiff = aspectAdjust - rectangleWidth;
+            canvasRectangle[2][0] = canvasRectangle[2][0] + adjDiff;
+            canvasRectangle[3][0] = canvasRectangle[3][0] + adjDiff;
         }
     }
     /**
