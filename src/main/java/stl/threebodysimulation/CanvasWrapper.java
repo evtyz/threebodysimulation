@@ -76,7 +76,6 @@ class CanvasWrapper {
      * The scale factor for the canvas orientation adjustment
      */
     double[] translationScale = new double[2];
-    //int[][] rectangleInt = new int[4][3];
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -115,6 +114,9 @@ class CanvasWrapper {
         centerOfMass = settings.getCenterOfGravity();
         this.particles = settings.getParticles();
 
+        // Calculate the sum of the particle masses
+        massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
+
         // Coordinates of the rectangle that the canvas represents.
         double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(scales, particles));
 
@@ -122,7 +124,6 @@ class CanvasWrapper {
         for(int i = 0; i < 4; i++) {
             System.out.println(" ");
             for(int j = 0; j < 2; j++) {
-                //rectangleInt[i][j] = (int)canvasRectangle[i][j];
                 System.out.println(canvasRectangle[i][j]);
             }
         }
@@ -146,9 +147,6 @@ class CanvasWrapper {
             oldCanvasPos[i][1] = 360 - particles[i].getPosition()[1];
         }
 
-        // Calculates the sum of the particle masses
-        massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
-
         // Draws grid lines
         for (int i = -3; i < 4; i++) {
             gridGC.setFill(Color.valueOf("#e6e6e6"));
@@ -170,8 +168,6 @@ class CanvasWrapper {
 
         double rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
         double rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
-        //int rectangleHeight = rectangleInt[1][1] - rectangleInt[0][1];
-        //int rectangleWidth = rectangleInt[3][0] - rectangleInt[1][0];
 
         double rectangleAspect = rectangleWidth / rectangleHeight;
         int canvasAspect = 10 / 9;
@@ -179,9 +175,11 @@ class CanvasWrapper {
         if (rectangleAspect > canvasAspect){
             aspectFactor = rectangleAspect / canvasAspect;
             aspectAdjust = rectangleHeight * aspectFactor;
-            adjDiff = aspectAdjust - rectangleHeight;
+            adjDiff = (aspectAdjust - rectangleHeight) / 2;
             canvasRectangle[1][1] = canvasRectangle[1][1] + adjDiff;
             canvasRectangle[3][1] = canvasRectangle[3][1] + adjDiff;
+            canvasRectangle[0][1] = canvasRectangle[0][1] - adjDiff;
+            canvasRectangle[2][1] = canvasRectangle[2][1] - adjDiff;
         }
 
         else if (rectangleAspect < canvasAspect) {
@@ -190,58 +188,9 @@ class CanvasWrapper {
             adjDiff = aspectAdjust - rectangleWidth;
             canvasRectangle[2][0] = canvasRectangle[2][0] + adjDiff;
             canvasRectangle[3][0] = canvasRectangle[3][0] + adjDiff;
+            canvasRectangle[0][0] = canvasRectangle[0][0] - adjDiff;
+            canvasRectangle[1][0] = canvasRectangle[1][0] - adjDiff;
         }
-    }
-    /**
-     * Calculates the scale factors required for adjusting the canvas.
-     *
-     * @param canvasRectangle The coordinates of the corners of the new rectangle.
-     */
-    private void setScaleFactors(double[][] canvasRectangle) {
-        boolean adjusted = false;
-
-        // The height and width of the new rectangle
-        double canvasRectangleHeight = canvasRectangle[1][1] - canvasRectangle[0][1];
-        double canvasRectangleWidth = canvasRectangle[3][0] - canvasRectangle[1][0];
-
-        // Adjusting the new rectangle's height to fit aspect ratio
-        if (canvasRectangleHeight > 720 && canvasRectangleHeight - 720 > 360) {
-            adjusted = true;
-            while (canvasRectangleHeight % 720 != 0) {
-                canvasRectangle[1][1]++;
-                canvasRectangleHeight++;
-            }
-        } else if (canvasRectangleHeight < 720 && 720 - canvasRectangleHeight > 360) {
-            adjusted = true;
-            while (720 % canvasRectangleHeight != 0) {
-                canvasRectangle[1][1]++;
-                canvasRectangleHeight++;
-            }
-        }
-    // Adjusting the new rectangle's width to fit aspect ratio
-        if (canvasRectangleWidth > 800 && canvasRectangleWidth - 800 > 400){
-            adjusted = true;
-            while (canvasRectangleWidth % 800 != 0) {
-                canvasRectangle[3][0]++;
-                canvasRectangleWidth++;
-            }
-        } else if (canvasRectangleWidth < 800 && 800 - canvasRectangleWidth > 400) {
-            adjusted = true;
-            while (800 % canvasRectangleWidth != 0) {
-                canvasRectangle[3][0]++;
-                canvasRectangleWidth++;
-            }
-        }
-
-        // Identifies the factor by which the canvas needs to be multiplied
-        if (adjusted) {
-            double canvasRectangleArea = canvasRectangleHeight * canvasRectangleWidth;
-            particleScale = ((canvasRectangleArea - 576000) / 576000) + 1;
-        }
-
-        // Identifies the center point of the new rectangle as the factor of translation
-        translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
-        translationScale[1] = (canvasRectangle[1][1] - canvasRectangle[0][1]) / 2;
     }
 
     /**
