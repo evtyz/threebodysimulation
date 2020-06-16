@@ -216,9 +216,16 @@ class CanvasWrapper {
         particleScale[0] = ((newHeight - 720) / 720) + 1;
         particleScale[1] = ((newWidth - 800) / 800) + 1;
 
-        // Calculates the coordinates of the center of the rectangle
+        // Calculates the coordinates of the center of the rectangle TODO incorrect calculation; fix!
         translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
         translationScale[1] = (canvasRectangle[1][1] - canvasRectangle[0][1]) / 2;
+
+        // TODO for debugging; remove later
+        System.out.println(" ");
+        System.out.println(particleScale[0]);
+        System.out.println(particleScale[1]);
+        System.out.println(translationScale[0]);
+        System.out.println(translationScale[1]);
     }
 
     /**
@@ -229,7 +236,6 @@ class CanvasWrapper {
      * @return The new rectangle adjusted by the buffer length.
      */
     private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
-        // TODO: calculate rectangle.
         double[][] newRectangle = new double[4][2];
 
         // Adjusting point 1 (lower left)
@@ -259,7 +265,6 @@ class CanvasWrapper {
      */
     private double calculateBuffer(Particle[] particles) {
         // TODO: Calculate a buffer size
-
         // Declares buffer variable
         double buffer;
 
@@ -276,6 +281,8 @@ class CanvasWrapper {
 
         // Determines the buffer as a product of ASV and a constant
         buffer = avgSquaredVelocity * 5;
+
+        // TODO for debugging; remove later
         System.out.println("buffer: " + buffer);
         return buffer;
     }
@@ -284,13 +291,13 @@ class CanvasWrapper {
      * Updates the canvas according to the current state of the particles.
      */
     void updateCanvas() {
-        // TODO
+        // TODO implement scaler variables
         clearCanvas();
 
         // Displays the positions of the particles on the canvas
         for (int i = 0; i < 3; i++) {
-            canvasPos[0] = particles[i].getPosition()[0] + 400;
-            canvasPos[1] = 360 - particles[i].getPosition()[1];
+            canvasPos[0] = (particles[i].getPosition()[0] + 400);
+            canvasPos[1] = (360 - particles[i].getPosition()[1]);
             particlesGC.setFill(particles[i].getColor());
             particlesGC.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
