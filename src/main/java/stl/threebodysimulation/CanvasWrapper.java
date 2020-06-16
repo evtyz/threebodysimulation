@@ -3,6 +3,7 @@ package stl.threebodysimulation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 // TODO documentation
 
@@ -148,19 +149,122 @@ class CanvasWrapper {
             oldCanvasPos[i] = returnRelativePosition(particles[i].getPosition());
         }
 
-        // Draws grid lines
-        for (int i = -3; i < 4; i++) {
-            gridGC.setFill(Color.valueOf("#e6e6e6"));
-            gridGC.strokeLine((i * 100) + 400, 720, (i * 100) + 400, 0);
-            gridGC.strokeLine(0, 360 - (i * 100), 800, 360 - (i * 100));
+        double gridInterval = calculateGridInterval();
+
+        System.out.println(gridInterval);
+
+        printVerticalGridlines(gridInterval);
+        printHorizontalGridlines(gridInterval);
+    }
+
+    private void printVerticalGridlines(double interval) {
+        double base = translationScale[0];
+
+        double currentGridline;
+
+        if (base < 0) {
+            currentGridline = base + Math.abs(base % interval);
+        } else if (base > 0) {
+            currentGridline = base + (interval - base % interval);
+        } else {
+            currentGridline = 0;
         }
 
-        // Draws axis
-        gridGC.setFill(Color.BLACK);
-        gridGC.strokeLine(400, 720, 400, 0);
-        gridGC.strokeLine(0, 360, 800, 360);
+        while (currentGridline < translationScale[0] + particleScale * 800) {
+            if (currentGridline == 0) {
+                gridGC.setFill(Color.BLACK);
+                gridGC.setStroke(Color.BLACK);
+            } else {
+                gridGC.setFill(Color.DARKGRAY);
+                gridGC.setStroke(Color.DARKGRAY);
+            }
+            double relativeCurrentGridline = returnRelativePosition(new double[] {currentGridline, 0})[0];
+            gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
+            drawRotatedText(gridGC, String.valueOf(currentGridline), 270,relativeCurrentGridline - 10, 710);
+            currentGridline += interval;
+        }
+    }
+
+    /**
+     * Draws a rotated piece of text. Modified from jewelsea's answer at https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas.
+     *
+     * @param gc The GraphicsContext to draw it on.
+     * @param text The text to draw.
+     * @param angle The angle to draw the text.
+     * @param tlpx The x position of the text.
+     * @param tlpy The y position of the text.
+     */
+    private void drawRotatedText(GraphicsContext gc, String text, double angle, double tlpx, double tlpy) {
+        gc.save(); // saves the current state on stack, including the current transform
+        Rotate r = new Rotate(angle, tlpx, tlpy);
+        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+        gc.fillText(text, tlpx, tlpy);
+        gc.restore(); // back to original state (before rotation)
+    }
 
 
+    private void printHorizontalGridlines(double interval) {
+        double base = translationScale[1];
+
+        double currentGridline;
+
+        if (base < 0) {
+            currentGridline = base + Math.abs(base % interval);
+        } else if (base > 0) {
+            currentGridline = base + (interval - base % interval);
+        } else {
+            currentGridline = 0;
+        }
+
+        while (currentGridline > translationScale[1] - particleScale * 720) {
+            if (currentGridline == 0) {
+                gridGC.setFill(Color.BLACK);
+                gridGC.setStroke(Color.BLACK);
+            } else {
+                gridGC.setFill(Color.DARKGRAY);
+                gridGC.setStroke(Color.DARKGRAY);
+            }
+
+            System.out.println(currentGridline);
+
+            double relativeCurrentGridline = returnRelativePosition(new double[] {0, currentGridline})[1];
+            gridGC.strokeLine(-20, relativeCurrentGridline, 850, relativeCurrentGridline);
+            gridGC.fillText(String.valueOf(currentGridline), 10, relativeCurrentGridline - 10);
+            currentGridline -= interval;
+        }
+    }
+
+    /**
+     * Gets the grid interval for a given scale factor.
+     *
+     * @return The grid interval.
+     */
+    private double calculateGridInterval() {
+        double rawGridInterval = 100 * particleScale;
+
+        double coefficient = 0;
+        boolean positive = true;
+        int magnitude = 0;
+
+        double base = 1;
+
+        while (! (coefficient >= 1 && coefficient < 10)) {
+            base = Math.pow(10, magnitude * (positive ? 1 : -1));
+            coefficient = rawGridInterval / base;
+            positive = !positive;
+            if (positive) {
+                magnitude++;
+            }
+        }
+
+        if (coefficient <= 1.75) {
+            return 1.0 * base;
+        } else if (coefficient <= 4) {
+            return 2.0 * base;
+        } else if (coefficient <= 8) {
+            return 5.0 * base;
+        }
+        return 10 * base;
     }
 
     /**
