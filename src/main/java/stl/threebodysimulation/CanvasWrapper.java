@@ -71,7 +71,7 @@ class CanvasWrapper {
     /**
      * The scale factor for the canvas size adjustment
      */
-    double particleScale;
+    double particleScale = 1;
     /**
      * The scale factor for the canvas orientation adjustment
      */
@@ -157,8 +157,7 @@ class CanvasWrapper {
         gridGC.setFill(Color.BLACK);
         gridGC.strokeLine(400, 720, 400, 0);
         gridGC.strokeLine(0, 360, 800, 360);
-
-        setScaleFactors(canvasRectangle);
+        
     }
 
     /**
@@ -167,31 +166,35 @@ class CanvasWrapper {
      * @param canvasRectangle The coordinates of the corners of the new rectangle.
      */
     private void setScaleFactors(double[][] canvasRectangle){
+        boolean adjusted = false;
 
         // The height and width of the new rectangle
         double canvasRectangleHeight = canvasRectangle[1][1] - canvasRectangle[0][1];
         double canvasRectangleWidth = canvasRectangle[3][0] - canvasRectangle[1][0];
 
         // Adjusting the new rectangle's height to fit aspect ratio
-        if (canvasRectangleHeight > 720) {
+        if (canvasRectangleHeight > 720 && canvasRectangleHeight - 720 > 360) {
+            adjusted = true;
             while (canvasRectangleHeight % 720 != 0) {
                 canvasRectangle[1][1]++;
                 canvasRectangleHeight++;
             }
-        } else if (canvasRectangleHeight < 720) {
+        } else if (canvasRectangleHeight < 720 && 720 - canvasRectangleHeight > 360) {
+            adjusted = true;
             while (720 % canvasRectangleHeight != 0) {
                 canvasRectangle[1][1]++;
                 canvasRectangleHeight++;
             }
         }
-
-        // Adjusting the new rectangle's width to fit aspect ratio
-        if (canvasRectangleWidth > 800){
+    // Adjusting the new rectangle's width to fit aspect ratio
+        if (canvasRectangleWidth > 800 && canvasRectangleWidth - 800 > 400){
+            adjusted = true;
             while (canvasRectangleWidth % 800 != 0) {
                 canvasRectangle[3][0]++;
                 canvasRectangleWidth++;
             }
-        } else if (canvasRectangleWidth < 800) {
+        } else if (canvasRectangleWidth < 800 && 800 - canvasRectangleWidth > 400) {
+            adjusted = true;
             while (800 % canvasRectangleWidth != 0) {
                 canvasRectangle[3][0]++;
                 canvasRectangleWidth++;
@@ -199,8 +202,10 @@ class CanvasWrapper {
         }
 
         // Identifies the factor by which the canvas needs to be multiplied
-        double canvasRectangleArea = canvasRectangleHeight * canvasRectangleWidth;
-        particleScale = ((canvasRectangleArea - 576000) / 576000) + 1;
+        if (adjusted) {
+            double canvasRectangleArea = canvasRectangleHeight * canvasRectangleWidth;
+            particleScale = ((canvasRectangleArea - 576000) / 576000) + 1;
+        }
 
         // Identifies the center point of the new rectangle as the factor of translation
         translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
