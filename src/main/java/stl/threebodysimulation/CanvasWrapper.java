@@ -76,6 +76,7 @@ class CanvasWrapper {
      * The scale factor for the canvas orientation adjustment
      */
     double[] translationScale = new double[2];
+    //int[][] rectangleInt = new int[4][3];
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -117,10 +118,12 @@ class CanvasWrapper {
         // Coordinates of the rectangle that the canvas represents.
         double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(scales, particles));
 
-        // Rounds the values of the canvasRectangle
+        // Rounds the values of the canvasRectangle TODO
         for(int i = 0; i < 4; i++) {
+            System.out.println(" ");
             for(int j = 0; j < 2; j++) {
-                canvasRectangle[i][j] = Math.round(canvasRectangle[i][j]);
+                //rectangleInt[i][j] = (int)canvasRectangle[i][j];
+                System.out.println(canvasRectangle[i][j]);
             }
         }
 
@@ -157,15 +160,34 @@ class CanvasWrapper {
         gridGC.setFill(Color.BLACK);
         gridGC.strokeLine(400, 720, 400, 0);
         gridGC.strokeLine(0, 360, 800, 360);
-        
+
     }
 
+    private void setScaleFactors2(double[][] canvasRectangle) {
+        double aspectFactor;
+        double adjHeight;
+        double heightDiff;
+
+        double rectangleHeight = canvasRectangle[1][1] - canvasRectangle[0][1];
+        double rectangleWidth = canvasRectangle[3][0] - canvasRectangle[1][0];
+        //int rectangleHeight = rectangleInt[1][1] - rectangleInt[0][1];
+        //int rectangleWidth = rectangleInt[3][0] - rectangleInt[1][0];
+
+        double rectangleAspect = rectangleWidth / rectangleHeight;
+        int canvasAspect = 10 / 9;
+
+        if (rectangleAspect > canvasAspect){
+            aspectFactor = rectangleAspect / canvasAspect;
+            adjHeight = rectangleHeight * aspectFactor;
+            heightDiff = adjHeight - rectangleHeight;
+        }
+    }
     /**
      * Calculates the scale factors required for adjusting the canvas.
      *
      * @param canvasRectangle The coordinates of the corners of the new rectangle.
      */
-    private void setScaleFactors(double[][] canvasRectangle){
+    private void setScaleFactors(double[][] canvasRectangle) {
         boolean adjusted = false;
 
         // The height and width of the new rectangle
@@ -268,7 +290,7 @@ class CanvasWrapper {
 
         // Determines the buffer as a product of ASV and a constant
         buffer = avgSquaredVelocity * 5;
-
+        System.out.println("buffer: " + buffer);
         return buffer;
     }
 
