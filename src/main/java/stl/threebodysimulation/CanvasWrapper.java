@@ -69,11 +69,11 @@ class CanvasWrapper {
      */
     double massSum;
     /**
-     * The scale factor for the canvas size adjustment
+     * The scale factor for the canvas size adjustment (x,y)
      */
-    double particleScale = 1;
+    double[] particleScale = {1,1};
     /**
-     * The scale factor for the canvas orientation adjustment
+     * The scale factor for the canvas orientation adjustment (x,y)
      */
     double[] translationScale = new double[2];
 
@@ -118,9 +118,9 @@ class CanvasWrapper {
         massSum = particles[0].getMass() + particles[1].getMass() + particles[2].getMass();
 
         // Coordinates of the rectangle that the canvas represents.
-        double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(scales, particles));
+        double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(particles));
 
-        // Rounds the values of the canvasRectangle TODO
+        // TODO for debugging; remove later
         for(int i = 0; i < 4; i++) {
             System.out.println(" ");
             for(int j = 0; j < 2; j++) {
@@ -138,8 +138,9 @@ class CanvasWrapper {
         }
 
 
-        // Clears the trails canvas of any existing trails
+        // Clears the trails canvas of any existing trails and grid lines
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
+        gridGC.clearRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
         // Initializes the oldCanvasPos variable with the original position values
         for (int i = 0; i < 3; i++) {
@@ -159,23 +160,37 @@ class CanvasWrapper {
         gridGC.strokeLine(400, 720, 400, 0);
         gridGC.strokeLine(0, 360, 800, 360);
 
+        setScaleFactors(canvasRectangle);
     }
 
-    private void setScaleFactors2(double[][] canvasRectangle) {
+    /**
+     * Calculates the scales by which to adjust the canvas size and orientation.
+     *
+     * @param canvasRectangle The corner coordinates of the original rectangle adjusted for buffer.
+     */
+    private void setScaleFactors(double[][] canvasRectangle) {
+
+        // Declaring variables used by the method
         double aspectFactor;
         double aspectAdjust;
         double adjDiff;
+        double newHeight;
+        double newWidth;
 
+        // Calculates absolute width and height of the rectangle
         double rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
         double rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
 
+        // Calculates the aspect ratios of the canvas and the rectangle
         double rectangleAspect = rectangleWidth / rectangleHeight;
         int canvasAspect = 10 / 9;
 
+        // Adjusts the rectangle to fit the canvas aspect ratio
         if (rectangleAspect > canvasAspect){
             aspectFactor = rectangleAspect / canvasAspect;
             aspectAdjust = rectangleHeight * aspectFactor;
             adjDiff = (aspectAdjust - rectangleHeight) / 2;
+
             canvasRectangle[1][1] = canvasRectangle[1][1] + adjDiff;
             canvasRectangle[3][1] = canvasRectangle[3][1] + adjDiff;
             canvasRectangle[0][1] = canvasRectangle[0][1] - adjDiff;
@@ -186,11 +201,24 @@ class CanvasWrapper {
             aspectFactor = canvasAspect / rectangleAspect;
             aspectAdjust = rectangleWidth * aspectFactor;
             adjDiff = aspectAdjust - rectangleWidth;
+
             canvasRectangle[2][0] = canvasRectangle[2][0] + adjDiff;
             canvasRectangle[3][0] = canvasRectangle[3][0] + adjDiff;
             canvasRectangle[0][0] = canvasRectangle[0][0] - adjDiff;
             canvasRectangle[1][0] = canvasRectangle[1][0] - adjDiff;
         }
+
+        // Defines the new height and width of the rectangle
+        newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        newWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
+
+        // Calculates a scale factor by which to adjust the canvas particles
+        particleScale[0] = ((newHeight - 720) / 720) + 1;
+        particleScale[1] = ((newWidth - 800) / 800) + 1;
+
+        // Calculates the coordinates of the center of the rectangle
+        translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
+        translationScale[1] = (canvasRectangle[1][1] - canvasRectangle[0][1]) / 2;
     }
 
     /**
@@ -226,11 +254,10 @@ class CanvasWrapper {
     /**
      * Returns a buffer size based on particles and an original rectangle.
      *
-     * @param originalRectangle The coordinates of the corners of the original rectangle.
      * @param particles The particle objects that contain information about velocity and mass.
      * @return An integer that represents the buffer size.
      */
-    private double calculateBuffer(double[][] originalRectangle, Particle[] particles) {
+    private double calculateBuffer(Particle[] particles) {
         // TODO: Calculate a buffer size
 
         // Declares buffer variable
