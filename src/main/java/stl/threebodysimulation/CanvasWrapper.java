@@ -183,23 +183,13 @@ class CanvasWrapper {
         double rectangleWidth;
         double[] particleScaleArray = {0, 0};
 
-        // Calculates absolute width of the rectangle
-        if (canvasRectangle[0][1] < 0 && canvasRectangle[1][1] > 0) {
-            rectangleHeight = Math.abs(canvasRectangle[1][1] + Math.abs(canvasRectangle[0][1]));
-        } else {
-            rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
-        }
-
-        // Calculates the absolute width
-        if (canvasRectangle[1][0] < 0 && canvasRectangle[3][0] > 0) {
-            rectangleWidth = Math.abs(canvasRectangle[3][0] + Math.abs(canvasRectangle[1][0]));
-        } else {
-            rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
-        }
+        // Calculates absolute height and width of the rectangle
+        rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
 
         // Calculates the aspect ratios of the canvas and the rectangle
         double rectangleAspect = rectangleWidth / rectangleHeight;
-        int canvasAspect = 10 / 9;
+        double canvasAspect = 10.0 / 9.0;
 
         // Adjusts the rectangle to fit the canvas aspect ratio
         if (rectangleAspect > canvasAspect){
@@ -234,17 +224,8 @@ class CanvasWrapper {
         }
 
         // Defines the new height and width of the rectangle
-        if (canvasRectangle[0][1] < 0 && canvasRectangle[1][1] > 0) {
-            newHeight = Math.abs(canvasRectangle[1][1] + Math.abs(canvasRectangle[0][1]));
-        } else {
-            newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
-        }
-
-        if (canvasRectangle[1][0] < 0 && canvasRectangle[3][0] > 0) {
-            newWidth = Math.abs(canvasRectangle[3][0] + Math.abs(canvasRectangle[1][0]));
-        } else {
-            newWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
-        }
+        newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        newWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
 
         // Calculates a scale factor by which to adjust the canvas particles
         particleScaleArray[0] = ((newHeight - 720) / 720) + 1;
