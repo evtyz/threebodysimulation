@@ -343,7 +343,7 @@ public class CanvasPanelFXMLController {
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                coordinatePositions[index++] = new double[] {minsAndMaxs[i][0], minsAndMaxs[j][0]};
+                coordinatePositions[index++] = new double[] {minsAndMaxs[i][0], minsAndMaxs[j][1]};
             }
         }
         return coordinatePositions;
