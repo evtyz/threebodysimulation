@@ -71,7 +71,7 @@ class CanvasWrapper {
     /**
      * The scale factor for the canvas size adjustment (x,y)
      */
-    double[] particleScale = {1,1};
+    double particleScale = 1;
     /**
      * The scale factor for the canvas orientation adjustment (x,y)
      */
@@ -123,6 +123,7 @@ class CanvasWrapper {
         // TODO for debugging; remove later
         for(int i = 0; i < 4; i++) {
             System.out.println(" ");
+            System.out.println("point " + i);
             for(int j = 0; j < 2; j++) {
                 System.out.println(canvasRectangle[i][j]);
             }
@@ -142,10 +143,12 @@ class CanvasWrapper {
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
         gridGC.clearRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
+        setScaleFactors(canvasRectangle);
+
         // Initializes the oldCanvasPos variable with the original position values
         for (int i = 0; i < 3; i++) {
-            oldCanvasPos[i][0] = particles[i].getPosition()[0] + 400;
-            oldCanvasPos[i][1] = 360 - particles[i].getPosition()[1];
+            oldCanvasPos[i][0] = (particles[i].getPosition()[0] + 400) / particleScale;
+            oldCanvasPos[i][1] = (360 - particles[i].getPosition()[1]) / particleScale;
         }
 
         // Draws grid lines
@@ -160,7 +163,7 @@ class CanvasWrapper {
         gridGC.strokeLine(400, 720, 400, 0);
         gridGC.strokeLine(0, 360, 800, 360);
 
-        setScaleFactors(canvasRectangle);
+
     }
 
     /**
@@ -176,10 +179,23 @@ class CanvasWrapper {
         double adjDiff;
         double newHeight;
         double newWidth;
+        double rectangleHeight;
+        double rectangleWidth;
+        double[] particleScaleArray = {0, 0};
 
-        // Calculates absolute width and height of the rectangle
-        double rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
-        double rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
+        // Calculates absolute width of the rectangle
+        if (canvasRectangle[0][1] < 0 && canvasRectangle[1][1] > 0) {
+            rectangleHeight = Math.abs(canvasRectangle[1][1] + Math.abs(canvasRectangle[0][1]));
+        } else {
+            rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        }
+
+        // Calculates the absolute width
+        if (canvasRectangle[1][0] < 0 && canvasRectangle[3][0] > 0) {
+            rectangleWidth = Math.abs(canvasRectangle[3][0] + Math.abs(canvasRectangle[1][0]));
+        } else {
+            rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
+        }
 
         // Calculates the aspect ratios of the canvas and the rectangle
         double rectangleAspect = rectangleWidth / rectangleHeight;
@@ -200,7 +216,7 @@ class CanvasWrapper {
         else if (rectangleAspect < canvasAspect) {
             aspectFactor = canvasAspect / rectangleAspect;
             aspectAdjust = rectangleWidth * aspectFactor;
-            adjDiff = aspectAdjust - rectangleWidth;
+            adjDiff = (aspectAdjust - rectangleWidth) / 2;
 
             canvasRectangle[2][0] = canvasRectangle[2][0] + adjDiff;
             canvasRectangle[3][0] = canvasRectangle[3][0] + adjDiff;
@@ -208,24 +224,46 @@ class CanvasWrapper {
             canvasRectangle[1][0] = canvasRectangle[1][0] - adjDiff;
         }
 
+        // TODO for debugging; remove later
+        for(int i = 0; i < 4; i++) {
+            System.out.println(" ");
+            System.out.println("point " + i);
+            for(int j = 0; j < 2; j++) {
+                System.out.println(canvasRectangle[i][j]);
+            }
+        }
+
         // Defines the new height and width of the rectangle
-        newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
-        newWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
+        if (canvasRectangle[0][1] < 0 && canvasRectangle[1][1] > 0) {
+            newHeight = Math.abs(canvasRectangle[1][1] + Math.abs(canvasRectangle[0][1]));
+        } else {
+            newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
+        }
+
+        if (canvasRectangle[1][0] < 0 && canvasRectangle[3][0] > 0) {
+            newWidth = Math.abs(canvasRectangle[3][0] + Math.abs(canvasRectangle[1][0]));
+        } else {
+            newWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
+        }
 
         // Calculates a scale factor by which to adjust the canvas particles
-        particleScale[0] = ((newHeight - 720) / 720) + 1;
-        particleScale[1] = ((newWidth - 800) / 800) + 1;
+        particleScaleArray[0] = ((newHeight - 720) / 720) + 1;
+        particleScaleArray[1] = ((newWidth - 800) / 800) + 1;
+        particleScale = (particleScaleArray[0] + particleScaleArray[1]) / 2;
 
-        // Calculates the coordinates of the center of the rectangle TODO incorrect calculation; fix!
-        translationScale[0] = (canvasRectangle[3][0] - canvasRectangle[1][0]) / 2;
-        translationScale[1] = (canvasRectangle[1][1] - canvasRectangle[0][1]) / 2;
+        // Calculates the coordinates of the upper left corner of the rectangle
+        translationScale[0] = canvasRectangle[1][0];
+        translationScale[1] = canvasRectangle[1][1];
 
         // TODO for debugging; remove later
         System.out.println(" ");
-        System.out.println(particleScale[0]);
-        System.out.println(particleScale[1]);
-        System.out.println(translationScale[0]);
-        System.out.println(translationScale[1]);
+        System.out.println("new height: " + newHeight);
+        System.out.println("new width: " + newWidth);
+        System.out.println(" ");
+        System.out.println("particle scale: " + particleScale);
+        System.out.println(" ");
+        System.out.println("X translation scale: " + translationScale[0]);
+        System.out.println("Y translation scale: " + translationScale[1]);
     }
 
     /**
@@ -264,7 +302,6 @@ class CanvasWrapper {
      * @return An integer that represents the buffer size.
      */
     private double calculateBuffer(Particle[] particles) {
-        // TODO: Calculate a buffer size
         // Declares buffer variable
         double buffer;
 
@@ -283,6 +320,7 @@ class CanvasWrapper {
         buffer = avgSquaredVelocity * 5;
 
         // TODO for debugging; remove later
+        System.out.println(" ");
         System.out.println("buffer: " + buffer);
         return buffer;
     }
@@ -291,13 +329,13 @@ class CanvasWrapper {
      * Updates the canvas according to the current state of the particles.
      */
     void updateCanvas() {
-        // TODO implement scaler variables
+        // TODO implement scale variables
         clearCanvas();
 
         // Displays the positions of the particles on the canvas
         for (int i = 0; i < 3; i++) {
-            canvasPos[0] = (particles[i].getPosition()[0] + 400);
-            canvasPos[1] = (360 - particles[i].getPosition()[1]);
+            canvasPos[0] = (particles[i].getPosition()[0] + 400) / particleScale;
+            canvasPos[1] = (360 - particles[i].getPosition()[1]) / particleScale;
             particlesGC.setFill(particles[i].getColor());
             particlesGC.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
@@ -325,7 +363,7 @@ class CanvasWrapper {
 
             // Displays the center of mass
             particlesGC.setFill(Color.valueOf("#555555"));
-            particlesGC.fillOval(centerOfMassPos[0] + 400 - 5, 360 - centerOfMassPos[1] - 5, 10, 10);
+            particlesGC.fillOval((centerOfMassPos[0] + 400 - 5) / particleScale, (360 - centerOfMassPos[1] - 5) / particleScale, 10, 10);
 
             particlesGC.setStroke(Color.valueOf("#555555"));
             for (int i = 0; i < 2; i++) {
@@ -334,7 +372,7 @@ class CanvasWrapper {
                 }
             }
             for (int i = 0; i < 3; i++) {
-                particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], centerOfMassPos[0] + 400, 360 - centerOfMassPos[1]);
+                particlesGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], (centerOfMassPos[0] + 400) / particleScale, (360 - centerOfMassPos[1]) / particleScale);
             }
 
         }
