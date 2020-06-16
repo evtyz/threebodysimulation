@@ -360,23 +360,23 @@ class CanvasWrapper {
 
         final double BUFFER_PROPORTION = 0.1;
 
-        double bufferPropotionalWidth = (originalRectangle[2][0] - originalRectangle[0][0]) * BUFFER_PROPORTION + buffer;
+        double bufferProportionalWidth = (originalRectangle[2][0] - originalRectangle[0][0]) * BUFFER_PROPORTION + buffer;
         double bufferProportionalHeight = (originalRectangle[1][1] - originalRectangle[0][1]) * BUFFER_PROPORTION + buffer;
 
         // Adjusting point 1 (lower left)
-        newRectangle[0][0] = originalRectangle[0][0] - bufferPropotionalWidth;
+        newRectangle[0][0] = originalRectangle[0][0] - bufferProportionalWidth;
         newRectangle[0][1] = originalRectangle[0][1] - bufferProportionalHeight;
 
         // Adjusting point 2 (upper left)
-        newRectangle[1][0] = originalRectangle[1][0] - bufferPropotionalWidth;
+        newRectangle[1][0] = originalRectangle[1][0] - bufferProportionalWidth;
         newRectangle[1][1] = originalRectangle[1][1] + bufferProportionalHeight;
 
         // Adjusting point 3 (lower right)
-        newRectangle[2][0] = originalRectangle[2][0] + bufferPropotionalWidth;
+        newRectangle[2][0] = originalRectangle[2][0] + bufferProportionalWidth;
         newRectangle[2][1] = originalRectangle[2][1] - bufferProportionalHeight;
 
         // Adjusting point 4 (upper right)
-        newRectangle[3][0] = originalRectangle[3][0] + bufferPropotionalWidth;
+        newRectangle[3][0] = originalRectangle[3][0] + bufferProportionalWidth;
         newRectangle[3][1] = originalRectangle[3][1] + bufferProportionalHeight;
 
         return newRectangle;
