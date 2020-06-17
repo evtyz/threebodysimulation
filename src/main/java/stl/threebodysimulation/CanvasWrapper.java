@@ -119,29 +119,19 @@ class CanvasWrapper {
         // Coordinates of the rectangle that the canvas represents.
         double[][] canvasRectangle = calculateRectangle(scales, calculateBuffer(particles));
 
-//        // TODO for debugging; remove later
-//        for(int i = 0; i < 4; i++) {
-//            System.out.println(" ");
-//            System.out.println("point " + i);
-//            for(int j = 0; j < 2; j++) {
-//                System.out.println(canvasRectangle[i][j]);
-//            }
-//        }
-
         // Geometric mean of masses.
         avgMass = Math.cbrt(particles[0].getMass() * particles[1].getMass() * particles[2].getMass());
-
 
         // Attempting to normalize the masses.
         for (int i = 0; i < 3; i++) {
             circleDiameter[i] = Math.cbrt(particles[i].getMass() / avgMass) * 4 + 8;
         }
 
-
         // Clears the trails canvas of any existing trails and grid lines
         trailGC.clearRect(0, 0, trailCanvas.getWidth(), trailCanvas.getHeight());
         gridGC.clearRect(0, 0, gridCanvas.getWidth(), gridCanvas.getHeight());
 
+        // Sets the scale factors for drawing on the canvas
         setScaleFactors(canvasRectangle);
 
         // Initializes the oldCanvasPos variable with the original position values
@@ -155,6 +145,11 @@ class CanvasWrapper {
         printHorizontalGridlines(gridInterval);
     }
 
+    /**
+     * Prints the vertical gridlines based on the calculated grid interval.
+     *
+     * @param interval The absolute distance between each vertical gridline.
+     */
     private void printVerticalGridlines(double interval) {
         double base = translationScale[0];
 
@@ -202,7 +197,11 @@ class CanvasWrapper {
         gc.restore(); // back to original state (before rotation)
     }
 
-
+    /**
+     * Prints the horizontal gridlines based on the calculated grid interval.
+     *
+     * @param interval The absolute distance between each horizontal gridline.
+     */
     private void printHorizontalGridlines(double interval) {
         double base = translationScale[1];
 
@@ -315,14 +314,6 @@ class CanvasWrapper {
             canvasRectangle[1][0] = canvasRectangle[1][0] - adjDiff;
         }
 
-//        // TODO for debugging; remove later
-//        for(int i = 0; i < 4; i++) {
-//            System.out.println(" ");
-//            System.out.println("point " + i);
-//            for(int j = 0; j < 2; j++) {
-//                System.out.println(canvasRectangle[i][j]);
-//            }
-//        }
 
         // Defines the new height and width of the rectangle
         newHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
@@ -336,16 +327,6 @@ class CanvasWrapper {
         // Calculates the coordinates of the upper left corner of the rectangle
         translationScale[0] = canvasRectangle[1][0];
         translationScale[1] = canvasRectangle[1][1];
-
-//        // TODO for debugging; remove later
-//        System.out.println(" ");
-//        System.out.println("new height: " + newHeight);
-//        System.out.println("new width: " + newWidth);
-//        System.out.println(" ");
-//        System.out.println("particle scale: " + particleScale);
-//        System.out.println(" ");
-//        System.out.println("X translation scale: " + translationScale[0]);
-//        System.out.println("Y translation scale: " + translationScale[1]);
     }
 
     /**
@@ -356,10 +337,14 @@ class CanvasWrapper {
      * @return The new rectangle adjusted by the buffer length.
      */
     private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
+
+        // Declaring the new rectangle variable
         double[][] newRectangle = new double[4][2];
 
+        // Setting a constant minimum buffer proportion
         final double BUFFER_PROPORTION = 0.1;
 
+        // Calculates the buffer space by which to adjust the original rectangle
         double bufferProportionalWidth = (originalRectangle[2][0] - originalRectangle[0][0]) * BUFFER_PROPORTION + buffer;
         double bufferProportionalHeight = (originalRectangle[1][1] - originalRectangle[0][1]) * BUFFER_PROPORTION + buffer;
 
@@ -407,12 +392,15 @@ class CanvasWrapper {
         // Determines the buffer as a product of ASV and a constant
         buffer = avgSquaredVelocity * 5;
 
-        // TODO for debugging; remove later
-//        System.out.println(" ");
-//        System.out.println("buffer: " + buffer);
         return buffer;
     }
 
+    /**
+     * Gives the relative canvas position of a drawn element given it's real position
+     *
+     * @param absolutePosition The real position of the element
+     * @return The position of the element on the canvas
+     */
     private double[] returnRelativePosition(double[] absolutePosition) {
         return new double[] {
                 (absolutePosition[0]-translationScale[0])/particleScale,

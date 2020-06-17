@@ -7,7 +7,10 @@
       <w>earthmasses</w>
       <w>framerate</w>
       <w>frametime</w>
+      <w>gridline</w>
+      <w>gridlines</w>
       <w>itse</w>
+      <w>jewelsea</w>
       <w>jowko</w>
       <w>knoeller</w>
       <w>macos</w>
@@ -23,6 +26,8 @@
       <w>timeskip</w>
       <w>timeskips</w>
       <w>titledpane</w>
+      <w>tlpx</w>
+      <w>tlpy</w>
       <w>undeletable</w>
       <w>unpause</w>
       <w>varga</w>
