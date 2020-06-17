@@ -151,8 +151,6 @@ class CanvasWrapper {
 
         double gridInterval = calculateGridInterval();
 
-        System.out.println(gridInterval);
-
         printVerticalGridlines(gridInterval);
         printHorizontalGridlines(gridInterval);
     }
@@ -180,7 +178,9 @@ class CanvasWrapper {
             }
             double relativeCurrentGridline = returnRelativePosition(new double[] {currentGridline, 0})[0];
             gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
-            drawRotatedText(gridGC, String.valueOf(currentGridline), 270,relativeCurrentGridline - 10, 710);
+            if (!(relativeCurrentGridline < 60)) {
+                drawRotatedText(gridGC, String.valueOf(currentGridline), 270,relativeCurrentGridline - 10, 710);
+            }
             currentGridline += interval;
         }
     }
