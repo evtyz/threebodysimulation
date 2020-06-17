@@ -442,7 +442,7 @@ class CanvasWrapper {
             oldCanvasPos[i][1] = canvasPos[1];
 
             // Conditionally draws the off-canvas position indicator TODO not displaying
-            if (canvasPos[0] < 0 || canvasPos[0] > 800) {
+            if ((canvasPos[0] < 0 || canvasPos[0] > 800) || (canvasPos[1] < 0 || canvasPos[1] > 720)) {
                 double[] indicatorArgs = findIndicatorArguments(canvasPos);
                 drawRotatedText(particlesGC, "^", indicatorArgs[0], indicatorArgs[1], indicatorArgs[2]);
             }
