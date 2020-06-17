@@ -145,6 +145,7 @@
                         <list>javafx.scene.text.Font</list>
                         <list>javafx.scene.paint.Color</list>
                         <list>javafx.scene.shape.Circle</list>
+                        <list>javafx.scene.transform.Rotate</list>
                         <list>javafx.application.Application</list>
                         <list>javafx.util.Duration</list>
                         <list>org.kordamp.ikonli.javafx.FontIcon</list>
