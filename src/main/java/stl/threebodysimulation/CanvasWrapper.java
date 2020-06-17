@@ -3,6 +3,7 @@ package stl.threebodysimulation;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 
 // TODO documentation
@@ -143,6 +144,8 @@ class CanvasWrapper {
 
         printVerticalGridlines(gridInterval);
         printHorizontalGridlines(gridInterval);
+
+        particlesGC.setFont(Font.font("Verdana", 50));
     }
 
     /**
@@ -223,8 +226,6 @@ class CanvasWrapper {
                 gridGC.setFill(Color.DARKGRAY);
                 gridGC.setStroke(Color.DARKGRAY);
             }
-
-            System.out.println(currentGridline);
 
             double relativeCurrentGridline = returnRelativePosition(new double[] {0, currentGridline})[1];
             gridGC.strokeLine(-20, relativeCurrentGridline, 850, relativeCurrentGridline);
@@ -494,47 +495,49 @@ class CanvasWrapper {
 
         // Cases A1, A2, A3 (x fixed)
         if (canvasPos[0] < 0) {
-            chevronArgs[1] = 10;
+            chevronArgs[1] = 50;
 
-            if (canvasPos[1] < 0) {
+            if (canvasPos[1] <= 0) {
                 chevronArgs[0] = 315;
-                chevronArgs[2] = 10;
-            } else if (canvasPos[1] < 0 && canvasPos[1] > 720) {
+                chevronArgs[1] = 20;
+                chevronArgs[2] = 50;
+            } else if (canvasPos[1] >= 0 && canvasPos[1] <= 720) {
                 chevronArgs[0] = 270;
-                chevronArgs[2] = canvasPos[1];
-            } else if (canvasPos[1] > 720) {
+                chevronArgs[2] = canvasPos[1] + 10;
+            } else if (canvasPos[1] >= 720) {
                 chevronArgs[0] = 225;
-                chevronArgs[2] = 710;
+                chevronArgs[2] = 700;
             }
         }
 
         // Cases B1, B2, B3 (x fixed)
         else if (canvasPos[0] > 800) {
-            chevronArgs[1] = 790;
+            chevronArgs[1] = 750;
 
-            if (canvasPos[1] < 0) {
+            if (canvasPos[1] <= 0) {
                 chevronArgs[0] = 45;
-                chevronArgs[2] = 10;
-            } else if (canvasPos[1] < 0 && canvasPos[1] > 720) {
+                chevronArgs[2] = 20;
+            } else if (canvasPos[1] >= 0 && canvasPos[1] <= 720) {
                 chevronArgs[0] = 90;
-                chevronArgs[2] = canvasPos[1];
-            } else if (canvasPos[1] > 720) {
+                chevronArgs[2] = canvasPos[1] - 10;
+            } else if (canvasPos[1] >= 720) {
                 chevronArgs[0] = 135;
-                chevronArgs[2] = 710;
+                chevronArgs[1] = 775;
+                chevronArgs[2] = 670;
             }
         }
 
         // Case C1, C2 (y fixed)
         else if (canvasPos[0] > 0 && canvasPos[0] < 800) {
 
-            if (canvasPos[1] < 0) {
+            if (canvasPos[1] <= 0) {
                 chevronArgs[0] = 0;
                 chevronArgs[1] = canvasPos[0];
-                chevronArgs[2] = 10;
-            } else if (canvasPos[1] > 720) {
+                chevronArgs[2] = 50;
+            } else if (canvasPos[1] >= 720) {
                 chevronArgs[0] = 180;
                 chevronArgs[1] = canvasPos[0];
-                chevronArgs[2] = 710;
+                chevronArgs[2] = 670;
             }
         }
 
