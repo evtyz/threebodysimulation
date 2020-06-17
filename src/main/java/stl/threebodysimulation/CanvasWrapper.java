@@ -418,14 +418,15 @@ class CanvasWrapper {
      * Updates the canvas according to the current state of the particles.
      */
     void updateCanvas() {
-        // TODO implement scale variables
         clearCanvas();
 
         // Displays the positions of the particles on the canvas
         for (int i = 0; i < 3; i++) {
 
+            // Determines the position of the particle on the canvas
             canvasPos = returnRelativePosition(particles[i].getPosition());
 
+            // Draws the particle
             particlesGC.setFill(particles[i].getColor());
             particlesGC.fillOval(canvasPos[0] - (circleDiameter[i] / 2), canvasPos[1] - (circleDiameter[i] / 2), circleDiameter[i], circleDiameter[i]);
 
@@ -436,8 +437,15 @@ class CanvasWrapper {
                 trailGC.strokeLine(oldCanvasPos[i][0], oldCanvasPos[i][1], canvasPos[0], canvasPos[1]);
             }
 
+            // Sets the current canvas position as the old canvas position
             oldCanvasPos[i][0] = canvasPos[0];
             oldCanvasPos[i][1] = canvasPos[1];
+
+            // Conditionally draws the off-canvas position indicator TODO not displaying
+            if (canvasPos[0] < 0 || canvasPos[0] > 800) {
+                double[] indicatorArgs = findIndicatorArguments(canvasPos);
+                drawRotatedText(particlesGC, "^", indicatorArgs[0], indicatorArgs[1], indicatorArgs[2]);
+            }
         }
 
         // Conditionally draws the center of mass
@@ -445,7 +453,6 @@ class CanvasWrapper {
 
             double[] centerOfMassAbsolutePosition = new double[2];
 
-            // TODO: center of mass sometimes obscures visibility of actual particle
             // Calculates the center of mass
             for (int i = 0; i < 2; i++) {
                 centerOfMassAbsolutePosition[i] = ((particles[0].getMass() * particles[0].getPosition()[i])
@@ -478,5 +485,59 @@ class CanvasWrapper {
      */
     void clearCanvas() {
         particlesGC.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    private double[] findIndicatorArguments(double[] canvasPos) {
+
+        // Rotating text arguments; [0] = angle, [1] = tlpx, [2] = tlpy
+        double[] chevronArgs = new double[3];
+
+        // Cases A1, A2, A3 (x fixed)
+        if (canvasPos[0] < 0) {
+            chevronArgs[1] = 10;
+
+            if (canvasPos[1] < 0) {
+                chevronArgs[0] = 315;
+                chevronArgs[2] = 10;
+            } else if (canvasPos[1] < 0 && canvasPos[1] > 720) {
+                chevronArgs[0] = 270;
+                chevronArgs[2] = canvasPos[1];
+            } else if (canvasPos[1] > 720) {
+                chevronArgs[0] = 225;
+                chevronArgs[2] = 710;
+            }
+        }
+
+        // Cases B1, B2, B3 (x fixed)
+        else if (canvasPos[0] > 800) {
+            chevronArgs[1] = 790;
+
+            if (canvasPos[1] < 0) {
+                chevronArgs[0] = 45;
+                chevronArgs[2] = 10;
+            } else if (canvasPos[1] < 0 && canvasPos[1] > 720) {
+                chevronArgs[0] = 90;
+                chevronArgs[2] = canvasPos[1];
+            } else if (canvasPos[1] > 720) {
+                chevronArgs[0] = 135;
+                chevronArgs[2] = 710;
+            }
+        }
+
+        // Case C1, C2 (y fixed)
+        else if (canvasPos[0] > 0 && canvasPos[0] < 800) {
+
+            if (canvasPos[1] < 0) {
+                chevronArgs[0] = 0;
+                chevronArgs[1] = canvasPos[0];
+                chevronArgs[2] = 10;
+            } else if (canvasPos[1] > 720) {
+                chevronArgs[0] = 180;
+                chevronArgs[1] = canvasPos[0];
+                chevronArgs[2] = 710;
+            }
+        }
+
+        return chevronArgs;
     }
 }
