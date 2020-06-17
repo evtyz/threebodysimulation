@@ -493,18 +493,22 @@ class CanvasWrapper {
         // Rotating text arguments; [0] = angle, [1] = tlpx, [2] = tlpy
         double[] chevronArgs = new double[3];
 
+        int OFFSET = 17;
+
+        int LOCK = 25;
+
         // Cases A1, A2, A3 (x fixed)
         if (canvasPos[0] < 0) {
             chevronArgs[1] = 50;
 
-            if (canvasPos[1] <= 0) {
+            if (canvasPos[1] <= LOCK) {
                 chevronArgs[0] = 315;
                 chevronArgs[1] = 20;
                 chevronArgs[2] = 50;
-            } else if (canvasPos[1] >= 0 && canvasPos[1] <= 720) {
+            } else if (canvasPos[1] >= LOCK && canvasPos[1] <= 720 - LOCK) {
                 chevronArgs[0] = 270;
-                chevronArgs[2] = canvasPos[1] + 10;
-            } else if (canvasPos[1] >= 720) {
+                chevronArgs[2] = canvasPos[1] + OFFSET;
+            } else if (canvasPos[1] >= 720 - LOCK) {
                 chevronArgs[0] = 225;
                 chevronArgs[2] = 700;
             }
@@ -514,13 +518,13 @@ class CanvasWrapper {
         else if (canvasPos[0] > 800) {
             chevronArgs[1] = 750;
 
-            if (canvasPos[1] <= 0) {
+            if (canvasPos[1] <= LOCK) {
                 chevronArgs[0] = 45;
                 chevronArgs[2] = 20;
-            } else if (canvasPos[1] >= 0 && canvasPos[1] <= 720) {
+            } else if (canvasPos[1] >= LOCK && canvasPos[1] <= 720 - LOCK) {
                 chevronArgs[0] = 90;
-                chevronArgs[2] = canvasPos[1] - 10;
-            } else if (canvasPos[1] >= 720) {
+                chevronArgs[2] = canvasPos[1] - OFFSET;
+            } else if (canvasPos[1] >= 720 - LOCK) {
                 chevronArgs[0] = 135;
                 chevronArgs[1] = 775;
                 chevronArgs[2] = 670;
@@ -528,16 +532,39 @@ class CanvasWrapper {
         }
 
         // Case C1, C2 (y fixed)
-        else if (canvasPos[0] > 0 && canvasPos[0] < 800) {
+        else {
 
             if (canvasPos[1] <= 0) {
-                chevronArgs[0] = 0;
-                chevronArgs[1] = canvasPos[0];
-                chevronArgs[2] = 50;
+                if (canvasPos[0] <= LOCK) {
+                    chevronArgs[0] = 315;
+                    chevronArgs[1] = 20;
+                    chevronArgs[2] = 50;
+                } else if (canvasPos[0] > LOCK && canvasPos[0] <= 800 - LOCK) {
+                    chevronArgs[0] = 0;
+                    chevronArgs[1] = canvasPos[0] - OFFSET;
+                    chevronArgs[2] = 50;
+                } else {
+                    chevronArgs[0] = 45;
+                    chevronArgs[1] = 750;
+                    chevronArgs[2] = 20;
+                }
+
+
+
             } else if (canvasPos[1] >= 720) {
-                chevronArgs[0] = 180;
-                chevronArgs[1] = canvasPos[0];
-                chevronArgs[2] = 670;
+                if (canvasPos[0] <= LOCK) {
+                    chevronArgs[0] = 225;
+                    chevronArgs[1] = 50;
+                    chevronArgs[2] = 700;
+                } else if (canvasPos[0] > LOCK && canvasPos[0] <= 800 - LOCK) {
+                    chevronArgs[0] = 180;
+                    chevronArgs[1] = canvasPos[0] + OFFSET;
+                    chevronArgs[2] = 670;
+                } else {
+                    chevronArgs[0] = 135;
+                    chevronArgs[1] = 775;
+                    chevronArgs[2] = 670;
+                }
             }
         }
 
