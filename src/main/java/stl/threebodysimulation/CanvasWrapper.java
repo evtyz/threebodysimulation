@@ -288,6 +288,12 @@ class CanvasWrapper {
         rectangleHeight = Math.abs(canvasRectangle[1][1] - canvasRectangle[0][1]);
         rectangleWidth = Math.abs(canvasRectangle[3][0] - canvasRectangle[1][0]);
 
+        if (rectangleHeight == 0 || rectangleWidth == 0) {
+            particleScale = 1;
+            translationScale = new double[] {-400, 360};
+            return;
+        }
+
         // Calculates the aspect ratios of the canvas and the rectangle
         double rectangleAspect = rectangleWidth / rectangleHeight;
         double canvasAspect = 10.0 / 9.0;
