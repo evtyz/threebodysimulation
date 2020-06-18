@@ -63,7 +63,7 @@ class CanvasWrapper {
     /**
      * A 2D array of the old canvas position values
      */
-    double[][] oldCanvasPos = new double[3][2];
+    final double[][] oldCanvasPos = new double[3][2];
     /**
      * The sum of the masses of the particles
      */
