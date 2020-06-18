@@ -547,7 +547,7 @@ public class CanvasPanelFXMLController {
             // Pause
             case ACTIVE:
                 state = SimulationState.PAUSED;
-                pauseButton.setText("Unpause");
+                pauseButton.setText("Resume");
                 break;
         }
     }
