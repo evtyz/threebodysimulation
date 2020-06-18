@@ -34,17 +34,17 @@ public class SettingsPanelFXMLController {
     /**
      * The maximum timeskip allowed, in seconds, in both positive and negative directions.
      */
-    private static final double MAX_ABS_TIMESKIP = 10000000;
+    private static final double MAX_ABS_TIMESKIP = 10000;
 
     /**
      * The slowest simulation speed allowed.
      */
-    private static final double MIN_SIMULATION_SPEED = 0.0001;
+    private static final double MIN_SIMULATION_SPEED = 0.1;
 
     /**
      * The fastest simulation speed allowed.
      */
-    private static final double MAX_SIMULATION_SPEED = 10000;
+    private static final double MAX_SIMULATION_SPEED = 10;
 
     /**
      * The listener that is called when the run simulation button is pressed.
