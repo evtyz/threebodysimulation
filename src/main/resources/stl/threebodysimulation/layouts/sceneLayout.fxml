@@ -11,7 +11,7 @@
             <Tab fx:id="settingsTab" text="Settings">
             </Tab>
             <Tab text="Saves">
-                 <ScrollPane fx:id="savesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" />
+                 <ScrollPane fx:id="savesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" vbarPolicy="ALWAYS" />
             </Tab>
         </TabPane>
     </left>

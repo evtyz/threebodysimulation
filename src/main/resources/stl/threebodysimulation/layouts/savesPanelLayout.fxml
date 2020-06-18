@@ -39,5 +39,8 @@
                 <String fx:value="primary" />
             </styleClass>
         </Button>
+      <padding>
+         <Insets bottom="30.0" />
+      </padding>
     </HBox>
 </VBox>
