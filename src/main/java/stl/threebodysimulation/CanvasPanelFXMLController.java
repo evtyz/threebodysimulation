@@ -26,6 +26,8 @@ import java.util.LinkedHashMap;
  */
 public class CanvasPanelFXMLController {
 
+    boolean lock = false;
+
     /**
      * Maximum framerate allowed by program.
      */
@@ -244,7 +246,7 @@ public class CanvasPanelFXMLController {
         particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
 
         // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
-        integrator = new DormandPrince853Integrator(Math.pow(10, -20), 30000, 0.01, 0.01);
+        integrator = new DormandPrince853Integrator(Math.pow(10, -20), 10000, 0.01, 0.0001);
 
         // Flatten particles into the flattenedParticles array.
         flattenParticles();
@@ -420,6 +422,8 @@ public class CanvasPanelFXMLController {
             updateCSV();
         }
 
+        lock = false;
+
         // Finally, let the thread that runs the simulation unpause.
         synchronized (synchronizationObject) {
             synchronizationObject.notify();
@@ -484,12 +488,16 @@ public class CanvasPanelFXMLController {
                     // Update the time
                     currentTime += (speed / MAX_FRAMERATE);
 
+                    lock = true;
+
                     // Update the UI on the main thread
                     Platform.runLater(() -> updateAll());
 
                     // Wait for the UI to update completely and notify this thread.
-                    synchronized (synchronizationObject) {
-                        synchronizationObject.wait();
+                    if (lock) {
+                        synchronized (synchronizationObject) {
+                            synchronizationObject.wait();
+                        }
                     }
 
                     // Check how much time left to wait before next frame
