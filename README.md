@@ -43,4 +43,4 @@ For more information, check the manual inside the application.
 - [Gluon Client-Maven-Plugin](https://github.com/gluonhq/client-maven-plugin) for GraalVM compatibility with JavaFX.
 
 ## License
-See LICENSE file.
+See [LICENSE](https://github.com/richmondvan/threebodysimulation/blob/master/LICENSE) file.
