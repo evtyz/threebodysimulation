@@ -488,6 +488,12 @@ class CanvasWrapper {
         particlesGC.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
+    /**
+     * Returns the display parameters of an off-screen indicator for a particle at a certain canvas position.
+     *
+     * @param canvasPos The canvas position [x, y] of an off-screen particle.
+     * @return A double array [angle, x, y] that denotes the display parameters of an off-screen indicator.
+     */
     private double[] findIndicatorArguments(double[] canvasPos) {
 
         // Rotating text arguments; [0] = angle, [1] = tlpx, [2] = tlpy
