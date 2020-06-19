@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
-      prefWidth="1200.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css"
-      xmlns="http://javafx.com/javafx/10.0.2-internal">
+<?import javafx.scene.text.TextFlow?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.UserManualFXMLController">
     <TabPane tabClosingPolicy="UNAVAILABLE">
-        <Tab text="Manual"/>
-        <Tab text="Credits"/>
+        <Tab text="Manual">
+            <ScrollPane>
+                <TextFlow fx:id="manualTextFlow"/>
+            </ScrollPane>
+        </Tab>
+        <Tab text="Credits">
+            <ScrollPane>
+                <TextFlow fx:id="creditsTextFlow"/>
+            </ScrollPane>
+        </Tab>
     </TabPane>
 </VBox>

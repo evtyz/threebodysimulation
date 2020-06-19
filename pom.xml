@@ -143,6 +143,8 @@
                         <list>javafx.scene.control.Tooltip</list>
                         <list>javafx.scene.control.Separator</list>
                         <list>javafx.scene.text.Font</list>
+                        <list>javafx.scene.text.Text</list>
+                        <list>javafx.scene.text.TextFlow</list>
                         <list>javafx.scene.paint.Color</list>
                         <list>javafx.scene.shape.Circle</list>
                         <list>javafx.scene.transform.Rotate</list>
@@ -196,6 +198,7 @@
                         <list>stl.threebodysimulation.SettingsPanelFXMLController</list>
                         <list>stl.threebodysimulation.SimulationSettings</list>
                         <list>stl.threebodysimulation.SimulationState</list>
+                        <list>stl.threebodysimulation.UserManualFXMLController</list>
                         <list>stl.threebodysimulation.LimitedTextFieldWrapper</list>
                         <list>stl.threebodysimulation.WarningWindowFXMLController</list>
                     </reflectionList>
