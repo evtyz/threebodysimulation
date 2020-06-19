@@ -112,7 +112,8 @@ class FilenameSpecificMessage implements PopupMessage {
             String getMessageTemplate() {
                 return "The following file could not be edited:\n'%s'\nIt might be open in another window.";
             }
-        },;
+        },
+        ;
 
         /**
          * Returns the title of the message.

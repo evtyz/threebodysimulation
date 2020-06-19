@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<VBox alignment="TOP_CENTER" prefWidth="400.0" style="-fx-background-color: white;" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SavesPanelFXMLController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER" prefWidth="400.0"
+      style="-fx-background-color: white;" stylesheets="@../styles/bootstrap3.css"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="stl.threebodysimulation.SavesPanelFXMLController">
     <padding>
-        <Insets top="5.0" />
+        <Insets top="5.0"/>
     </padding>
-   <TextField fx:id="searchField" promptText="🔍">
-      <VBox.margin>
-         <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
-      </VBox.margin>
-      <font>
-         <Font size="14.0" />
-      </font>
-   </TextField>
-   <VBox fx:id="defaultSavesBox" alignment="TOP_CENTER" layoutX="10.0" layoutY="62.0" style="-fx-background-color: white;">
-      <padding>
-         <Insets top="5.0" />
-      </padding>
-   </VBox>
-    <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;" />
+    <TextField fx:id="searchField" promptText="🔍">
+        <VBox.margin>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="5.0"/>
+        </VBox.margin>
+        <font>
+            <Font size="14.0"/>
+        </font>
+    </TextField>
+    <VBox fx:id="defaultSavesBox" alignment="TOP_CENTER" layoutX="10.0" layoutY="62.0"
+          style="-fx-background-color: white;">
+        <padding>
+            <Insets top="5.0"/>
+        </padding>
+    </VBox>
+    <VBox fx:id="savesBox" alignment="TOP_CENTER" style="-fx-background-color: white;"/>
     <HBox alignment="TOP_CENTER">
         <VBox.margin>
-            <Insets top="10.0" />
+            <Insets top="10.0"/>
         </VBox.margin>
         <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshSaves" styleClass="first">
             <HBox.margin>
-                <Insets right="-1.0" />
+                <Insets right="-1.0"/>
             </HBox.margin>
         </Button>
-        <Button fx:id="browseButton" layoutX="176.0" layoutY="10.0" mnemonicParsing="false" onAction="#openSavesDirectory">
+        <Button fx:id="browseButton" layoutX="176.0" layoutY="10.0" mnemonicParsing="false"
+                onAction="#openSavesDirectory">
             <styleClass>
-                <String fx:value="last" />
-                <String fx:value="primary" />
+                <String fx:value="last"/>
+                <String fx:value="primary"/>
             </styleClass>
         </Button>
-      <padding>
-         <Insets bottom="30.0" />
-      </padding>
+        <padding>
+            <Insets bottom="30.0"/>
+        </padding>
     </HBox>
 </VBox>

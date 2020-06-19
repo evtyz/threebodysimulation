@@ -118,7 +118,7 @@ public class SavesPanelFXMLController {
             String title = template.getTitle();
 
             try {
-                if (! (searchPrompt.equals("") || title.toLowerCase().contains(searchPrompt.toLowerCase()))) {
+                if (!(searchPrompt.equals("") || title.toLowerCase().contains(searchPrompt.toLowerCase()))) {
                     continue;
                 }
 
@@ -147,7 +147,8 @@ public class SavesPanelFXMLController {
                 saveController.setOnExpandListener(() -> expandRecord.put(title, true));
                 saveController.setOnContractListener(() -> expandRecord.put(title, false));
 
-            } catch (IOException ignored) {} // Should never happen.
+            } catch (IOException ignored) {
+            } // Should never happen.
         }
 
         File saveDirectory = new File(SceneFXMLController.SAVES_DIRECTORY_NAME);
@@ -158,7 +159,7 @@ public class SavesPanelFXMLController {
             for (File saveFile : filesList) {
                 String filename = saveFile.getName().substring(0, saveFile.getName().lastIndexOf("."));
 
-                if (! (searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
+                if (!(searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
                     continue;
                 }
                 // TODO Documentation

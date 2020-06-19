@@ -13,13 +13,13 @@ import javafx.scene.transform.Rotate;
  */
 class CanvasWrapper {
     /**
-     * An array of the X and Y positions of a particle.
-     */
-    double[] canvasPos = {0, 0};
-    /**
      * An array of the radii of each particle respectively.
      */
     final double[] circleDiameter = {0, 0, 0};
+    /**
+     * A 2D array of the old canvas position values
+     */
+    final double[][] oldCanvasPos = new double[3][2];
     /**
      * The canvas to draw particles on.
      */
@@ -45,25 +45,13 @@ class CanvasWrapper {
      */
     private final GraphicsContext trailGC;
     /**
+     * An array of the X and Y positions of a particle.
+     */
+    double[] canvasPos = {0, 0};
+    /**
      * The average mass of all the particles.
      */
     double avgMass;
-    /**
-     * The particles to draw on the canvas.
-     */
-    private Particle[] particles;
-    /**
-     * Whether the canvas should show particle trails.
-     */
-    private boolean trails;
-    /**
-     * Whether the canvas should show the center of mass of the particles.
-     */
-    private boolean centerOfMass;
-    /**
-     * A 2D array of the old canvas position values
-     */
-    final double[][] oldCanvasPos = new double[3][2];
     /**
      * The sum of the masses of the particles
      */
@@ -76,6 +64,18 @@ class CanvasWrapper {
      * The scale factor for the canvas orientation adjustment (x,y)
      */
     double[] translationScale = new double[2];
+    /**
+     * The particles to draw on the canvas.
+     */
+    private Particle[] particles;
+    /**
+     * Whether the canvas should show particle trails.
+     */
+    private boolean trails;
+    /**
+     * Whether the canvas should show the center of mass of the particles.
+     */
+    private boolean centerOfMass;
 
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
@@ -92,9 +92,47 @@ class CanvasWrapper {
     }
 
     /**
+     * Adjusts the original rectangle by the length of the buffer.
+     *
+     * @param originalRectangle The coordinates of the corners of the original rectangle.
+     * @param buffer            The length by which the new rectangle is extended outwards.
+     * @return The new rectangle adjusted by the buffer length.
+     */
+    private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
+
+        // Declaring the new rectangle variable
+        double[][] newRectangle = new double[4][2];
+
+        // Setting a constant minimum buffer proportion
+        final double BUFFER_PROPORTION = 0.1;
+
+        // Calculates the buffer space by which to adjust the original rectangle
+        double bufferProportionalWidth = (originalRectangle[2][0] - originalRectangle[0][0]) * BUFFER_PROPORTION + buffer;
+        double bufferProportionalHeight = (originalRectangle[1][1] - originalRectangle[0][1]) * BUFFER_PROPORTION + buffer;
+
+        // Adjusting point 1 (lower left)
+        newRectangle[0][0] = originalRectangle[0][0] - bufferProportionalWidth;
+        newRectangle[0][1] = originalRectangle[0][1] - bufferProportionalHeight;
+
+        // Adjusting point 2 (upper left)
+        newRectangle[1][0] = originalRectangle[1][0] - bufferProportionalWidth;
+        newRectangle[1][1] = originalRectangle[1][1] + bufferProportionalHeight;
+
+        // Adjusting point 3 (lower right)
+        newRectangle[2][0] = originalRectangle[2][0] + bufferProportionalWidth;
+        newRectangle[2][1] = originalRectangle[2][1] - bufferProportionalHeight;
+
+        // Adjusting point 4 (upper right)
+        newRectangle[3][0] = originalRectangle[3][0] + bufferProportionalWidth;
+        newRectangle[3][1] = originalRectangle[3][1] + bufferProportionalHeight;
+
+        return newRectangle;
+    }
+
+    /**
      * Sets the graphics options and particles for the canvas.
      *
-     * @param scales An 2D array of doubles that represent the max/min x/y coordinates of the particles in the first 10 seconds of simulation.
+     * @param scales   An 2D array of doubles that represent the max/min x/y coordinates of the particles in the first 10 seconds of simulation.
      * @param settings The SimulationSettings object that options and particles will be read from.
      */
     void setupScalesAndSettings(double[][] scales, SimulationSettings settings) {
@@ -174,10 +212,10 @@ class CanvasWrapper {
                 gridGC.setFill(Color.DARKGRAY);
                 gridGC.setStroke(Color.DARKGRAY);
             }
-            double relativeCurrentGridline = returnRelativePosition(new double[] {currentGridline, 0})[0];
+            double relativeCurrentGridline = returnRelativePosition(new double[]{currentGridline, 0})[0];
             gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
             if (!(relativeCurrentGridline < 60)) {
-                drawRotatedText(gridGC, String.valueOf(currentGridline), 270,relativeCurrentGridline - 10, 710);
+                drawRotatedText(gridGC, String.valueOf(currentGridline), 270, relativeCurrentGridline - 10, 710);
             }
             currentGridline += interval;
         }
@@ -186,11 +224,11 @@ class CanvasWrapper {
     /**
      * Draws a rotated piece of text. Modified from jewelsea's answer at https://stackoverflow.com/questions/18260421/how-to-draw-image-rotated-on-javafx-canvas.
      *
-     * @param gc The GraphicsContext to draw it on.
-     * @param text The text to draw.
+     * @param gc    The GraphicsContext to draw it on.
+     * @param text  The text to draw.
      * @param angle The angle to draw the text.
-     * @param tlpx The x position of the text.
-     * @param tlpy The y position of the text.
+     * @param tlpx  The x position of the text.
+     * @param tlpy  The y position of the text.
      */
     private void drawRotatedText(GraphicsContext gc, String text, double angle, double tlpx, double tlpy) {
         gc.save(); // saves the current state on stack, including the current transform
@@ -227,7 +265,7 @@ class CanvasWrapper {
                 gridGC.setStroke(Color.DARKGRAY);
             }
 
-            double relativeCurrentGridline = returnRelativePosition(new double[] {0, currentGridline})[1];
+            double relativeCurrentGridline = returnRelativePosition(new double[]{0, currentGridline})[1];
             gridGC.strokeLine(-20, relativeCurrentGridline, 850, relativeCurrentGridline);
             gridGC.fillText(String.valueOf(currentGridline), 10, relativeCurrentGridline - 10);
             currentGridline -= interval;
@@ -248,7 +286,7 @@ class CanvasWrapper {
 
         double base = 1;
 
-        while (! (coefficient >= 1 && coefficient < 10)) {
+        while (!(coefficient >= 1 && coefficient < 10)) {
             base = Math.pow(10, magnitude * (positive ? 1 : -1));
             coefficient = rawGridInterval / base;
             positive = !positive;
@@ -290,7 +328,7 @@ class CanvasWrapper {
 
         if (rectangleHeight == 0 || rectangleWidth == 0) {
             particleScale = 1;
-            translationScale = new double[] {-400, 360};
+            translationScale = new double[]{-400, 360};
             return;
         }
 
@@ -299,7 +337,7 @@ class CanvasWrapper {
         double canvasAspect = 10.0 / 9.0;
 
         // Adjusts the rectangle to fit the canvas aspect ratio
-        if (rectangleAspect > canvasAspect){
+        if (rectangleAspect > canvasAspect) {
             aspectFactor = rectangleAspect / canvasAspect;
             aspectAdjust = rectangleHeight * aspectFactor;
             adjDiff = (aspectAdjust - rectangleHeight) / 2;
@@ -308,9 +346,7 @@ class CanvasWrapper {
             canvasRectangle[3][1] = canvasRectangle[3][1] + adjDiff;
             canvasRectangle[0][1] = canvasRectangle[0][1] - adjDiff;
             canvasRectangle[2][1] = canvasRectangle[2][1] - adjDiff;
-        }
-
-        else if (rectangleAspect < canvasAspect) {
+        } else if (rectangleAspect < canvasAspect) {
             aspectFactor = canvasAspect / rectangleAspect;
             aspectAdjust = rectangleWidth * aspectFactor;
             adjDiff = (aspectAdjust - rectangleWidth) / 2;
@@ -337,44 +373,6 @@ class CanvasWrapper {
     }
 
     /**
-     * Adjusts the original rectangle by the length of the buffer.
-     *
-     * @param originalRectangle The coordinates of the corners of the original rectangle.
-     * @param buffer The length by which the new rectangle is extended outwards.
-     * @return The new rectangle adjusted by the buffer length.
-     */
-    private static double[][] calculateRectangle(double[][] originalRectangle, double buffer) {
-
-        // Declaring the new rectangle variable
-        double[][] newRectangle = new double[4][2];
-
-        // Setting a constant minimum buffer proportion
-        final double BUFFER_PROPORTION = 0.1;
-
-        // Calculates the buffer space by which to adjust the original rectangle
-        double bufferProportionalWidth = (originalRectangle[2][0] - originalRectangle[0][0]) * BUFFER_PROPORTION + buffer;
-        double bufferProportionalHeight = (originalRectangle[1][1] - originalRectangle[0][1]) * BUFFER_PROPORTION + buffer;
-
-        // Adjusting point 1 (lower left)
-        newRectangle[0][0] = originalRectangle[0][0] - bufferProportionalWidth;
-        newRectangle[0][1] = originalRectangle[0][1] - bufferProportionalHeight;
-
-        // Adjusting point 2 (upper left)
-        newRectangle[1][0] = originalRectangle[1][0] - bufferProportionalWidth;
-        newRectangle[1][1] = originalRectangle[1][1] + bufferProportionalHeight;
-
-        // Adjusting point 3 (lower right)
-        newRectangle[2][0] = originalRectangle[2][0] + bufferProportionalWidth;
-        newRectangle[2][1] = originalRectangle[2][1] - bufferProportionalHeight;
-
-        // Adjusting point 4 (upper right)
-        newRectangle[3][0] = originalRectangle[3][0] + bufferProportionalWidth;
-        newRectangle[3][1] = originalRectangle[3][1] + bufferProportionalHeight;
-
-        return newRectangle;
-    }
-
-    /**
      * Returns a buffer size based on particles and an original rectangle.
      *
      * @param particles The particle objects that contain information about velocity and mass.
@@ -389,7 +387,7 @@ class CanvasWrapper {
         for (int i = 0; i < 3; i++) {
             particleSquares[i] =
                     particles[i].getVelocity()[0] * particles[i].getVelocity()[0] +
-                    particles[i].getVelocity()[1] * particles[i].getVelocity()[1];
+                            particles[i].getVelocity()[1] * particles[i].getVelocity()[1];
         }
 
         // Calculates the average squared velocity
@@ -409,9 +407,9 @@ class CanvasWrapper {
      * @return The position of the element on the canvas
      */
     private double[] returnRelativePosition(double[] absolutePosition) {
-        return new double[] {
-                (absolutePosition[0]-translationScale[0])/particleScale,
-                -(absolutePosition[1]-translationScale[1])/particleScale
+        return new double[]{
+                (absolutePosition[0] - translationScale[0]) / particleScale,
+                -(absolutePosition[1] - translationScale[1]) / particleScale
         };
     }
 
@@ -554,7 +552,6 @@ class CanvasWrapper {
                     chevronArgs[1] = 750;
                     chevronArgs[2] = 20;
                 }
-
 
 
             } else if (canvasPos[1] >= 720) {

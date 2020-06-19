@@ -4,19 +4,29 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
-
-<BorderPane fx:id="sceneLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" style="-fx-border-color: #C0C0C0 transparent transparent transparent;" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SceneFXMLController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="sceneLayout" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0"
+            style="-fx-border-color: #C0C0C0 transparent transparent transparent;"
+            stylesheets="@../styles/bootstrap3.css"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="stl.threebodysimulation.SceneFXMLController">
     <left>
-        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE"
+                 BorderPane.alignment="CENTER">
             <Tab fx:id="settingsTab" text="Settings">
             </Tab>
             <Tab text="Saves">
-                 <ScrollPane fx:id="savesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="863.0" prefWidth="400.0" style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;" vbarPolicy="ALWAYS" />
+                <ScrollPane fx:id="savesScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+                            pannable="true" prefHeight="863.0" prefWidth="400.0"
+                            style="-fx-border-color: white; -fx-border-width: 0px; -fx-background-color: white;"
+                            vbarPolicy="ALWAYS"/>
             </Tab>
         </TabPane>
     </left>
     <center>
-        <BorderPane fx:id="actionPane" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: transparent transparent transparent #C0C0C0; -fx-background-color: #FCFCFC;" BorderPane.alignment="CENTER">
+        <BorderPane fx:id="actionPane" prefHeight="200.0" prefWidth="200.0"
+                    style="-fx-border-color: transparent transparent transparent #C0C0C0; -fx-background-color: #FCFCFC;"
+                    BorderPane.alignment="CENTER">
         </BorderPane>
     </center>
 </BorderPane>

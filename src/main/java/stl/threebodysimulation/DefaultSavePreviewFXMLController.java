@@ -106,6 +106,14 @@ public class DefaultSavePreviewFXMLController {
         this.selectListener = selectListener;
     }
 
+    /**
+     * Retrieves the settings that the preview represents.
+     *
+     * @return The settings.
+     */
+    SimulationSettings getSettings() {
+        return settings;
+    }
 
     /**
      * Sets the settings previewed.
@@ -140,17 +148,6 @@ public class DefaultSavePreviewFXMLController {
         massLabel2.setText(String.format("%.2f", particles[1].getMass()));
         massLabel3.setText(String.format("%.2f", particles[2].getMass()));
     }
-
-
-    /**
-     * Retrieves the settings that the preview represents.
-     *
-     * @return The settings.
-     */
-    SimulationSettings getSettings() {
-        return settings;
-    }
-
 
     /**
      * Sets the expanded/contracted state of the titled pane.

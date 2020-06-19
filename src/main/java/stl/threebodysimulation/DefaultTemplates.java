@@ -98,6 +98,7 @@ enum DefaultTemplates {
                     ""
             );
         }
+
         String getTitle() {
             return "Chaotic Orbit (Example)";
         }

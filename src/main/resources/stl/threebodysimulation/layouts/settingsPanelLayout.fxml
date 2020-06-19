@@ -1,136 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<VBox fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="settingsBox" alignment="TOP_CENTER" spacing="10.0"
+      stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      fx:controller="stl.threebodysimulation.SettingsPanelFXMLController">
     <padding>
-        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <Label text="Global Settings">
         <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="12.0"/>
         </font>
     </Label>
     <HBox alignment="CENTER" spacing="10.0">
-        <CheckBox fx:id="infiniteCheckBox" mnemonicParsing="false" onAction="#infiniteToggle" selected="true" text="Run Infinitely" />
-        <CheckBox fx:id="trailCheckBox" mnemonicParsing="false" selected="true" text="Show Particle Trails" />
-        <CheckBox fx:id="centerCheckBox" alignment="CENTER" mnemonicParsing="false" selected="true" text="Show Center of Mass" />
+        <CheckBox fx:id="infiniteCheckBox" mnemonicParsing="false" onAction="#infiniteToggle" selected="true"
+                  text="Run Infinitely"/>
+        <CheckBox fx:id="trailCheckBox" mnemonicParsing="false" selected="true" text="Show Particle Trails"/>
+        <CheckBox fx:id="centerCheckBox" alignment="CENTER" mnemonicParsing="false" selected="true"
+                  text="Show Center of Mass"/>
     </HBox>
     <GridPane prefHeight="145.0" prefWidth="358.0" vgap="5.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="80.0" />
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="89.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="10.0" prefWidth="197.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="198.0" minWidth="10.0" prefWidth="80.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="89.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="10.0" prefWidth="197.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-        <Label text="Timeskip:" GridPane.columnSpan="2" />
-        <Label fx:id="simSpeedLabel" text="Simulation Speed Multiplier:" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+        <Label text="Timeskip:" GridPane.columnSpan="2"/>
+        <Label fx:id="simSpeedLabel" text="Simulation Speed Multiplier:" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
         <TextField fx:id="timeskipField" promptText="(s)" GridPane.columnIndex="2">
             <tooltip>
                 <Tooltip fx:id="timeskipTooltip" text="Empty Tooltip">
                     <font>
-                        <Font size="16.0" />
+                        <Font size="16.0"/>
                     </font>
                 </Tooltip>
             </tooltip>
         </TextField>
-        <TextField fx:id="simSpeedField" prefHeight="27.0" prefWidth="109.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <TextField fx:id="simSpeedField" prefHeight="27.0" prefWidth="109.0" GridPane.columnIndex="2"
+                   GridPane.rowIndex="1">
             <tooltip>
                 <Tooltip fx:id="simSpeedTooltip" text="Empty Tooltip">
                     <font>
-                        <Font size="16.0" />
+                        <Font size="16.0"/>
                     </font>
                 </Tooltip>
             </tooltip>
         </TextField>
-        <ChoiceBox fx:id="numberFormatBox" prefWidth="318.0" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-        <Label text="Preferred Number Format:" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-        <CheckBox fx:id="saveCSVCheckBox" alignment="CENTER" mnemonicParsing="false" onAction="#saveCSVToggle" text="Save CSV" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets top="3.0" />
-         </GridPane.margin>
+        <ChoiceBox fx:id="numberFormatBox" prefWidth="318.0" GridPane.columnIndex="2" GridPane.halignment="LEFT"
+                   GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"/>
+        <Label text="Preferred Number Format:" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+        <CheckBox fx:id="saveCSVCheckBox" alignment="CENTER" mnemonicParsing="false" onAction="#saveCSVToggle"
+                  text="Save CSV" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets top="3.0"/>
+            </GridPane.margin>
         </CheckBox>
-       <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
-           <Button fx:id="browseButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#openCSVDirectory" style="-fx-font-size: 13;">
-            <HBox.margin>
-               <Insets right="-1.0" />
-            </HBox.margin>
-            <styleClass>
-               <String fx:value="first" />
-            </styleClass>
-            <padding>
-               <Insets bottom="-1.0" top="-1.0" />
-            </padding>
-         </Button>
-           <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="166.0" promptText="Filename" styleClass="last">
-               <HBox.margin>
-                   <Insets />
-               </HBox.margin>
-               <tooltip>
-                   <Tooltip fx:id="CSVIDFieldTooltip" text="Empty Tooltip">
-                       <font>
-                           <Font size="16.0" />
-                       </font>
-                   </Tooltip>
-               </tooltip>
-           </TextField>
-       </HBox>
-        <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button fx:id="browseButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                    onAction="#openCSVDirectory" style="-fx-font-size: 13;">
+                <HBox.margin>
+                    <Insets right="-1.0"/>
+                </HBox.margin>
+                <styleClass>
+                    <String fx:value="first"/>
+                </styleClass>
+                <padding>
+                    <Insets bottom="-1.0" top="-1.0"/>
+                </padding>
+            </Button>
+            <TextField fx:id="CSVIDField" alignment="CENTER_RIGHT" prefWidth="166.0" promptText="Filename"
+                       styleClass="last">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <tooltip>
+                    <Tooltip fx:id="CSVIDFieldTooltip" text="Empty Tooltip">
+                        <font>
+                            <Font size="16.0"/>
+                        </font>
+                    </Tooltip>
+                </tooltip>
+            </TextField>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0"
+              spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <Separator orientation="VERTICAL" prefHeight="200.0">
                 <HBox.margin>
-                    <Insets left="8.0" right="5.0" />
+                    <Insets left="8.0" right="5.0"/>
                 </HBox.margin>
             </Separator>
-            <Label fx:id="CSVIDLabel" text="CSV ID:" />
+            <Label fx:id="CSVIDLabel" text="CSV ID:"/>
         </HBox>
     </GridPane>
-    <Separator prefWidth="200.0" />
-    <Separator prefWidth="200.0" />
-    <Separator prefWidth="200.0" />
-    <Separator prefWidth="200.0" />
-    <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#runSimulation" style="-fx-font-weight: bold;" styleClass="primary" text="Run Simulation">
+    <Separator prefWidth="200.0"/>
+    <Separator prefWidth="200.0"/>
+    <Separator prefWidth="200.0"/>
+    <Separator prefWidth="200.0"/>
+    <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#runSimulation"
+            style="-fx-font-weight: bold;" styleClass="primary" text="Run Simulation">
         <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="12.0"/>
         </font>
     </Button>
     <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT">
-        <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveTemplate" style="-fx-font-size: 13;">
+        <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveTemplate"
+                style="-fx-font-size: 13;">
             <HBox.margin>
-                <Insets right="-1.0" />
+                <Insets right="-1.0"/>
             </HBox.margin>
-         <padding>
-            <Insets bottom="-1.0" left="6.0" right="7.0" top="-1.0" />
-         </padding>
-         <styleClass>
-            <String fx:value="first" />
-         </styleClass>
+            <padding>
+                <Insets bottom="-1.0" left="6.0" right="7.0" top="-1.0"/>
+            </padding>
+            <styleClass>
+                <String fx:value="first"/>
+            </styleClass>
         </Button>
-        <TextField fx:id="templateIDField" alignment="CENTER_RIGHT" prefWidth="200.0" promptText="Filename" styleClass="last">
+        <TextField fx:id="templateIDField" alignment="CENTER_RIGHT" prefWidth="200.0" promptText="Filename"
+                   styleClass="last">
             <HBox.margin>
-                <Insets />
+                <Insets/>
             </HBox.margin>
             <tooltip>
                 <Tooltip fx:id="templateIDTooltip" text="Empty Tooltip">
                     <font>
-                        <Font size="16.0" />
+                        <Font size="16.0"/>
                     </font>
                 </Tooltip>
             </tooltip>
         </TextField>
         <Label text="Template ID:">
-         <padding>
-            <Insets left="15.0" />
-         </padding>
+            <padding>
+                <Insets left="15.0"/>
+            </padding>
         </Label>
     </HBox>
-    <Button mnemonicParsing="false" onAction="#openManual" text="View User Manual" />
+    <Button mnemonicParsing="false" onAction="#openManual" text="View User Manual"/>
 </VBox>

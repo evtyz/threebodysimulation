@@ -11,9 +11,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<VBox spacing="10.0" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/8.0.172-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.ParameterFXMLController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="10.0" stylesheets="@../styles/bootstrap3.css"
+      xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="stl.threebodysimulation.ParameterFXMLController">
     <HBox alignment="CENTER" prefWidth="200.0" spacing="20.0">
         <Label fx:id="objectLabel" text="Object">
             <font>
