@@ -25,19 +25,14 @@ import java.util.LinkedHashMap;
  * The controller for the Canvas with graphics.
  */
 public class CanvasPanelFXMLController {
-
-    boolean lock = false;
-
     /**
      * Maximum framerate allowed by program.
      */
     private static final int MAX_FRAMERATE = 100;
-
     /**
      * Amount of time in milliseconds that a frame appears on screen
      */
     private static final long FRAMETIME = 1000 / MAX_FRAMERATE;
-
     /**
      * Object used for synchronization between threads
      */
@@ -46,6 +41,10 @@ public class CanvasPanelFXMLController {
      * Flattened version of the Particle array for input into a ParticleDifferentialEquations object.
      */
     private final double[] flattenedParticles = new double[12];
+    /**
+     * A lock that ensures synchronization between threads.
+     */
+    boolean lock = false;
     /**
      * A Listener that is called when the simulation stops.
      */
@@ -311,8 +310,8 @@ public class CanvasPanelFXMLController {
      * Calculates the maximum and minimum x/y coordinates during the first ten seconds of simulation.
      *
      * @param integrator The integrator used.
-     * @param particles The particles' initial states in flattened form.
-     * @param settings The settings of the simulation.
+     * @param particles  The particles' initial states in flattened form.
+     * @param settings   The settings of the simulation.
      * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
      */
     private double[][] generateScale(DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
@@ -345,7 +344,7 @@ public class CanvasPanelFXMLController {
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                coordinatePositions[index++] = new double[] {minsAndMaxs[i][0], minsAndMaxs[j][1]};
+                coordinatePositions[index++] = new double[]{minsAndMaxs[i][0], minsAndMaxs[j][1]};
             }
         }
         return coordinatePositions;
@@ -358,11 +357,11 @@ public class CanvasPanelFXMLController {
      * @return double 2D array {{minimum x, minimum y}, {maximum x, maximum y}}
      */
     private double[][] minAndMaxPositions(double[] particles) {
-        double[] xPositions = new double[] {particles[0], particles[4], particles[8]};
-        double[] yPositions = new double[] {particles[1], particles[5], particles[9]};
+        double[] xPositions = new double[]{particles[0], particles[4], particles[8]};
+        double[] yPositions = new double[]{particles[1], particles[5], particles[9]};
         Arrays.sort(xPositions);
         Arrays.sort(yPositions);
-        return new double[][] {{xPositions[0], yPositions[0]}, {xPositions[2], yPositions[2]}};
+        return new double[][]{{xPositions[0], yPositions[0]}, {xPositions[2], yPositions[2]}};
     }
 
     /**
@@ -398,6 +397,9 @@ public class CanvasPanelFXMLController {
         canvasWrapper.updateCanvas();
     }
 
+    /**
+     * Updates the CSV with the current state of the particles.
+     */
     private void updateCSV() {
         try {
             BufferedWriter dataWriter = Files.newBufferedWriter(Paths.get(CSVFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
@@ -553,7 +555,7 @@ public class CanvasPanelFXMLController {
     }
 
     /**
-     * Breaks the simulation prematurely and sends an error message to the user.
+     * Breaks the simulation prematurely and updates the display one more time.
      *
      * @param errorMessage What error message to send to the user.
      */
@@ -562,6 +564,11 @@ public class CanvasPanelFXMLController {
         breakSimulation(errorMessage);
     }
 
+    /**
+     * Breaks the simulation prematurely and sends an error message to the user.
+     *
+     * @param errorMessage What error message to send to the user.
+     */
     private void breakSimulation(PopupMessage errorMessage) {
         stopPressed();
         SceneFXMLController.openErrorWindow(errorMessage, canvas.getScene().getWindow());
