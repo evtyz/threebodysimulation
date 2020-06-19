@@ -48,10 +48,10 @@ enum DefaultTemplates {
             return new SimulationSettings(
                     new Particle[]{
                             new Particle(
-                                    100, 0, 0, 71, 1, 1, Color.RED
+                                    100, 0, 0, 70.5, 1, 1, Color.RED
                             ),
                             new Particle(
-                                    -100, 0, 0, -71, 1, 2, Color.GREEN
+                                    -100, 0, 0, -70.5, 1, 2, Color.GREEN
                             ),
                             new Particle(
                                     0, 0, 0, 0, 1, 3, Color.BLUE
