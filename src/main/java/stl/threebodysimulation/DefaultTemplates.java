@@ -42,7 +42,7 @@ enum DefaultTemplates {
     /**
      * An example of a symmetrical orbit.
      */
-    SYMMETRICAL_ORBIT {
+    SIMPLE_ORBIT {
         @Override
         SimulationSettings getSettings() {
             return new SimulationSettings(
@@ -69,7 +69,73 @@ enum DefaultTemplates {
 
         @Override
         String getTitle() {
-            return "Symmetrical Orbit (Example)";
+            return "Simple Orbit (Example)";
+        }
+    },
+    /**
+     * An example of a Lagrangian orbit.
+     */
+    LAGRANGIAN_ORBIT {
+        @Override
+        SimulationSettings getSettings() {
+            return new SimulationSettings(
+                    new Particle[]{
+                            new Particle(
+                                    0, -100, 47.97, 0, 1, 1, Color.RED
+                            ),
+                            new Particle(
+                                    -86.60254038, 50, -23.985, -41.54323862, 1, 2, Color.GREEN
+                            ),
+                            new Particle(
+                                    86.60254038, 50, -23.985, 41.54323862, 1, 3, Color.BLUE
+                            )
+                    },
+                    true,
+                    true,
+                    true,
+                    0,
+                    1,
+                    NumberFormat.ADAPTIVE,
+                    ""
+            );
+        }
+
+        @Override
+        String getTitle() {
+            return "Lagrangian Orbit (Example)";
+        }
+    },
+    /**
+     * An example of a figure-8 orbit.
+     */
+    FIGURE_8_ORBIT {
+        @Override
+        SimulationSettings getSettings() {
+            return new SimulationSettings(
+                    new Particle[]{
+                            new Particle(
+                                    0, 0, -43.735986, -67.123728, 1, 1, Color.RED
+                            ),
+                            new Particle(
+                                    -100, 0, 21.867993, 33.561864, 1, 2, Color.GREEN
+                            ),
+                            new Particle(
+                                    100, 0, 21.867993, 33.561864, 1, 3, Color.BLUE
+                            )
+                    },
+                    true,
+                    true,
+                    true,
+                    0,
+                    1,
+                    NumberFormat.ADAPTIVE,
+                    ""
+            );
+        }
+
+        @Override
+        String getTitle() {
+            return "Figure-8 Orbit (Example)";
         }
     },
     /**
