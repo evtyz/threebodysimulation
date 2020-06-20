@@ -245,7 +245,7 @@ public class CanvasPanelFXMLController {
         particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
 
         // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
-        integrator = new DormandPrince853Integrator(Math.pow(10, -20), 10000, 0.01, 0.0001);
+        integrator = new DormandPrince853Integrator(Math.pow(10, -10), 10000, 0.01, 0.0001);
 
         // Flatten particles into the flattenedParticles array.
         flattenParticles();

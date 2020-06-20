@@ -80,7 +80,9 @@ class CanvasWrapper {
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
      *
-     * @param canvas The canvas that the wrapper manages.
+     * @param canvas The main canvas for particles.
+     * @param gridCanvas The canvas that manages gridlines.
+     * @param trailCanvas The canvas that manages trails.
      */
     CanvasWrapper(Canvas canvas, Canvas gridCanvas, Canvas trailCanvas) {
         this.canvas = canvas;
@@ -192,19 +194,14 @@ class CanvasWrapper {
      * @param interval The absolute distance between each vertical gridline.
      */
     private void printVerticalGridlines(double interval) {
+        // left end of the canvas
         double base = translationScale[0];
 
-        double currentGridline;
+        double currentGridline = calculateFirstGridline(base, interval);
 
-        if (base < 0) {
-            currentGridline = base + Math.abs(base % interval);
-        } else if (base > 0) {
-            currentGridline = base + (interval - base % interval);
-        } else {
-            currentGridline = 0;
-        }
-
+        // Draws all gridlines that fit on the canvas
         while (currentGridline < translationScale[0] + particleScale * 800) {
+            // If it is the zero gridline, make it darker
             if (currentGridline == 0) {
                 gridGC.setFill(Color.BLACK);
                 gridGC.setStroke(Color.BLACK);
@@ -214,8 +211,9 @@ class CanvasWrapper {
             }
             double relativeCurrentGridline = returnRelativePosition(new double[]{currentGridline, 0})[0];
             gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
+            // Draw the label for the gridline, but only if it isn't too close to the left side of the canvas (to prevent overlap)
             if (!(relativeCurrentGridline < 60)) {
-                drawRotatedText(gridGC, String.valueOf(currentGridline), 270, relativeCurrentGridline - 10, 710);
+                drawRotatedText(gridGC, String.format("%g", currentGridline), 270, relativeCurrentGridline - 10, 710);
             }
             currentGridline += interval;
         }
@@ -239,24 +237,36 @@ class CanvasWrapper {
     }
 
     /**
+     * Calculates the first gridline based on a corner coordinate and a grid interval.
+     *
+     * @param base The corner coordinate.
+     * @param interval The grid interval.
+     * @return The coordinate of the first gridline.
+     */
+    private static double calculateFirstGridline(double base, double interval) {
+        if (base < 0) { // Modulo works differently with positive and negative numbers in Java
+            return base + Math.abs(base % interval);
+        } else if (base > 0) {
+            return base + (interval - base % interval);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Prints the horizontal gridlines based on the calculated grid interval.
      *
      * @param interval The absolute distance between each horizontal gridline.
      */
     private void printHorizontalGridlines(double interval) {
+        // Top end of the canvas
         double base = translationScale[1];
 
-        double currentGridline;
+        double currentGridline = calculateFirstGridline(base, interval);
 
-        if (base < 0) {
-            currentGridline = base + Math.abs(base % interval);
-        } else if (base > 0) {
-            currentGridline = base + (interval - base % interval);
-        } else {
-            currentGridline = 0;
-        }
-
+        // Fill in gridlines that appear on canvas
         while (currentGridline > translationScale[1] - particleScale * 720) {
+            // Zero gridline is darker
             if (currentGridline == 0) {
                 gridGC.setFill(Color.BLACK);
                 gridGC.setStroke(Color.BLACK);
@@ -267,7 +277,8 @@ class CanvasWrapper {
 
             double relativeCurrentGridline = returnRelativePosition(new double[]{0, currentGridline})[1];
             gridGC.strokeLine(-20, relativeCurrentGridline, 850, relativeCurrentGridline);
-            gridGC.fillText(String.valueOf(currentGridline), 10, relativeCurrentGridline - 10);
+            gridGC.fillText(String.format("%g", currentGridline), 10, relativeCurrentGridline - 10);
+
             currentGridline -= interval;
         }
     }
@@ -279,21 +290,8 @@ class CanvasWrapper {
      */
     private double calculateGridInterval() {
         double rawGridInterval = 100 * particleScale;
-
-        double coefficient = 0;
-        boolean positive = true;
-        int magnitude = 0;
-
-        double base = 1;
-
-        while (!(coefficient >= 1 && coefficient < 10)) {
-            base = Math.pow(10, magnitude * (positive ? 1 : -1));
-            coefficient = rawGridInterval / base;
-            positive = !positive;
-            if (positive) {
-                magnitude++;
-            }
-        }
+        double base = Math.pow(10, Math.floor(Math.log10(rawGridInterval)));
+        double coefficient = rawGridInterval / base;
 
         if (coefficient <= 1.75) {
             return 1.0 * base;
@@ -494,83 +492,57 @@ class CanvasWrapper {
      */
     private double[] findIndicatorArguments(double[] canvasPos) {
 
-        // Rotating text arguments; [0] = angle, [1] = tlpx, [2] = tlpy
-        double[] chevronArgs = new double[3];
+        final int OFFSET = 17; // Offset: artifically center indicators.
+        final int LOCK = 25; // Prevents indicators from drifting past corners.
 
-        int OFFSET = 17;
-
-        int LOCK = 25;
+        final double[] UPPER_LEFT = {315, 20, 50};
+        final double[] UPPER_RIGHT = {45, 750, 20};
+        final double[] LOWER_LEFT = {225, 50, 700};
+        final double[] LOWER_RIGHT = {135, 775, 670};
 
         // Cases A1, A2, A3 (x fixed)
         if (canvasPos[0] < 0) {
-            chevronArgs[1] = 50;
-
             if (canvasPos[1] <= LOCK) {
-                chevronArgs[0] = 315;
-                chevronArgs[1] = 20;
-                chevronArgs[2] = 50;
+                return UPPER_LEFT;
             } else if (canvasPos[1] >= LOCK && canvasPos[1] <= 720 - LOCK) {
-                chevronArgs[0] = 270;
-                chevronArgs[2] = canvasPos[1] + OFFSET;
+                return new double[]{270, 50, canvasPos[1] + OFFSET};
             } else if (canvasPos[1] >= 720 - LOCK) {
-                chevronArgs[0] = 225;
-                chevronArgs[2] = 700;
+                return LOWER_LEFT;
             }
         }
 
         // Cases B1, B2, B3 (x fixed)
         else if (canvasPos[0] > 800) {
-            chevronArgs[1] = 750;
-
             if (canvasPos[1] <= LOCK) {
-                chevronArgs[0] = 45;
-                chevronArgs[2] = 20;
+                return UPPER_RIGHT;
             } else if (canvasPos[1] >= LOCK && canvasPos[1] <= 720 - LOCK) {
-                chevronArgs[0] = 90;
-                chevronArgs[2] = canvasPos[1] - OFFSET;
+                return new double[]{90, 750, canvasPos[1] - OFFSET};
             } else if (canvasPos[1] >= 720 - LOCK) {
-                chevronArgs[0] = 135;
-                chevronArgs[1] = 775;
-                chevronArgs[2] = 670;
+                return LOWER_RIGHT;
             }
         }
 
         // Case C1, C2 (y fixed)
         else {
-
             if (canvasPos[1] <= 0) {
                 if (canvasPos[0] <= LOCK) {
-                    chevronArgs[0] = 315;
-                    chevronArgs[1] = 20;
-                    chevronArgs[2] = 50;
+                    return UPPER_LEFT;
                 } else if (canvasPos[0] > LOCK && canvasPos[0] <= 800 - LOCK) {
-                    chevronArgs[0] = 0;
-                    chevronArgs[1] = canvasPos[0] - OFFSET;
-                    chevronArgs[2] = 50;
+                    return new double[]{0, canvasPos[0] - OFFSET, 50};
                 } else {
-                    chevronArgs[0] = 45;
-                    chevronArgs[1] = 750;
-                    chevronArgs[2] = 20;
+                    return UPPER_RIGHT;
                 }
-
 
             } else if (canvasPos[1] >= 720) {
                 if (canvasPos[0] <= LOCK) {
-                    chevronArgs[0] = 225;
-                    chevronArgs[1] = 50;
-                    chevronArgs[2] = 700;
+                    return LOWER_LEFT;
                 } else if (canvasPos[0] > LOCK && canvasPos[0] <= 800 - LOCK) {
-                    chevronArgs[0] = 180;
-                    chevronArgs[1] = canvasPos[0] + OFFSET;
-                    chevronArgs[2] = 670;
+                    return new double[]{180, canvasPos[0] + OFFSET, 670};
                 } else {
-                    chevronArgs[0] = 135;
-                    chevronArgs[1] = 775;
-                    chevronArgs[2] = 670;
+                    return LOWER_RIGHT;
                 }
             }
         }
-
-        return chevronArgs;
+        return new double[]{0, 0, 0}; // Should never happen.
     }
 }
