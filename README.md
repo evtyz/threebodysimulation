@@ -41,6 +41,7 @@ For more information, check the manual inside the application.
 - [Apache Commons CSV](https://commons.apache.org/proper/commons-csv/) for logging statistics and templates into CSV files.
 - [GraalVM](https://www.graalvm.org/) for native-image compilation of Java programs.
 - [Gluon Client-Maven-Plugin](https://github.com/gluonhq/client-maven-plugin) for GraalVM compatibility with JavaFX.
+- [Ikonli](https://github.com/kordamp/ikonli) for UI icons.
 
 ## License
-See LICENSE file.
+See [LICENSE](https://github.com/richmondvan/threebodysimulation/blob/master/LICENSE) file.
