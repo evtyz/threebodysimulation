@@ -65,10 +65,12 @@ enum FilenameUnspecificMessage implements PopupMessage {
      * For confirmations related to loading settings files.
      */
     LOAD_CONFIRMATION {
+        @Override
         public String getTitle() {
             return "Load Template Confirmation";
         }
 
+        @Override
         public String getMessage() {
             return "You are about to overwrite existing settings with a saved template. Are you sure you want to proceed?";
         }
