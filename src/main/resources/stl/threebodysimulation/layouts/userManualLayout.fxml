@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.UserManualFXMLController">
-    <TabPane tabClosingPolicy="UNAVAILABLE">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" styleClass="tab" stylesheets="@../styles/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.UserManualFXMLController">
+    <TabPane prefHeight="853.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE">
         <Tab text="Manual">
             <ScrollPane>
-                <TextFlow fx:id="manualTextFlow"/>
+                <TextFlow fx:id="manualTextFlow" />
             </ScrollPane>
         </Tab>
         <Tab text="Credits">
             <ScrollPane>
-                <TextFlow fx:id="creditsTextFlow"/>
+                <TextFlow fx:id="creditsTextFlow" />
             </ScrollPane>
         </Tab>
     </TabPane>
