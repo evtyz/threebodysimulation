@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
- <TabPane prefHeight="853.0" prefWidth="1200.0" stylesheets="@../styles/bootstrap3.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.UserManualFXMLController">
+<TabPane prefHeight="853.0" prefWidth="1200.0" stylesheets="@../styles/bootstrap3.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="stl.threebodysimulation.UserManualFXMLController">
      <Tab text="Manual">
          <ScrollPane style="-fx-background-color: white;">
              <VBox prefHeight="816.0" prefWidth="1200.0" style="-fx-background-color: white;">
                  <TextFlow fx:id="manualTextFlow">
                      <padding>
-                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                      </padding>
                  </TextFlow>
              </VBox>
@@ -25,7 +22,7 @@
              <VBox prefHeight="816.0" prefWidth="1200.0" style="-fx-background-color: white;">
                  <TextFlow fx:id="creditsTextFlow">
                      <padding>
-                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                      </padding>
                  </TextFlow>
              </VBox>
