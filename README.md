@@ -4,9 +4,8 @@ A JavaFX app that computationally simulates the [three-body problem](https://en.
 Built for an ICS3U culminating project, by Evan Zheng and Vladislav Aleinikov, June 2020.
 
 ## Downloads
-A Windows x64 binary executable can be found under the [releases](https://github.com/richmondvan/threebodysimulation/releases) section. 
-
-Please note that it requires Visual C++ Redistributable 2015. A download link can be found [here,](https://aka.ms/vs/16/release/vc_redist.x64.exe) courtesy of Microsoft.
+Download information can be found under the [releases](https://github.com/richmondvan/threebodysimulation/releases) section. 
+The app currently only officially supports Windows x64.
 
 ## Functionality
 A screenshot of the UI can be seen here:
