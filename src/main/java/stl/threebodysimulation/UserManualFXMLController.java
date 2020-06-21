@@ -6,7 +6,6 @@ import javafx.geometry.VPos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 import java.net.URL;
@@ -53,7 +52,7 @@ public class UserManualFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Displays the text
 
-        Text[] manualTexts = new Text[] {
+        Text[] manualTexts = new Text[]{
                 generateHeadingText("HOW TO RUN A SIMULATION:\n"),
                 generateSpace(),
                 generateBodyText("1) Enter your simulation variables into the boxes under each simulation 'Object'. \n" +
@@ -81,7 +80,7 @@ public class UserManualFXMLController implements Initializable {
                         "4) Click 'Run Simulation'.\n\n")
         };
 
-        Text[] creditTexts = new Text[] {
+        Text[] creditTexts = new Text[]{
                 generateHeadingText("CREATORS\n"),
                 generateSpace(),
                 generateBodyText("Evan Zheng\n" +

@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<TitledPane xmlns:fx="http://javafx.com/fxml/1" fx:id="fileTitle" alignment="CENTER" expanded="false" maxHeight="-Infinity"
+<TitledPane xmlns:fx="http://javafx.com/fxml/1" fx:id="fileTitle" alignment="CENTER" expanded="false"
+            maxHeight="-Infinity"
             maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             style="-fx-background-color: white;" stylesheets="@../styles/bootstrap3.css" text="untitled"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="stl.threebodysimulation.SavePreviewFXMLController">

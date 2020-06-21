@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<TitledPane xmlns:fx="http://javafx.com/fxml/1" fx:id="titleInfo" alignment="CENTER" animated="false" collapsible="false"
+<TitledPane xmlns:fx="http://javafx.com/fxml/1" fx:id="titleInfo" alignment="CENTER" animated="false"
+            collapsible="false"
             contentDisplay="RIGHT" graphicTextGap="8.0" text="Object"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="stl.threebodysimulation.InfoFXMLController">
     <font>

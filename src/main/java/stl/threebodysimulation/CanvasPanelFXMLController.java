@@ -292,9 +292,9 @@ public class CanvasPanelFXMLController {
     /**
      * Attempts to integrate and find particle states at another time.
      *
-     * @param time0 The current time.
-     * @param time The time to travel to.
-     * @param particles The particles involved.
+     * @param time0      The current time.
+     * @param time       The time to travel to.
+     * @param particles  The particles involved.
      * @param wantErrors Whether errors should be reported to the user (True if you want reports, false otherwise)
      * @return True if the integration was successful, false otherwise.
      */
@@ -359,8 +359,8 @@ public class CanvasPanelFXMLController {
     /**
      * Calculates the maximum and minimum x/y coordinates during the first ten seconds of simulation.
      *
-     * @param particles  The particles' initial states in flattened form.
-     * @param settings   The settings of the simulation.
+     * @param particles The particles' initial states in flattened form.
+     * @param settings  The settings of the simulation.
      * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
      */
     private double[][] generateScale(double[] particles, SimulationSettings settings) {
