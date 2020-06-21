@@ -76,6 +76,20 @@ enum FilenameUnspecificMessage implements PopupMessage {
         }
     },
     /**
+     * A timeout error.
+     */
+    TIMEOUT_ERROR {
+        @Override
+        public String getTitle() {
+            return "Timeout Error";
+        }
+
+        @Override
+        public String getMessage() {
+            return "An integration is taking too long and has timed out to avoid infinite loops. You may try again.";
+        }
+    },
+    /**
      * An unknown error that occurs.
      */
     UNKNOWN_ERROR {

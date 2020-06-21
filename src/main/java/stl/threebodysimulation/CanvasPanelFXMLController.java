@@ -125,6 +125,11 @@ public class CanvasPanelFXMLController {
     private Label timeLabel;
 
     /**
+     * A variable that checks for whether the current integration is successful.
+     */
+    private boolean successfulIntegration = false;
+
+    /**
      * Constructor, for use by the FXML loader.
      */
     public CanvasPanelFXMLController() {
@@ -254,7 +259,7 @@ public class CanvasPanelFXMLController {
 
         // Get position, velocity, acceleration at current time.
         if (currentTime != 0) {
-            if (!tryToIntegrate(0, currentTime, flattenedParticles, true)) {
+            if (!tryToIntegrate(0, currentTime, flattenedParticles, true, true)) {
                 return;
             }
         }
@@ -296,41 +301,44 @@ public class CanvasPanelFXMLController {
      * @param time       The time to travel to.
      * @param particles  The particles involved.
      * @param wantErrors Whether errors should be reported to the user (True if you want reports, false otherwise)
+     * @param onMainThread Whether the integration is occuring on the main thread or not.
      * @return True if the integration was successful, false otherwise.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Inverted for clarity.
-    private boolean tryToIntegrate(double time0, double time, double[] particles, boolean wantErrors) {
+    private boolean tryToIntegrate(double time0, double time, double[] particles, boolean wantErrors, boolean onMainThread) {
 
-        final boolean[] successfulIntegration = {false};
+        successfulIntegration = false;
 
         Task<Void> integrationTask = new Task<>() {
+            /**
+             * Attempts to perform an integration.
+             *
+             * @return Nothing.
+             */
             @Override
             protected Void call() {
                 try {
                     integrator.integrate(particleDifferentialEquations, time0, particles, time, particles);
+                    successfulIntegration = true;
                 } catch (NumberIsTooSmallException e) {
                     // Asymptote error catching
                     e.printStackTrace();
                     if (wantErrors) {
                         Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR));
                     }
-                    return null;
                 } catch (NumberIsTooLargeException e) {
                     // Double overflow error catching.
                     e.printStackTrace();
                     if (wantErrors) {
                         Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR));
                     }
-                    return null;
                 } catch (Exception e) {
                     // Other errors
                     e.printStackTrace();
                     if (wantErrors) {
                         Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR));
                     }
-                    return null;
                 }
-                successfulIntegration[0] = true;
                 return null;
             }
         };
@@ -342,18 +350,24 @@ public class CanvasPanelFXMLController {
         // For debugging purposes, an exception handler to terminal output is created.
         simulationThread.setUncaughtExceptionHandler((t, e) -> System.out.println(e.getMessage()));
 
-        double deadline = System.currentTimeMillis() + 50; // half a second
         simulationThread.start();
-        while ((!simulationThread.isInterrupted()) && simulationThread.isAlive()) {
+        double deadline = System.currentTimeMillis() + 200; // 200 milliseconds
+        while (simulationThread.isAlive() && !simulationThread.isInterrupted()) {
             if (System.currentTimeMillis() > deadline) {
+                System.out.println("past deadline!");
                 simulationThread.interrupt();
                 if (wantErrors) {
-                    Platform.runLater(() -> breakSimulation(FilenameUnspecificMessage.ASYMPTOTE_ERROR));
+                    if (!onMainThread) {
+                        Platform.runLater(() -> breakSimulation(FilenameUnspecificMessage.TIMEOUT_ERROR));
+                    } else {
+                        breakSimulation(FilenameUnspecificMessage.TIMEOUT_ERROR);
+                    }
                 }
+                System.out.println("we did it!");
                 return false;
             }
         }
-        return successfulIntegration[0];
+        return successfulIntegration;
     }
 
     /**
@@ -370,7 +384,7 @@ public class CanvasPanelFXMLController {
         double[][] minsAndMaxs = minAndMaxPositions(particles);
 
         for (double time = simulationTime; time < SIMULATION_LENGTH * settings.getSpeed() + simulationTime; time += settings.getSpeed() / 5) {
-            if (!tryToIntegrate(time, time + settings.getSpeed() / 5, particles, false)) {
+            if (!tryToIntegrate(time, time + settings.getSpeed() / 5, particles, false, true)) {
                 break;
             }
 
@@ -513,7 +527,9 @@ public class CanvasPanelFXMLController {
             protected Void call() throws Exception {
                 while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
                     long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
-                    if (!tryToIntegrate(currentTime, currentTime + (speed / MAX_FRAMERATE), flattenedParticles, true)) {
+                    System.out.println(currentTime);
+
+                    if (!tryToIntegrate(currentTime, currentTime + (speed / MAX_FRAMERATE), flattenedParticles, true, false)) {
                         break;
                     }
 

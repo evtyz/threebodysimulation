@@ -229,7 +229,7 @@ class CanvasWrapper {
             double relativeCurrentGridline = returnRelativePosition(new double[]{currentGridline, 0})[0];
             gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
             // Draw the label for the gridline, but only if it isn't too close to the left side of the canvas (to prevent overlap)
-            if (!(relativeCurrentGridline < 60)) {
+            if (!(relativeCurrentGridline < 100)) {
                 drawRotatedText(gridGC, String.format("%g", currentGridline), 270, relativeCurrentGridline - 10, 710);
             }
             currentGridline += interval;
