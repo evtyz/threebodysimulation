@@ -4,9 +4,8 @@ A JavaFX app that computationally simulates the [three-body problem](https://en.
 Built for an ICS3U culminating project, by Evan Zheng and Vladislav Aleinikov, June 2020.
 
 ## Downloads
-A Windows x64 binary executable can be found under the [releases](https://github.com/richmondvan/threebodysimulation/releases) section. 
-
-Please note that it requires Visual C++ Redistributable 2015. A download link can be found [here,](https://aka.ms/vs/16/release/vc_redist.x64.exe) courtesy of Microsoft.
+Download information can be found under the [releases](https://github.com/richmondvan/threebodysimulation/releases) section. 
+The app currently only officially supports Windows x64.
 
 ## Functionality
 A screenshot of the UI can be seen here:
@@ -42,6 +41,8 @@ For more information, check the manual inside the application.
 - [GraalVM](https://www.graalvm.org/) for native-image compilation of Java programs.
 - [Gluon Client-Maven-Plugin](https://github.com/gluonhq/client-maven-plugin) for GraalVM compatibility with JavaFX.
 - [Ikonli](https://github.com/kordamp/ikonli) for UI icons.
+- [Launch4j](http://launch4j.sourceforge.net/) for packaging .jar files into .exe.
+- [Apache Maven Shade](https://maven.apache.org/plugins/maven-shade-plugin/) for building .jar files.
 
 ## License
 See [LICENSE](https://github.com/richmondvan/threebodysimulation/blob/master/LICENSE) file.
