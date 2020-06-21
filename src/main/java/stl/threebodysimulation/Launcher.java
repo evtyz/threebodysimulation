@@ -12,6 +12,7 @@ public class Launcher {
      * @param args Terminal arguments.
      */
     public static void main(String[] args) {
+        System.setProperty("prism.allowhidpi", "false");
         Application.launch(MainApp.class, args);
     }
 }
