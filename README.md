@@ -41,6 +41,8 @@ For more information, check the manual inside the application.
 - [GraalVM](https://www.graalvm.org/) for native-image compilation of Java programs.
 - [Gluon Client-Maven-Plugin](https://github.com/gluonhq/client-maven-plugin) for GraalVM compatibility with JavaFX.
 - [Ikonli](https://github.com/kordamp/ikonli) for UI icons.
+- [Launch4j](http://launch4j.sourceforge.net/) for packaging .jar files into .exe.
+- [Apache Maven Shade](https://maven.apache.org/plugins/maven-shade-plugin/) for building .jar files.
 
 ## License
 See [LICENSE](https://github.com/richmondvan/threebodysimulation/blob/master/LICENSE) file.
