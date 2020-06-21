@@ -125,11 +125,6 @@ public class CanvasPanelFXMLController {
     private Label timeLabel;
 
     /**
-     * A variable that checks for whether the current integration is successful.
-     */
-    private boolean successfulIntegration = false;
-
-    /**
      * Constructor, for use by the FXML loader.
      */
     public CanvasPanelFXMLController() {
@@ -209,8 +204,6 @@ public class CanvasPanelFXMLController {
         currentTime = 0;
         // Wrap the canvas.
         canvasWrapper = new CanvasWrapper(canvas, gridCanvas, trailCanvas);
-        // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
-        integrator = new DormandPrince853Integrator(Math.pow(10, -10), 10000, 0.01, 0.0001);
     }
 
     /**
@@ -251,6 +244,9 @@ public class CanvasPanelFXMLController {
         // Set up the particle differential equation according to the masses of each particle.
         particleDifferentialEquations = new ParticleDifferentialEquations(settings.getMass());
 
+        // Set up the integrator that we will be using. The minimum step size is 10 ^ -20, so that the integrator will return errors at asymptotes.
+        integrator = new DormandPrince853Integrator(Math.pow(10, -10), 10000, 0.01, 0.0001);
+
         // Flatten particles into the flattenedParticles array.
         flattenParticles();
 
@@ -259,12 +255,28 @@ public class CanvasPanelFXMLController {
 
         // Get position, velocity, acceleration at current time.
         if (currentTime != 0) {
-            if (!tryToIntegrate(0, currentTime, flattenedParticles, true, true)) {
+            try {
+                // Get the position and velocity of particles at currentTime
+                integrator.integrate(particleDifferentialEquations, 0, flattenedParticles, currentTime, flattenedParticles);
+            } catch (NumberIsTooSmallException e) {
+                // Asymptote error (the integrator can't converge and gives up)
+                System.out.println(e.getMessage());
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR);
+                return;
+            } catch (NumberIsTooLargeException e) {
+                // Double overflow error (inputs too large for double datatype to handle)
+                System.out.println(e.getMessage());
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR);
+                return;
+            } catch (Exception e) {
+                // Other errors
+                System.out.println(e.getMessage());
+                breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR);
                 return;
             }
         }
 
-        double[][] scales = generateScale(flattenedParticles.clone(), settings);
+        double[][] scales = generateScale(integrator, flattenedParticles.clone(), settings);
 
         updateParticles();
 
@@ -295,107 +307,35 @@ public class CanvasPanelFXMLController {
     }
 
     /**
-     * Attempts to integrate and find particle states at another time.
-     *
-     * @param time0        The current time.
-     * @param time         The time to travel to.
-     * @param particles    The particles involved.
-     * @param wantErrors   Whether errors should be reported to the user (True if you want reports, false otherwise)
-     * @param onMainThread Whether the integration is occuring on the main thread or not.
-     * @return True if the integration was successful, false otherwise.
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Inverted for clarity.
-    private boolean tryToIntegrate(double time0, double time, double[] particles, boolean wantErrors, boolean onMainThread) {
-
-        successfulIntegration = false;
-
-        Task<Void> integrationTask = new Task<>() {
-            /**
-             * Attempts to perform an integration.
-             *
-             * @return Nothing.
-             */
-            @Override
-            protected Void call() {
-                try {
-                    integrator.integrate(particleDifferentialEquations, time0, particles, time, particles);
-                    successfulIntegration = true;
-                } catch (NumberIsTooSmallException e) {
-                    // Asymptote error catching
-                    e.printStackTrace();
-                    if (wantErrors) {
-                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR));
-                    }
-                } catch (NumberIsTooLargeException e) {
-                    // Double overflow error catching.
-                    e.printStackTrace();
-                    if (wantErrors) {
-                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR));
-                    }
-                } catch (Exception e) {
-                    // Other errors
-                    e.printStackTrace();
-                    if (wantErrors) {
-                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR));
-                    }
-                }
-                return null;
-            }
-        };
-
-
-        // Run the thread.
-        Thread simulationThread = new Thread(integrationTask);
-        simulationThread.setDaemon(true);
-        // For debugging purposes, an exception handler to terminal output is created.
-        simulationThread.setUncaughtExceptionHandler((t, e) -> System.out.println(e.getMessage()));
-
-        simulationThread.start();
-        double deadline = System.currentTimeMillis() + 200; // 200 milliseconds
-        while (simulationThread.isAlive() && !simulationThread.isInterrupted()) {
-            if (System.currentTimeMillis() > deadline) {
-                System.out.println("past deadline!");
-                simulationThread.interrupt();
-                if (wantErrors) {
-                    if (!onMainThread) {
-                        Platform.runLater(() -> breakSimulation(FilenameUnspecificMessage.TIMEOUT_ERROR));
-                    } else {
-                        breakSimulation(FilenameUnspecificMessage.TIMEOUT_ERROR);
-                    }
-                }
-                System.out.println("we did it!");
-                return false;
-            }
-        }
-        return successfulIntegration;
-    }
-
-    /**
      * Calculates the maximum and minimum x/y coordinates during the first ten seconds of simulation.
      *
-     * @param particles The particles' initial states in flattened form.
-     * @param settings  The settings of the simulation.
+     * @param integrator The integrator used.
+     * @param particles  The particles' initial states in flattened form.
+     * @param settings   The settings of the simulation.
      * @return The four corners of the smallest possible rectangle that all three particles do not escape in the first 10 seconds of simulation.
      */
-    private double[][] generateScale(double[] particles, SimulationSettings settings) {
+    private double[][] generateScale(DormandPrince853Integrator integrator, double[] particles, SimulationSettings settings) {
         final int SIMULATION_LENGTH = 10;
         double simulationTime = currentTime;
 
         double[][] minsAndMaxs = minAndMaxPositions(particles);
 
         for (double time = simulationTime; time < SIMULATION_LENGTH * settings.getSpeed() + simulationTime; time += settings.getSpeed() / 5) {
-            if (!tryToIntegrate(time, time + settings.getSpeed() / 5, particles, false, true)) {
+            try {
+                // Get the position and velocity of particles at currentTime
+                integrator.integrate(particleDifferentialEquations, time, particles, time + settings.getSpeed() / 5, particles);
+                double[][] currentMinsAndMaxs = minAndMaxPositions(particles);
+                for (int i = 0; i < 2; i++) {
+                    if (currentMinsAndMaxs[0][i] < minsAndMaxs[0][i]) {
+                        minsAndMaxs[0][i] = currentMinsAndMaxs[0][i];
+                    }
+                    if (currentMinsAndMaxs[1][i] > minsAndMaxs[1][i]) {
+                        minsAndMaxs[1][i] = currentMinsAndMaxs[1][i];
+                    }
+                }
+            } catch (Exception e) {
+                // All exceptions mean automatic break.
                 break;
-            }
-
-            double[][] currentMinsAndMaxs = minAndMaxPositions(particles);
-            for (int i = 0; i < 2; i++) {
-                if (currentMinsAndMaxs[0][i] < minsAndMaxs[0][i]) {
-                    minsAndMaxs[0][i] = currentMinsAndMaxs[0][i];
-                }
-                if (currentMinsAndMaxs[1][i] > minsAndMaxs[1][i]) {
-                    minsAndMaxs[1][i] = currentMinsAndMaxs[1][i];
-                }
             }
         }
 
@@ -527,9 +467,23 @@ public class CanvasPanelFXMLController {
             protected Void call() throws Exception {
                 while (state == SimulationState.ACTIVE) { // Break if the simulation becomes inactive or paused.
                     long taskTime = System.currentTimeMillis(); // Record current time (to sync framerate)
-                    System.out.println(currentTime);
-
-                    if (!tryToIntegrate(currentTime, currentTime + (speed / MAX_FRAMERATE), flattenedParticles, true, false)) {
+                    try {
+                        // Store the state of the particles at the next frame.
+                        integrator.integrate(particleDifferentialEquations, currentTime, flattenedParticles, currentTime + (speed / MAX_FRAMERATE), flattenedParticles);
+                    } catch (NumberIsTooSmallException e) {
+                        // Asymptote error catching
+                        System.out.println(e.getMessage());
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.ASYMPTOTE_ERROR));
+                        break;
+                    } catch (NumberIsTooLargeException e) {
+                        // Double overflow error catching.
+                        System.out.println(e.getMessage());
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.OVERFLOW_ERROR));
+                        break;
+                    } catch (Exception e) {
+                        // Other errors
+                        System.out.println(e.getMessage());
+                        Platform.runLater(() -> breakSimulationAfterUpdate(FilenameUnspecificMessage.UNKNOWN_ERROR));
                         break;
                     }
 
