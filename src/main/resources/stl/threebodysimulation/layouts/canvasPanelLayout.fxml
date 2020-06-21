@@ -9,8 +9,10 @@
 <?import javafx.scene.text.Font?>
 <StackPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
            minWidth="-Infinity"
-           style="-fx-background-color: #F2F2F2; -fx-border-color: #C0C0C0 transparent transparent transparent;" stylesheets="@../styles/bootstrap3.css"
-           xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="stl.threebodysimulation.CanvasPanelFXMLController">
+           style="-fx-background-color: #F2F2F2; -fx-border-color: #C0C0C0 transparent transparent transparent;"
+           stylesheets="@../styles/bootstrap3.css"
+           xmlns="http://javafx.com/javafx/10.0.2-internal"
+           fx:controller="stl.threebodysimulation.CanvasPanelFXMLController">
     <Canvas fx:id="gridCanvas" height="720.0" layoutX="11.0" layoutY="11.0" width="800.0"/>
     <Canvas fx:id="trailCanvas" height="720.0" layoutX="11.0" layoutY="11.0" width="800.0"/>
     <Canvas fx:id="canvas" height="720.0" width="800.0"/>

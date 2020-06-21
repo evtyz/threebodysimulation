@@ -78,8 +78,8 @@ class CanvasWrapper {
     /**
      * Constructs a basic CanvasWrapper object for a particular canvas UI element.
      *
-     * @param canvas The main canvas for particles.
-     * @param gridCanvas The canvas that manages gridlines.
+     * @param canvas      The main canvas for particles.
+     * @param gridCanvas  The canvas that manages gridlines.
      * @param trailCanvas The canvas that manages trails.
      */
     CanvasWrapper(Canvas canvas, Canvas gridCanvas, Canvas trailCanvas) {
@@ -127,6 +127,23 @@ class CanvasWrapper {
         newRectangle[3][1] = originalRectangle[3][1] + bufferProportionalHeight;
 
         return newRectangle;
+    }
+
+    /**
+     * Calculates the first gridline based on a corner coordinate and a grid interval.
+     *
+     * @param base     The corner coordinate.
+     * @param interval The grid interval.
+     * @return The coordinate of the first gridline.
+     */
+    private static double calculateFirstGridline(double base, double interval) {
+        if (base < 0) { // Modulo works differently with positive and negative numbers in Java
+            return base + Math.abs(base % interval);
+        } else if (base > 0) {
+            return base + (interval - base % interval);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -210,7 +227,7 @@ class CanvasWrapper {
             double relativeCurrentGridline = returnRelativePosition(new double[]{currentGridline, 0})[0];
             gridGC.strokeLine(relativeCurrentGridline, -20, relativeCurrentGridline, 800);
             // Draw the label for the gridline, but only if it isn't too close to the left side of the canvas (to prevent overlap)
-            if (!(relativeCurrentGridline < 60)) {
+            if (!(relativeCurrentGridline < 100)) {
                 drawRotatedText(gridGC, String.format("%g", currentGridline), 270, relativeCurrentGridline - 10, 710);
             }
             currentGridline += interval;
@@ -232,23 +249,6 @@ class CanvasWrapper {
         gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
         gc.fillText(text, tlpx, tlpy);
         gc.restore(); // back to original state (before rotation)
-    }
-
-    /**
-     * Calculates the first gridline based on a corner coordinate and a grid interval.
-     *
-     * @param base The corner coordinate.
-     * @param interval The grid interval.
-     * @return The coordinate of the first gridline.
-     */
-    private static double calculateFirstGridline(double base, double interval) {
-        if (base < 0) { // Modulo works differently with positive and negative numbers in Java
-            return base + Math.abs(base % interval);
-        } else if (base > 0) {
-            return base + (interval - base % interval);
-        } else {
-            return 0;
-        }
     }
 
     /**
