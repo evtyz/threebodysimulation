@@ -297,10 +297,10 @@ public class CanvasPanelFXMLController {
     /**
      * Attempts to integrate and find particle states at another time.
      *
-     * @param time0      The current time.
-     * @param time       The time to travel to.
-     * @param particles  The particles involved.
-     * @param wantErrors Whether errors should be reported to the user (True if you want reports, false otherwise)
+     * @param time0        The current time.
+     * @param time         The time to travel to.
+     * @param particles    The particles involved.
+     * @param wantErrors   Whether errors should be reported to the user (True if you want reports, false otherwise)
      * @param onMainThread Whether the integration is occuring on the main thread or not.
      * @return True if the integration was successful, false otherwise.
      */
