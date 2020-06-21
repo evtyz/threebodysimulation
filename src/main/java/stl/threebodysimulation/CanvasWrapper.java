@@ -202,7 +202,7 @@ class CanvasWrapper {
         // Draws all gridlines that fit on the canvas
         while (currentGridline < translationScale[0] + particleScale * 800) {
             // If it is the zero gridline, make it darker
-            if (currentGridline == 0) {
+            if (Math.abs(currentGridline) < Math.pow(10, -10)) {
                 gridGC.setFill(Color.BLACK);
                 gridGC.setStroke(Color.BLACK);
             } else {
@@ -266,8 +266,8 @@ class CanvasWrapper {
 
         // Fill in gridlines that appear on canvas
         while (currentGridline > translationScale[1] - particleScale * 720) {
-            // Zero gridline is darker
-            if (currentGridline == 0) {
+            // Zero gridline is darker (approximation due to double inaccuracy)
+            if (Math.abs(currentGridline) < Math.pow(10, -10)) {
                 gridGC.setFill(Color.BLACK);
                 gridGC.setStroke(Color.BLACK);
             } else {
