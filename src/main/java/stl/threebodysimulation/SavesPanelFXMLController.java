@@ -162,7 +162,7 @@ public class SavesPanelFXMLController {
                 if (!(searchPrompt.equals("") || filename.toLowerCase().contains(searchPrompt.toLowerCase()))) {
                     continue;
                 }
-                // TODO Documentation
+
                 // Reads a file and saves it as a node.
                 ArrayList<String> serializedForm = new ArrayList<>();
 

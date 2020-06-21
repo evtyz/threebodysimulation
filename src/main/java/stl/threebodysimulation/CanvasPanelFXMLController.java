@@ -536,7 +536,7 @@ public class CanvasPanelFXMLController {
                     long leftoverTime = FRAMETIME - (System.currentTimeMillis() - taskTime);
                     if (leftoverTime > 0) {
                         // Wait until next frame.
-                        // TODO: This lags behind by around 1/30th of a second every loop, fix!
+
                         //noinspection BusyWait
                         Thread.sleep(leftoverTime);
                     }

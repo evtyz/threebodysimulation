@@ -140,7 +140,7 @@ public class DefaultSavePreviewFXMLController {
             }
         });
 
-        // Everything has 2 decimal places. TODO: Make sure things fit!
+        // Everything has 2 decimal places.
         timeskipLabel.setText(String.format("%.2f", settings.getSkip()));
         speedLabel.setText(String.format("%.2f", settings.getSpeed()));
         Particle[] particles = settings.getParticles();

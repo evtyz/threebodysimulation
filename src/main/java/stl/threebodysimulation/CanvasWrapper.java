@@ -6,8 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 
-// TODO documentation
-
 /**
  * A wrapper that manages the graphics of a canvas UI object.
  */
@@ -275,6 +273,7 @@ class CanvasWrapper {
                 gridGC.setStroke(Color.DARKGRAY);
             }
 
+            // Draws the vertical gridlines on the canvas
             double relativeCurrentGridline = returnRelativePosition(new double[]{0, currentGridline})[1];
             gridGC.strokeLine(-20, relativeCurrentGridline, 850, relativeCurrentGridline);
             gridGC.fillText(String.format("%g", currentGridline), 10, relativeCurrentGridline - 10);
@@ -289,10 +288,13 @@ class CanvasWrapper {
      * @return The grid interval.
      */
     private double calculateGridInterval() {
+
+        // Calculates the grid interval coefficient for determining the actual interval
         double rawGridInterval = 100 * particleScale;
         double base = Math.pow(10, Math.floor(Math.log10(rawGridInterval)));
         double coefficient = rawGridInterval / base;
 
+        // Determines the interval based on the coefficient
         if (coefficient <= 1.75) {
             return 1.0 * base;
         } else if (coefficient <= 4) {
@@ -438,7 +440,7 @@ class CanvasWrapper {
             oldCanvasPos[i][0] = canvasPos[0];
             oldCanvasPos[i][1] = canvasPos[1];
 
-            // Conditionally draws the off-canvas position indicator TODO not displaying
+            // Conditionally draws the off-canvas position indicator
             if ((canvasPos[0] < 0 || canvasPos[0] > 800) || (canvasPos[1] < 0 || canvasPos[1] > 720)) {
                 double[] indicatorArgs = findIndicatorArguments(canvasPos);
                 drawRotatedText(particlesGC, "^", indicatorArgs[0], indicatorArgs[1], indicatorArgs[2]);
@@ -492,9 +494,10 @@ class CanvasWrapper {
      */
     private double[] findIndicatorArguments(double[] canvasPos) {
 
-        final int OFFSET = 17; // Offset: artifically center indicators.
+        final int OFFSET = 17; // Offset: artificially center indicators.
         final int LOCK = 25; // Prevents indicators from drifting past corners.
 
+        // Declares the cases for drawing the indicators.
         final double[] UPPER_LEFT = {315, 20, 50};
         final double[] UPPER_RIGHT = {45, 750, 20};
         final double[] LOWER_LEFT = {225, 50, 700};

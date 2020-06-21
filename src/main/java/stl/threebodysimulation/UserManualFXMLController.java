@@ -6,25 +6,40 @@ import javafx.geometry.VPos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// TODO documentation
-
+/**
+ * A controller for the user manual popup.
+ */
 public class UserManualFXMLController implements Initializable {
 
+    /**
+     * The manual tab UI object in the user manual.
+     */
     @FXML
     TextFlow manualTextFlow;
 
+    /**
+     * The credits tab UI object in the user manual.
+     */
     @FXML
     TextFlow creditsTextFlow;
 
+    /**
+     * Constructor, for use by the FXML loader.
+     */
     public UserManualFXMLController() {
     }
 
+    /**
+     * Method that generates formatted heading text.
+     *
+     * @param s String to be formatted.
+     * @return Formatted string.
+     */
     private Text generateHeadingText(String s) {
         Text text = new Text();
         text.setFont(Font.font("System", FontWeight.BOLD, 20));
@@ -34,6 +49,12 @@ public class UserManualFXMLController implements Initializable {
         return text;
     }
 
+    /**
+     * Method that generates formatted body text.
+     *
+     * @param s String to be formatted.
+     * @return Formatted string.
+     */
     private Text generateBodyText(String s) {
         Text text = new Text();
         text.setFont(Font.font("System", FontWeight.NORMAL, 16));
@@ -42,6 +63,11 @@ public class UserManualFXMLController implements Initializable {
         return text;
     }
 
+    /**
+     * Method that generates a formatted line of space.
+     *
+     * @return Line of space.
+     */
     private Text generateSpace() {
         Text text = new Text();
         text.setFont(Font.font("System", 4));
@@ -49,10 +75,16 @@ public class UserManualFXMLController implements Initializable {
         return text;
     }
 
+    /**
+     * Main method for printing text on the user manual UI object.
+     *
+     * @param url Unused.
+     * @param resourceBundle Unused.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Displays the text
 
+        // Displays the text
         Text[] manualTexts = new Text[] {
                 generateHeadingText("HOW TO RUN A SIMULATION:\n"),
                 generateSpace(),
@@ -97,6 +129,7 @@ public class UserManualFXMLController implements Initializable {
                         " - Ikonli for UI icons\n\n")
         };
 
+        // Outputs the text onto the each UI tab
         for (Text text : manualTexts) {
             manualTextFlow.getChildren().add(text);
         }
