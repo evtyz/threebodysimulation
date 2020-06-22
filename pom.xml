@@ -122,7 +122,6 @@
                 <artifactId>client-maven-plugin</artifactId>
                 <version>0.1.27-SNAPSHOT</version>
                 <configuration>
-                    <verbose>true</verbose>
                     <reflectionList>
 <!--                        Include every class that is imported or created here, in case they involve reflection.-->
                         <list>javafx.application.Platform</list>
