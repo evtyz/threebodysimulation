@@ -1,5 +1,5 @@
 # Three-Body Simulation
-A JavaFX app that computationally simulates the [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) in classical mechanics.
+A JavaFX app that computationally simulates and visualizes the [three-body problem](https://en.wikipedia.org/wiki/Three-body_problem) in classical mechanics, using Dormand-Prince integration of ordinary differential equations.
 
 Built for an ICS3U culminating project, by Evan Zheng and Vladislav Aleinikov, June 2020.
 
